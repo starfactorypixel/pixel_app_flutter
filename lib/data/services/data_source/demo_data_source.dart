@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:meta/meta.dart';
 import 'package:pixel_app_flutter/data/services/data_source/mixins/default_data_source_observer_mixin.dart';
 import 'package:pixel_app_flutter/data/services/data_source/mixins/package_stream_controller_mixin.dart';
+import 'package:pixel_app_flutter/data/services/data_source/mixins/parse_bytes_package_mixin.dart';
 import 'package:pixel_app_flutter/data/services/data_source/mixins/send_packages_mixin.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/authorizartion.dart';
@@ -14,6 +15,7 @@ import 'package:re_seedwork/re_seedwork.dart';
 
 class DemoDataSource extends DataSource
     with
+        ParseBytesPackageMixin,
         DefaultDataSourceObserverMixin,
         PackageStreamControllerMixin,
         SendPackagesMixin {
@@ -1137,9 +1139,11 @@ class DemoDataSource extends DataSource
   }
 
   void _sendPackage(DataSourceIncomingPackage package) {
-    observeIncoming(package);
     if (controller.isClosed) return;
-    controller.sink.add(package);
+    onNewPackage(
+      rawPackage: package.toUint8List,
+      onNewPackageCallback: controller.sink.add,
+    );
   }
 
   PeriodicValueStatus get _getRandomStatus {
