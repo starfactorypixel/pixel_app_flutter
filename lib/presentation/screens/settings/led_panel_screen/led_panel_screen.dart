@@ -14,7 +14,7 @@ class LEDPanelScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(onPressed: context.router.pop),
+        leading: BackButton(onPressed: context.router.maybePop),
         title: Text(context.l10n.ledPanelScreenTitle),
         bottom: _PreferredSizeTableTitle(),
       ),

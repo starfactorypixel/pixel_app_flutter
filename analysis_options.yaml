@@ -14,6 +14,6 @@ linter:
   rules:
     sort_pub_dependencies: false
     public_member_api_docs: false
-    avoid_returning_this: false
     always_put_required_named_parameters_first: false
     no_leading_underscores_for_local_identifiers: false
+    one_member_abstracts: false

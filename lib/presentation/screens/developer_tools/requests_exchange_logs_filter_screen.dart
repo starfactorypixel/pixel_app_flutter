@@ -15,7 +15,7 @@ class RequestsExchangeLogsFilterScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          onPressed: context.router.pop,
+          onPressed: context.router.maybePop,
         ),
         title: Text(context.l10n.requestsFilterScreenTitle),
         actions: [
@@ -51,7 +51,7 @@ class RequestsExchangeLogsFilterScreen extends StatelessWidget {
                       ),
                     )
                         .then((value) {
-                      if (value != null) {
+                      if (value != null && context.mounted) {
                         final cubit =
                             context.read<RequestsExchangeLogsFilterCubit>();
 
@@ -75,7 +75,7 @@ class RequestsExchangeLogsFilterScreen extends StatelessWidget {
                       ),
                     )
                         .then((value) {
-                      if (value != null) {
+                      if (value != null && context.mounted) {
                         final cubit =
                             context.read<RequestsExchangeLogsFilterCubit>();
 
@@ -99,7 +99,7 @@ class RequestsExchangeLogsFilterScreen extends StatelessWidget {
                       ),
                     )
                         .then((value) {
-                      if (value != null) {
+                      if (value != null && context.mounted) {
                         final cubit =
                             context.read<RequestsExchangeLogsFilterCubit>();
 

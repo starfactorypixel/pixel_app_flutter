@@ -21,7 +21,7 @@ class RequestsExchangeLogsScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             leading: BackButton(
-              onPressed: context.router.pop,
+              onPressed: context.router.maybePop,
             ),
             title: Text(context.l10n.requestsExchangeLogsScreenTitle),
             actions: [

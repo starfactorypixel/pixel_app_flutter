@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:bg_launcher/bg_launcher.dart';
 import 'package:flutter/material.dart';

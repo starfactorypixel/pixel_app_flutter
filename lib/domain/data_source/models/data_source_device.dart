@@ -13,7 +13,7 @@ class DataSourceDevice {
   final bool isBonded;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return other is DataSourceDevice &&
         name == other.name &&
         address == other.address &&

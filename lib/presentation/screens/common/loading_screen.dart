@@ -12,8 +12,8 @@ class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GradientScaffold(
-      body: WillPopScope(
-        onWillPop: () async => popable,
+      body: PopScope(
+        canPop: popable,
         child: const Center(child: CircularProgressIndicator()),
       ),
     );

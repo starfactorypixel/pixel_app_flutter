@@ -25,7 +25,7 @@ class AppTypography extends StatelessWidget {
     );
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(
-        textScaleFactor: textScaleFactor,
+        textScaler: TextScaler.linear(textScaleFactor),
       ),
       child: InheritedAppTypography(
         textScaleFactor: textScaleFactor,
