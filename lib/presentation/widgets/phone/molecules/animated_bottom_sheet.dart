@@ -63,7 +63,7 @@ class AnimatedBottomSheet extends StatelessWidget {
           onVerticalDragEnd: (_) {
             controller.animateToNearestEdge();
           },
-          onTap: controller.toggle,
+          onTap: controller.toggleBottomSheet,
           child: stickUpWidget,
         ),
       ),
@@ -119,7 +119,7 @@ class AnimatedBottomSheetController extends AnimationController {
     return (value - minHeightPerc) / (upperBound - minHeightPerc);
   }
 
-  void toggle() {
+  void toggleBottomSheet() {
     if (isOpened) hide();
     if (isClosed) show();
   }

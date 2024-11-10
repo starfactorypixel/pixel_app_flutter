@@ -197,7 +197,7 @@ Future<void> _configureManualDeps(GetIt getIt, Environment env) async {
     ..factory<ListUsbDevicesCallback>(() => UsbSerial.listDevices)
     // MacOS, Linux, Windows
     ..factory<ListUsbPortsCallback>(() => () => SerialPort.availablePorts)
-    ..singleton<LoggerStorage>(LoggerStorageImpl(prefs: gh.getIt()))
+    ..singleton<LoggerStorage>(() => LoggerStorageImpl(prefs: gh.getIt()))
     ..factory<List<UserDefinedButtonSerializer>>(
       () => const [
         IndicatorUserDefinedButtonSerializer(),
