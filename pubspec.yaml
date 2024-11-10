@@ -15,7 +15,7 @@ dependencies:
   # dart
   meta: ^1.9.1
   bloc: ^8.1.1
-  intl: ^0.18.0
+  intl: ^0.19.0
   crclib: ^3.0.0
   crypto: ^3.0.3
   rxdart: ^0.27.7
@@ -41,8 +41,8 @@ dependencies:
       ref: "0.3.0"
 
   # codegen
-  json_annotation: ^4.8.1
-  freezed_annotation: ^2.1.0
+  json_annotation: ^4.9.0
+  freezed_annotation: ^2.4.4
 
   # di
   get_it: ^7.2.0
@@ -50,7 +50,10 @@ dependencies:
 
   # platform
   share_plus: ^7.2.1
-  usb_serial: ^0.5.1
+  usb_serial:
+    git:
+      url: https://github.com/jymden/usbserial.git
+      ref: master
   bg_launcher: ^0.0.1
   app_settings: ^5.1.1
   wakelock_plus: ^1.1.3
@@ -89,9 +92,9 @@ dev_dependencies:
   very_good_analysis: ^5.1.0
 
   # codegen
-  freezed: ^2.1.0
-  build_runner: ^2.2.0
-  json_serializable: ^6.7.0
+  freezed: ^2.5.7
+  build_runner: ^2.4.13
+  json_serializable: ^6.8.0
   auto_route_generator: ^7.3.2
   injectable_generator: ^2.1.3
 
