@@ -20,7 +20,7 @@ class DeveloperToolsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(onPressed: context.router.pop),
+        leading: BackButton(onPressed: context.router.maybePop),
         title: Text(context.l10n.developerToolsScreenTitle),
       ),
       body:
@@ -74,7 +74,7 @@ class DeveloperToolsScreen extends StatelessWidget {
                       ),
                     )
                         .then((value) {
-                      if (value != null) {
+                      if (value != null && context.mounted) {
                         context
                             .read<DeveloperToolsParametersCubit>()
                             .update(requestsPeriodInMillis: value);
@@ -111,7 +111,7 @@ class DeveloperToolsScreen extends StatelessWidget {
                         ),
                       )
                           .then((value) {
-                        if (value != null) {
+                        if (value != null && context.mounted) {
                           context
                               .read<DeveloperToolsParametersCubit>()
                               .update(subscriptionParameterIds: value.toSet());
@@ -155,7 +155,7 @@ class DeveloperToolsScreen extends StatelessWidget {
                         ),
                       )
                           .then((value) {
-                        if (value != null) {
+                        if (value != null && context.mounted) {
                           context.read<DeveloperToolsParametersCubit>().update(
                                 handshakeResponseTimeoutInMillis: value,
                               );

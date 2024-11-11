@@ -137,7 +137,7 @@ class LEDPanelSwitcherDialog extends StatelessWidget {
               child: Text(context.l10n.toTheSettingsButtonCaption),
             ),
             TextButton(
-              onPressed: context.router.pop,
+              onPressed: context.router.maybePop,
               child: Text(context.l10n.closeButtonCaption),
             ),
           ],
@@ -150,7 +150,7 @@ class LEDPanelSwitcherDialog extends StatelessWidget {
 extension on BuildContext {
   void turnOn(LEDPanelConfig config) {
     read<LEDPanelSwitcherCubit>().turnOn(config);
-    if (mounted) router.pop();
+    if (mounted) router.maybePop();
   }
 
   void turnOff() {

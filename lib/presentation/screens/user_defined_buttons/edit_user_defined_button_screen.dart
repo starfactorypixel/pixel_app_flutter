@@ -55,6 +55,8 @@ class EditUserDefinedButtonScreen extends StatefulWidget
                 context.router
                     .navigate(const SelectedDataSourceFlow())
                     .then((value) {
+                  if (!context.mounted) return;
+
                   context.showSnackBar(
                     context.l10n.theChangesAreSuccessfullySavedMessage,
                   );
@@ -90,7 +92,7 @@ class _EditUserDefinedButtonScreenState
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(
           appBar: AppBar(
-            leading: BackButton(onPressed: context.router.pop),
+            leading: BackButton(onPressed: context.router.maybePop),
             title: Text(
               context.l10n
                   .editButtonScreenTitle(widget.buttonName.toLowerCase()),

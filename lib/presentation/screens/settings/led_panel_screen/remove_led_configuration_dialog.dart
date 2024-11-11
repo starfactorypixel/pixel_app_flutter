@@ -25,7 +25,7 @@ class RemoveLEDConfigurationDialog extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: context.router.pop,
+          onPressed: context.router.maybePop,
           child: Text(context.l10n.cancelButtonCaption),
         ),
         ElevatedButton(
@@ -41,7 +41,7 @@ class RemoveLEDConfigurationDialog extends StatelessWidget {
                   context.showSnackBar(
                     context.l10n.configurationWasRemovedMessage(config.name),
                   );
-                  context.router.pop();
+                  context.router.maybePop();
                 },
                 failure: (error) => context.showSnackBar(
                   context.l10n.errorRemovingConfiguration(config.name),

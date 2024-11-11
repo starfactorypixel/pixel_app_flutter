@@ -16,7 +16,7 @@ class PCloseButton extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: PIconButton.error(
         size: PIconButtonSize.normal,
-        onPressed: context.router.pop,
+        onPressed: context.router.maybePop,
         icon: PixelIcons.close,
       ),
     );

@@ -16,7 +16,7 @@ class DataSourceWithAddress {
   int get hashCode => Object.hash(dataSource.hashCode, address.hashCode);
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return other is DataSourceWithAddress &&
         other.address == address &&
         other.dataSource == dataSource;

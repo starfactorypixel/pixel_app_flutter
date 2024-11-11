@@ -782,7 +782,7 @@ class _SelectDataParametersDialogState
       actions: [
         TextButton(
           onPressed: () {
-            context.router.pop<PackageDataParameters>(parameters);
+            context.router.maybePop(parameters);
           },
           child: Text(context.l10n.saveButtonCaption),
         ),

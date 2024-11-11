@@ -47,13 +47,15 @@ class AddUserDefinedButtonScreen extends StatefulWidget
                     .showSnackBar(context.l10n.errorWhenAddingTheButtonMessage);
               },
               success: () {
-                context.router
-                    .navigate(const SelectedDataSourceFlow())
-                    .then((value) {
-                  context.showSnackBar(
-                    context.l10n.theButtonIsSuccessfullyAddedMessage,
-                  );
-                });
+                context.router.navigate(const SelectedDataSourceFlow()).then(
+                  (value) {
+                    if (!context.mounted) return;
+
+                    context.showSnackBar(
+                      context.l10n.theButtonIsSuccessfullyAddedMessage,
+                    );
+                  },
+                );
               },
               orElse: () {},
             );
@@ -85,7 +87,7 @@ class _AddUserDefinedButtonScreenState
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(
           appBar: AppBar(
-            leading: BackButton(onPressed: context.router.pop),
+            leading: BackButton(onPressed: context.router.maybePop),
             title: Text(
               context.l10n.addUserDefinedButtonScreenTitle(
                 widget.buttonName.toLowerCase(),

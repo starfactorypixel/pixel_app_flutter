@@ -121,7 +121,7 @@ class ButtonDecorationWrapper extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: kBorderRadius,
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
             border: border,
             boxShadow: const [
               BoxShadow(

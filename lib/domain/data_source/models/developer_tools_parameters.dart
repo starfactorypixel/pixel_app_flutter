@@ -101,7 +101,7 @@ class DeveloperToolsParameters {
       );
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return other is DeveloperToolsParameters &&
         other.protocolVersion == protocolVersion &&
         other.requestsPeriodInMillis == requestsPeriodInMillis &&

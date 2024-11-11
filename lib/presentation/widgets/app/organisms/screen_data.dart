@@ -153,7 +153,7 @@ class ScreenData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return other is ScreenData &&
         size == other.size &&
         type == other.type &&

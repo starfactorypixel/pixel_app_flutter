@@ -134,7 +134,7 @@ class _AddLEDConfigurationDialogState extends State<AddLEDConfigurationDialog> {
       actionsAlignment: MainAxisAlignment.center,
       actions: [
         TextButton(
-          onPressed: context.router.pop,
+          onPressed: context.router.maybePop,
           child: Text(context.l10n.cancelButtonCaption),
         ),
         BlocConsumer<AddLEDConfigBloc, AddLEDConfigState>(
@@ -144,7 +144,7 @@ class _AddLEDConfigurationDialogState extends State<AddLEDConfigurationDialog> {
                 context.showSnackBar(
                   context.l10n.configurationAddedSuccessfullyMessage,
                 );
-                context.router.pop();
+                context.router.maybePop();
               },
               failure: (error) => context
                   .showSnackBar(context.l10n.errorAddingConfigurationMessage),

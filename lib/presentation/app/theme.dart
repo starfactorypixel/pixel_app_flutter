@@ -63,8 +63,8 @@ class MaterialTheme {
         onSecondary: colors.onPrimary,
         error: colors.error,
         onError: colors.text,
-        background: colors.background,
-        onBackground: colors.text,
+        surface: colors.background,
+        onSurface: colors.text,
         brightness: brightness,
       ),
       primaryColor: colors.primary,
@@ -132,8 +132,8 @@ class MaterialTheme {
           shadowColor: Colors.transparent,
           padding: EdgeInsets.symmetric(horizontal: 13.si, vertical: 22.si),
         ).copyWith(
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.selected)) {
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
               return colors.primaryAccent.withOpacity(.15);
             }
             return colors.borderAccent.withOpacity(.10);
@@ -150,7 +150,7 @@ class MaterialTheme {
 }
 
 class ElevatedButtonBorder extends RoundedRectangleBorder
-    implements MaterialStateOutlinedBorder {
+    implements WidgetStateOutlinedBorder {
   const ElevatedButtonBorder({required this.colors});
 
   @protected
@@ -161,8 +161,8 @@ class ElevatedButtonBorder extends RoundedRectangleBorder
   static const border = RoundedRectangleBorder(borderRadius: _borderRadius);
 
   @override
-  OutlinedBorder? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.selected)) {
+  OutlinedBorder? resolve(Set<WidgetState> states) {
+    if (states.contains(WidgetState.selected)) {
       return border.copyWith(
         side: BorderSide(
           color: colors.primaryAccent,
