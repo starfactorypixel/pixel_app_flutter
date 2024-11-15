@@ -1279,9 +1279,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: master
-      resolved-ref: f67142be60261d59736af9fcdab21c44d32352a4
-      url: "https://github.com/jymden/usbserial.git"
+      ref: "feat/ch340k_support"
+      resolved-ref: c3261d608d2730b58d41eadc99cb7bd50d18e43f
+      url: "https://github.com/radomir9720/usbserial_flutter.git"
     source: git
     version: "0.5.1"
   uuid:
