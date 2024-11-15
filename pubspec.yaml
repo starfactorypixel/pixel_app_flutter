@@ -1,6 +1,6 @@
 name: pixel_app_flutter
 description: App, that manages the functions of the StarPixel car. Also considered to be used as an on-board computer.
-version: 0.15.7+38
+version: 0.15.8+39
 publish_to: none
 
 environment:
@@ -52,8 +52,8 @@ dependencies:
   share_plus: ^7.2.1
   usb_serial:
     git:
-      url: https://github.com/jymden/usbserial.git
-      ref: master
+      url: https://github.com/radomir9720/usbserial_flutter.git
+      ref: "feat/ch340k_support"
   bg_launcher: ^0.0.1
   app_settings: ^5.1.1
   wakelock_plus: ^1.1.3
