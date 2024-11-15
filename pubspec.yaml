@@ -1,6 +1,6 @@
 name: pixel_app_flutter
 description: App, that manages the functions of the StarPixel car. Also considered to be used as an on-board computer.
-version: 0.15.7+38
+version: 0.15.8+39
 publish_to: none
 
 environment:
