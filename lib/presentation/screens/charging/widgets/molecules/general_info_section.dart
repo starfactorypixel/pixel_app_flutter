@@ -30,9 +30,21 @@ class GeneralInfoSection extends StatelessWidget {
             return ChargingScreenListTile(
               title: context.l10n.totalCurrentTileTitle,
               trailing: context.l10n.currentValue(
-                (highCurrent.value / 10).toStringAsFixed(2),
+                (highCurrent.batt1 / 10).toStringAsFixed(2),
               ),
-              status: highCurrent.status,
+              status: PeriodicValueStatus.normal,
+            );
+          },
+        ),
+        BlocSelector<BatteryDataCubit, BatteryDataState, HighCurrent>(
+          selector: (state) => state.highCurrent,
+          builder: (context, highCurrent) {
+            return ChargingScreenListTile(
+              title: context.l10n.totalCurrentTileTitle,
+              trailing: context.l10n.currentValue(
+                (highCurrent.batt2 / 10).toStringAsFixed(2),
+              ),
+              status: PeriodicValueStatus.normal,
             );
           },
         ),
