@@ -820,8 +820,8 @@ class DemoDataSource extends DataSource
         secondConfigByte: 0x95, // 10010101(incoming 0x15)
         parameterId: const DataSourceParameterId.highCurrent().value,
         convertible: HighCurrent(
-          value: randomInt16,
-          status: _getRandomStatus,
+          batt1: randomInt16,
+          batt2: randomInt16,
         ),
       ),
     );
