@@ -28,8 +28,8 @@ class HighCurrentConverter extends BytesConverter<HighCurrent> {
   @override
   HighCurrent fromBytes(List<int> bytes) {
     return HighCurrent(
-      batt1: bytes.sublist(1, 3).toIntFromInt16,
-      batt2: bytes.sublist(3, 5).toIntFromInt16,
+      batt1: bytes.sublist(0, 2).toIntFromInt16,
+      batt2: bytes.sublist(2, 4).toIntFromInt16,
     );
   }
 
