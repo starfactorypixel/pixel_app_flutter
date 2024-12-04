@@ -259,8 +259,11 @@ class DemoDataSource extends DataSource
             ..voidOn<HighVoltageParameterId>(
               () => subscriptionCallbacks.remove(_sendHighVoltageCallback),
             )
-            ..voidOn<HighCurrentParameterId>(
-              () => subscriptionCallbacks.remove(_sendHighCurrentCallback),
+            ..voidOn<HighCurrent1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendHighCurrent1Callback),
+            )
+            ..voidOn<HighCurrent2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendHighCurrent2Callback),
             )
             ..voidOn<MaxTemperatureParameterId>(
               () => subscriptionCallbacks.remove(_sendMaxTemperatureCallback),
@@ -312,8 +315,11 @@ class DemoDataSource extends DataSource
           ..voidOn<HighVoltageParameterId>(
             () => subscriptionCallbacks.add(_sendHighVoltageCallback),
           )
-          ..voidOn<HighCurrentParameterId>(
-            () => subscriptionCallbacks.add(_sendHighCurrentCallback),
+          ..voidOn<HighCurrent1ParameterId>(
+            () => subscriptionCallbacks.add(_sendHighCurrent1Callback),
+          )
+          ..voidOn<HighCurrent2ParameterId>(
+            () => subscriptionCallbacks.add(_sendHighCurrent2Callback),
           )
           ..voidOn<MaxTemperatureParameterId>(
             () => subscriptionCallbacks.add(_sendMaxTemperatureCallback),
@@ -446,7 +452,8 @@ class DemoDataSource extends DataSource
       ..voidOn<RPMParameterId>(() => _sendNewRPMCallback(version: v))
       ..voidOn<LowVoltageMinMaxDeltaParameterId>(_sendNewLowVoltageCallback)
       ..voidOn<HighVoltageParameterId>(_sendHighVoltageCallback)
-      ..voidOn<HighCurrentParameterId>(_sendHighCurrentCallback)
+      ..voidOn<HighCurrent1ParameterId>(_sendHighCurrent1Callback)
+      ..voidOn<HighCurrent2ParameterId>(_sendHighCurrent2Callback)
       ..voidOn<MaxTemperatureParameterId>(_sendMaxTemperatureCallback)
       ..voidOn<BatteryLevelParameterId>(
         () => _sendNewBatteryLevelCallback(version: v),
@@ -814,14 +821,27 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendHighCurrentCallback() {
+  void _sendHighCurrent1Callback() {
     _sendPackage(
       DataSourceIncomingPackage.fromConvertible(
         secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.highCurrent().value,
+        parameterId: const DataSourceParameterId.highCurrent1().value,
         convertible: HighCurrent(
-          batt1: randomInt16,
-          batt2: randomInt16,
+          value: randomInt16,
+          status: _getRandomStatus,
+        ),
+      ),
+    );
+  }
+
+  void _sendHighCurrent2Callback() {
+    _sendPackage(
+      DataSourceIncomingPackage.fromConvertible(
+        secondConfigByte: 0x95, // 10010101(incoming 0x15)
+        parameterId: const DataSourceParameterId.highCurrent2().value,
+        convertible: HighCurrent(
+          value: randomInt16,
+          status: _getRandomStatus,
         ),
       ),
     );

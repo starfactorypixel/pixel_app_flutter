@@ -20,7 +20,8 @@ abstract class DataSourceParameterId {
   const factory DataSourceParameterId.lowVoltageMinMaxDelta() =
       LowVoltageMinMaxDeltaParameterId;
   const factory DataSourceParameterId.highVoltage() = HighVoltageParameterId;
-  const factory DataSourceParameterId.highCurrent() = HighCurrentParameterId;
+  const factory DataSourceParameterId.highCurrent1() = HighCurrent1ParameterId;
+  const factory DataSourceParameterId.highCurrent2() = HighCurrent2ParameterId;
   const factory DataSourceParameterId.maxTemperature() =
       MaxTemperatureParameterId;
   const factory DataSourceParameterId.custom(int id) = CustomParameterId;
@@ -116,7 +117,8 @@ abstract class DataSourceParameterId {
 
   bool get isHighVoltage => this is HighVoltageParameterId;
 
-  bool get isHighCurrent => this is HighCurrentParameterId;
+  bool get isHighCurrent1 => this is HighCurrent1ParameterId;
+  bool get isHighCurrent2 => this is HighCurrent2ParameterId;
 
   bool get isMaxTemperature => this is MaxTemperatureParameterId;
 
@@ -192,7 +194,8 @@ abstract class DataSourceParameterId {
       DataSourceParameterId.voltage(),
       DataSourceParameterId.current(),
       //
-      DataSourceParameterId.highCurrent(),
+      DataSourceParameterId.highCurrent1(),
+      DataSourceParameterId.highCurrent2(),
       DataSourceParameterId.highVoltage(),
       DataSourceParameterId.maxTemperature(),
       DataSourceParameterId.lowVoltageMinMaxDelta(),
@@ -295,8 +298,12 @@ class HighVoltageParameterId extends DataSourceParameterId {
   const HighVoltageParameterId() : super(0x0044);
 }
 
-class HighCurrentParameterId extends DataSourceParameterId {
-  const HighCurrentParameterId() : super(0x0045);
+class HighCurrent1ParameterId extends DataSourceParameterId {
+  const HighCurrent1ParameterId() : super(0x0184);
+}
+
+class HighCurrent2ParameterId extends DataSourceParameterId {
+  const HighCurrent2ParameterId() : super(0x0185);
 }
 
 class MaxTemperatureParameterId extends DataSourceParameterId {

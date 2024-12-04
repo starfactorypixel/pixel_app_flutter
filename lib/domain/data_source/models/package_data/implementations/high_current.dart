@@ -1,43 +1,45 @@
 import 'package:pixel_app_flutter/domain/data_source/extensions/int.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/package_data/wrappers/bytes_convertible_with_status.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/package_data/wrappers/mixins.dart';
 
-class HighCurrent extends BytesConvertible {
+class HighCurrent extends IntBytesConvertibleWithStatus {
   const HighCurrent({
-    required this.batt1,
-    required this.batt2,
+    required super.value,
+    required super.status,
   });
 
-  final int batt1;
-  final int batt2;
+  const HighCurrent.zero() : super.normal(0);
 
-  const HighCurrent.zero()
-      : batt1 = 0,
-        batt2 = 0;
-
-  @override
-  List<Object?> get props => [batt1, batt2];
+  HighCurrent.fromFunctionId(int id, {required super.value})
+      : super.fromId(id: id);
 
   @override
   BytesConverter<HighCurrent> get bytesConverter =>
       const HighCurrentConverter();
 }
 
-class HighCurrentConverter extends BytesConverter<HighCurrent> {
+class HighCurrentConverter extends BytesConverter<HighCurrent>
+    with PeriodicValueStatusOrOkEventFunctionIdMxixn {
   const HighCurrentConverter();
 
   @override
   HighCurrent fromBytes(List<int> bytes) {
-    return HighCurrent(
-      batt1: bytes.sublist(0, 2).toIntFromInt16,
-      batt2: bytes.sublist(2, 4).toIntFromInt16,
+    return whenFunctionId(
+      body: bytes,
+      dataParser: (bytes) => bytes.toIntFromInt16,
+      status: (data, status) => HighCurrent(status: status, value: data),
+      okEvent: (data) {
+        return HighCurrent(status: PeriodicValueStatus.normal, value: data);
+      },
     );
   }
 
   @override
   List<int> toBytes(HighCurrent model) {
     return [
-      ...model.batt1.toBytesInt16,
-      ...model.batt2.toBytesInt16,
+      ...model.status.toBytes,
+      ...model.value.toBytesInt16,
     ];
   }
 }

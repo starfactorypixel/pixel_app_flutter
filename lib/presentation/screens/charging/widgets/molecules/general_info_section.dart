@@ -25,26 +25,26 @@ class GeneralInfoSection extends StatelessWidget {
           },
         ),
         BlocSelector<BatteryDataCubit, BatteryDataState, HighCurrent>(
-          selector: (state) => state.highCurrent,
+          selector: (state) => state.highCurrent1,
           builder: (context, highCurrent) {
             return ChargingScreenListTile(
               title: context.l10n.totalCurrentTileTitle,
               trailing: context.l10n.currentValue(
-                (highCurrent.batt1 / 10).toStringAsFixed(2),
+                (highCurrent.value / 10).toStringAsFixed(2),
               ),
-              status: PeriodicValueStatus.normal,
+              status: highCurrent.status,
             );
           },
         ),
         BlocSelector<BatteryDataCubit, BatteryDataState, HighCurrent>(
-          selector: (state) => state.highCurrent,
+          selector: (state) => state.highCurrent2,
           builder: (context, highCurrent) {
             return ChargingScreenListTile(
               title: context.l10n.totalCurrentTileTitle,
               trailing: context.l10n.currentValue(
-                (highCurrent.batt2 / 10).toStringAsFixed(2),
+                (highCurrent.value / 10).toStringAsFixed(2),
               ),
-              status: PeriodicValueStatus.normal,
+              status: highCurrent.status,
             );
           },
         ),

@@ -14,7 +14,8 @@ import 'package:re_seedwork/re_seedwork.dart';
 class BatteryDataState with EquatableMixin {
   const BatteryDataState({
     required this.maxTemperature,
-    required this.highCurrent,
+    required this.highCurrent1,
+    required this.highCurrent2,
     required this.highVoltage,
     required this.lowVoltageMinMaxDelta,
     required this.temperatureFirstBatch,
@@ -32,9 +33,11 @@ class BatteryDataState with EquatableMixin {
     required this.lowVoltageTwentyEightToThirty,
     required this.lowVoltageThirtyOneToThirtyThree,
   });
+
   const BatteryDataState.initial()
       : maxTemperature = const MaxTemperature.zero(),
-        highCurrent = const HighCurrent.zero(),
+        highCurrent1 = const HighCurrent.zero(),
+        highCurrent2 = const HighCurrent.zero(),
         highVoltage = const HighVoltage.zero(),
         lowVoltageMinMaxDelta = const LowVoltageMinMaxDelta.zero(),
         temperatureFirstBatch = const BatteryTemperatureFirstBatch.zero(),
@@ -60,13 +63,16 @@ class BatteryDataState with EquatableMixin {
             const BatteryLowVoltageThirtyOneToThirtyThree.zero();
 
   final MaxTemperature maxTemperature;
-  final HighCurrent highCurrent;
+  final HighCurrent highCurrent1;
+  final HighCurrent highCurrent2;
   final HighVoltage highVoltage;
   final LowVoltageMinMaxDelta lowVoltageMinMaxDelta;
+
   //
   final BatteryTemperatureFirstBatch temperatureFirstBatch;
   final BatteryTemperatureSecondBatch temperatureSecondBatch;
   final BatteryTemperatureThirdBatch temperatureThirdBatch;
+
   //
   final BatteryLowVoltageOneToThree lowVoltageOneToThree;
   final BatteryLowVoltageFourToSix lowVoltageFourToSix;
@@ -84,7 +90,8 @@ class BatteryDataState with EquatableMixin {
 
   BatteryDataState copyWith({
     MaxTemperature? maxTemperature,
-    HighCurrent? highCurrent,
+    HighCurrent? highCurrent1,
+    HighCurrent? highCurrent2,
     HighVoltage? highVoltage,
     LowVoltageMinMaxDelta? lowVoltageMinMaxDelta,
     BatteryTemperatureFirstBatch? temperatureFirstBatch,
@@ -104,7 +111,8 @@ class BatteryDataState with EquatableMixin {
   }) {
     return BatteryDataState(
       maxTemperature: maxTemperature ?? this.maxTemperature,
-      highCurrent: highCurrent ?? this.highCurrent,
+      highCurrent1: highCurrent1 ?? this.highCurrent1,
+      highCurrent2: highCurrent2 ?? this.highCurrent2,
       highVoltage: highVoltage ?? this.highVoltage,
       lowVoltageMinMaxDelta:
           lowVoltageMinMaxDelta ?? this.lowVoltageMinMaxDelta,
@@ -140,7 +148,8 @@ class BatteryDataState with EquatableMixin {
   @override
   List<Object?> get props => [
         maxTemperature,
-        highCurrent,
+        highCurrent1,
+        highCurrent2,
         highVoltage,
         lowVoltageMinMaxDelta,
         temperatureFirstBatch,
@@ -173,8 +182,11 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
   }) : super(const BatteryDataState.initial()) {
     subscribe<DataSourceIncomingPackage>(dataSource.packageStream, (value) {
       value
-        ..voidOnModel<HighCurrent, HighCurrentIncomingDataSourcePackage>(
-          (model) => emit(state.copyWith(highCurrent: model)),
+        ..voidOnModel<HighCurrent, HighCurrent1IncomingDataSourcePackage>(
+          (model) => emit(state.copyWith(highCurrent1: model)),
+        )
+        ..voidOnModel<HighCurrent, HighCurrent2IncomingDataSourcePackage>(
+          (model) => emit(state.copyWith(highCurrent2: model)),
         )
         ..voidOnModel<HighVoltage, HighVoltageIncomingDataSourcePackage>(
           (model) => emit(state.copyWith(highVoltage: model)),
@@ -276,7 +288,8 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
   }
 
   static Set<DataSourceParameterId> kDefaultSubscribeParameters = {
-    const DataSourceParameterId.highCurrent(),
+    const DataSourceParameterId.highCurrent1(),
+    const DataSourceParameterId.highCurrent2(),
     const DataSourceParameterId.highVoltage(),
     const DataSourceParameterId.maxTemperature(),
   };
