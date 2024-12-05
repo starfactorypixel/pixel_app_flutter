@@ -1,11 +1,13 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pixel_app_flutter/bootstrap.dart';
 import 'package:pixel_app_flutter/data/services/data_source/bluetooth_data_source.dart';
 import 'package:pixel_app_flutter/data/services/data_source/demo_data_source.dart';
-import 'package:pixel_app_flutter/data/services/data_source/usb_data_source.dart';
+import 'package:pixel_app_flutter/data/services/data_source/usb_data_source.dart'
+    if (dart.library.js) 'package:pixel_app_flutter/data/services/data_source/stubs/usb_data_source.dart';
 import 'package:pixel_app_flutter/data/services/data_source/usb_data_source_android.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/l10n/l10n.dart';
@@ -87,7 +89,7 @@ class SelectDataSourceScope extends StatelessWidget
                     permissionRequestCallback: GetIt.I(),
                   ),
                 ),
-              ] else if (!platform.isIos)
+              ] else if (!platform.isIos && !kIsWeb)
                 DataSourceEntity(
                   key: USBDataSource.kKey,
                   title: platform.isMacOS
