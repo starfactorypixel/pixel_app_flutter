@@ -77,24 +77,11 @@ abstract class DataSourceIncomingPackage<T extends BytesConvertible>
       HandshakeInitialIncomingDataSourcePackage.new,
       HandshakePingIncomingDataSourcePackage.new,
       LowVoltageMinMaxDeltaIncomingDataSourcePackage.new,
-      HighCurrent1IncomingDataSourcePackage.new,
-      HighCurrent2IncomingDataSourcePackage.new,
+      HighCurrentIncomingDataSourcePackage.new,
       HighVoltageIncomingDataSourcePackage.new,
       MaxTemperatureIncomingDataSourcePackage.new,
-      BatteryTemperatureFirstBatchIncomingDataSourcePackage.new,
-      BatteryTemperatureSecondBatchIncomingDataSourcePackage.new,
-      BatteryTemperatureThirdBatchIncomingDataSourcePackage.new,
-      BatteryLowVoltageOneToThreeIncomingDataSourcePackage.new,
-      BatteryLowVoltageFourToSixIncomingDataSourcePackage.new,
-      BatteryLowVoltageSevenToNineIncomingDataSourcePackage.new,
-      BatteryLowVoltageTenToTwelveIncomingDataSourcePackage.new,
-      BatteryLowVoltageThirteenToFifteenIncomingDataSourcePackage.new,
-      BatteryLowVoltageSixteenToEighteenIncomingDataSourcePackage.new,
-      BatteryLowVoltageNineteenToTwentyOneIncomingDataSourcePackage.new,
-      BatteryLowVoltageTwentyTwoToTwentyFourIncomingDataSourcePackage.new,
-      BatteryLowVoltageTwentyFiveToTwentySevenIncomingDataSourcePackage.new,
-      BatteryLowVoltageTwentyEightToThirtyIncomingDataSourcePackage.new,
-      BatteryLowVoltageThirtyOneToThirtyThreeIncomingDataSourcePackage.new,
+      BatteryTemperatureIncomingDataSourcePackage.new,
+      BatteryLowVoltageIncomingDataSourcePackage.new,
 
       BatteryLevelIncomingDataSourcePackage.new,
       BatteryPowerIncomingDataSourcePackage.new,
@@ -149,6 +136,13 @@ extension VoidOnModelExtension on DataSourceIncomingPackage {
     void Function(Y model) fn,
   ) {
     if (this is T) fn((this as T).dataModel);
+  }
+
+  void voidOnPackage<Y extends BytesConvertible,
+      T extends DataSourceIncomingPackage<Y>>(
+    void Function(T package) fn,
+  ) {
+    if (this is T) fn(this as T);
   }
 }
 

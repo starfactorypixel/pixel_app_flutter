@@ -142,10 +142,50 @@
   },
   "chargingGeneralTabTitle": "General",
   "chargingTemperatureTabTitle": "Temperature",
+  "chargingTemperatureNTabTitle": "Temperature {number} battery",
+  "@chargingTemperatureNTabTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "chargingVoltageTabTitle": "Voltage",
+  "chargingVoltageNTabTitle": "Voltage {number} battery",
+  "@chargingVoltageNTabTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "totalVoltageTileTitle": "Total voltage",
+  "totalVoltageNTileTitle": "Total voltage {number} battery",
+  "@totalVoltageNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "totalCurrentTileTitle": "Total discharge/charge current",
+  "totalCurrentNTileTitle": "Total discharge/charge current {number} battery",
+  "@totalCurrentNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "maximumRegisteredTemperatureTileTitle": "Maximum temperature",
+  "maximumRegisteredTemperatureNTileTitle": "Maximum temperature {number} battery",
+  "@maximumRegisteredTemperatureNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "voltageValue": "{value} V",
   "@voltageValue": {
     "placeholders": {
@@ -476,7 +516,23 @@
   "dontDisplaySwitcherButtonCaption": "Don't display",
   "cabinLightButtonCaption": "Cabin light",
   "cellsSectionSubtitle": "Cells",
+  "cellsSectionNSubtitle": "Cells {number} battery",
+  "@cellsSectionNSubtitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "sensorsSectionSubtitle": "Sensors",
+  "sensorsSectionNSubtitle": "Sensors {number} battery",
+  "@sensorsSectionNSubtitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "waitingInterfaceStatus": "Waiting",
   "closedShortStatusMessage": "Closed",
   "openedShortStatusMessage": "Closed",

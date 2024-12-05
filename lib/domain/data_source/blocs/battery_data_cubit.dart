@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:pixel_app_flutter/domain/app/app.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/outgoing_data_source_packages.dart';
@@ -13,159 +14,94 @@ import 'package:re_seedwork/re_seedwork.dart';
 @immutable
 class BatteryDataState with EquatableMixin {
   const BatteryDataState({
+    required this.batteriesCount,
+    required this.cellsCount,
+    required this.temperatureSensorsCount,
     required this.maxTemperature,
-    required this.highCurrent1,
-    required this.highCurrent2,
+    required this.highCurrent,
     required this.highVoltage,
     required this.lowVoltageMinMaxDelta,
-    required this.temperatureFirstBatch,
-    required this.temperatureSecondBatch,
-    required this.temperatureThirdBatch,
-    required this.lowVoltageOneToThree,
-    required this.lowVoltageFourToSix,
-    required this.lowVoltageSevenToNine,
-    required this.lowVoltageTenToTwelve,
-    required this.lowVoltageThirteenToFifteen,
-    required this.lowVoltageSixteenToEighteen,
-    required this.lowVoltageNineteenToTwentyOne,
-    required this.lowVoltageTwentyTwoToTwentyFour,
-    required this.lowVoltageTwentyFiveToTwentySeven,
-    required this.lowVoltageTwentyEightToThirty,
-    required this.lowVoltageThirtyOneToThirtyThree,
+    required this.temperature,
+    required this.batteryLowVoltage,
   });
 
-  const BatteryDataState.initial()
-      : maxTemperature = const MaxTemperature.zero(),
-        highCurrent1 = const HighCurrent.zero(),
-        highCurrent2 = const HighCurrent.zero(),
-        highVoltage = const HighVoltage.zero(),
-        lowVoltageMinMaxDelta = const LowVoltageMinMaxDelta.zero(),
-        temperatureFirstBatch = const BatteryTemperatureFirstBatch.zero(),
-        temperatureSecondBatch = const BatteryTemperatureSecondBatch.zero(),
-        temperatureThirdBatch = const BatteryTemperatureThirdBatch.zero(),
-        lowVoltageOneToThree = const BatteryLowVoltageOneToThree.zero(),
-        lowVoltageFourToSix = const BatteryLowVoltageFourToSix.zero(),
-        lowVoltageSevenToNine = const BatteryLowVoltageSevenToNine.zero(),
-        lowVoltageTenToTwelve = const BatteryLowVoltageTenToTwelve.zero(),
-        lowVoltageThirteenToFifteen =
-            const BatteryLowVoltageThirteenToFifteen.zero(),
-        lowVoltageSixteenToEighteen =
-            const BatteryLowVoltageSixteenToEighteen.zero(),
-        lowVoltageNineteenToTwentyOne =
-            const BatteryLowVoltageNineteenToTwentyOne.zero(),
-        lowVoltageTwentyTwoToTwentyFour =
-            const BatteryLowVoltageTwentyTwoToTwentyFour.zero(),
-        lowVoltageTwentyFiveToTwentySeven =
-            const BatteryLowVoltageTwentyFiveToTwentySeven.zero(),
-        lowVoltageTwentyEightToThirty =
-            const BatteryLowVoltageTwentyEightToThirty.zero(),
-        lowVoltageThirtyOneToThirtyThree =
-            const BatteryLowVoltageThirtyOneToThirtyThree.zero();
+  BatteryDataState.initial({
+    required this.batteriesCount,
+    required this.cellsCount,
+    required this.temperatureSensorsCount,
+  })  : maxTemperature = Sequence.fill(
+          batteriesCount,
+          const MaxTemperature.zero(),
+        ),
+        highCurrent = Sequence<HighCurrent>.fill(
+          batteriesCount,
+          const HighCurrent.zero(),
+        ),
+        highVoltage = Sequence<HighVoltage>.fill(
+          batteriesCount,
+          const HighVoltage.zero(),
+        ),
+        lowVoltageMinMaxDelta = Sequence.fill(
+          batteriesCount,
+          const LowVoltageMinMaxDelta.zero(),
+        ),
+        temperature = Sequence.fill(
+          batteriesCount,
+          Sequence.fillBuilder(
+            temperatureSensorsCount,
+            (index) => BatteryTemperature.zero(no: index + 1),
+          ),
+        ),
+        batteryLowVoltage = Sequence.fill(
+          batteriesCount,
+          Sequence.fill(cellsCount, 0),
+        );
 
-  final MaxTemperature maxTemperature;
-  final HighCurrent highCurrent1;
-  final HighCurrent highCurrent2;
-  final HighVoltage highVoltage;
-  final LowVoltageMinMaxDelta lowVoltageMinMaxDelta;
+  final int batteriesCount;
+  final int cellsCount;
+  final int temperatureSensorsCount;
+
+  final Sequence<MaxTemperature> maxTemperature;
+  final Sequence<HighCurrent> highCurrent;
+  final Sequence<HighVoltage> highVoltage;
+  final Sequence<LowVoltageMinMaxDelta> lowVoltageMinMaxDelta;
 
   //
-  final BatteryTemperatureFirstBatch temperatureFirstBatch;
-  final BatteryTemperatureSecondBatch temperatureSecondBatch;
-  final BatteryTemperatureThirdBatch temperatureThirdBatch;
+  final Sequence<Sequence<BatteryTemperature>> temperature;
 
   //
-  final BatteryLowVoltageOneToThree lowVoltageOneToThree;
-  final BatteryLowVoltageFourToSix lowVoltageFourToSix;
-  final BatteryLowVoltageSevenToNine lowVoltageSevenToNine;
-  final BatteryLowVoltageTenToTwelve lowVoltageTenToTwelve;
-  final BatteryLowVoltageThirteenToFifteen lowVoltageThirteenToFifteen;
-  final BatteryLowVoltageSixteenToEighteen lowVoltageSixteenToEighteen;
-  final BatteryLowVoltageNineteenToTwentyOne lowVoltageNineteenToTwentyOne;
-  final BatteryLowVoltageTwentyTwoToTwentyFour lowVoltageTwentyTwoToTwentyFour;
-  final BatteryLowVoltageTwentyFiveToTwentySeven
-      lowVoltageTwentyFiveToTwentySeven;
-  final BatteryLowVoltageTwentyEightToThirty lowVoltageTwentyEightToThirty;
-  final BatteryLowVoltageThirtyOneToThirtyThree
-      lowVoltageThirtyOneToThirtyThree;
+  final Sequence<Sequence<double>> batteryLowVoltage;
 
   BatteryDataState copyWith({
-    MaxTemperature? maxTemperature,
-    HighCurrent? highCurrent1,
-    HighCurrent? highCurrent2,
-    HighVoltage? highVoltage,
-    LowVoltageMinMaxDelta? lowVoltageMinMaxDelta,
-    BatteryTemperatureFirstBatch? temperatureFirstBatch,
-    BatteryTemperatureSecondBatch? temperatureSecondBatch,
-    BatteryTemperatureThirdBatch? temperatureThirdBatch,
-    BatteryLowVoltageOneToThree? lowVoltageOneToThree,
-    BatteryLowVoltageFourToSix? lowVoltageFourToSix,
-    BatteryLowVoltageSevenToNine? lowVoltageSevenToNine,
-    BatteryLowVoltageTenToTwelve? lowVoltageTenToTwelve,
-    BatteryLowVoltageThirteenToFifteen? lowVoltageThirteenToFifteen,
-    BatteryLowVoltageSixteenToEighteen? lowVoltageSixteenToEighteen,
-    BatteryLowVoltageNineteenToTwentyOne? lowVoltageNineteenToTwentyOne,
-    BatteryLowVoltageTwentyTwoToTwentyFour? lowVoltageTwentyTwoToTwentyFour,
-    BatteryLowVoltageTwentyFiveToTwentySeven? lowVoltageTwentyFiveToTwentySeven,
-    BatteryLowVoltageTwentyEightToThirty? lowVoltageTwentyEightToThirty,
-    BatteryLowVoltageThirtyOneToThirtyThree? lowVoltageThirtyOneToThirtyThree,
+    Sequence<MaxTemperature>? maxTemperature,
+    Sequence<HighCurrent>? highCurrent,
+    Sequence<HighVoltage>? highVoltage,
+    Sequence<LowVoltageMinMaxDelta>? lowVoltageMinMaxDelta,
+    Sequence<Sequence<BatteryTemperature>>? temperature,
+    Sequence<Sequence<double>>? batteryLowVoltage,
   }) {
     return BatteryDataState(
+      batteriesCount: batteriesCount,
+      cellsCount: cellsCount,
+      temperatureSensorsCount: temperatureSensorsCount,
       maxTemperature: maxTemperature ?? this.maxTemperature,
-      highCurrent1: highCurrent1 ?? this.highCurrent1,
-      highCurrent2: highCurrent2 ?? this.highCurrent2,
+      highCurrent: highCurrent ?? this.highCurrent,
       highVoltage: highVoltage ?? this.highVoltage,
       lowVoltageMinMaxDelta:
           lowVoltageMinMaxDelta ?? this.lowVoltageMinMaxDelta,
-      temperatureFirstBatch:
-          temperatureFirstBatch ?? this.temperatureFirstBatch,
-      temperatureSecondBatch:
-          temperatureSecondBatch ?? this.temperatureSecondBatch,
-      temperatureThirdBatch:
-          temperatureThirdBatch ?? this.temperatureThirdBatch,
-      lowVoltageOneToThree: lowVoltageOneToThree ?? this.lowVoltageOneToThree,
-      lowVoltageFourToSix: lowVoltageFourToSix ?? this.lowVoltageFourToSix,
-      lowVoltageSevenToNine:
-          lowVoltageSevenToNine ?? this.lowVoltageSevenToNine,
-      lowVoltageTenToTwelve:
-          lowVoltageTenToTwelve ?? this.lowVoltageTenToTwelve,
-      lowVoltageThirteenToFifteen:
-          lowVoltageThirteenToFifteen ?? this.lowVoltageThirteenToFifteen,
-      lowVoltageSixteenToEighteen:
-          lowVoltageSixteenToEighteen ?? this.lowVoltageSixteenToEighteen,
-      lowVoltageNineteenToTwentyOne:
-          lowVoltageNineteenToTwentyOne ?? this.lowVoltageNineteenToTwentyOne,
-      lowVoltageTwentyTwoToTwentyFour: lowVoltageTwentyTwoToTwentyFour ??
-          this.lowVoltageTwentyTwoToTwentyFour,
-      lowVoltageTwentyFiveToTwentySeven: lowVoltageTwentyFiveToTwentySeven ??
-          this.lowVoltageTwentyFiveToTwentySeven,
-      lowVoltageTwentyEightToThirty:
-          lowVoltageTwentyEightToThirty ?? this.lowVoltageTwentyEightToThirty,
-      lowVoltageThirtyOneToThirtyThree: lowVoltageThirtyOneToThirtyThree ??
-          this.lowVoltageThirtyOneToThirtyThree,
+      temperature: temperature ?? this.temperature,
+      batteryLowVoltage: batteryLowVoltage ?? this.batteryLowVoltage,
     );
   }
 
   @override
   List<Object?> get props => [
         maxTemperature,
-        highCurrent1,
-        highCurrent2,
+        highCurrent,
         highVoltage,
         lowVoltageMinMaxDelta,
-        temperatureFirstBatch,
-        temperatureSecondBatch,
-        temperatureThirdBatch,
-        lowVoltageOneToThree,
-        lowVoltageFourToSix,
-        lowVoltageSevenToNine,
-        lowVoltageTenToTwelve,
-        lowVoltageThirteenToFifteen,
-        lowVoltageSixteenToEighteen,
-        lowVoltageNineteenToTwentyOne,
-        lowVoltageTwentyTwoToTwentyFour,
-        lowVoltageTwentyFiveToTwentySeven,
-        lowVoltageTwentyEightToThirty,
-        lowVoltageThirtyOneToThirtyThree,
+        temperature,
+        batteryLowVoltage,
       ];
 }
 
@@ -175,114 +111,104 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
         BlocLoggerMixin<DataSourcePackage, BatteryDataState> {
   BatteryDataCubit({
     required this.dataSource,
+    required int batteriesCount,
+    required int cellsCount,
+    required int temperatureSensorsCount,
     this.temperatureUpdateDuration = kDefaultTemperatureUpdateDuration,
     this.voltageUpdateDuration = kDefaultVoltageUpdateDuration,
     this.temperatureParametersId = kDefaultTemperatureParameterIds,
     this.voltageParametersId = kDefaultVoltageParameterIds,
-  }) : super(const BatteryDataState.initial()) {
+  }) : super(
+          BatteryDataState.initial(
+            batteriesCount: batteriesCount,
+            cellsCount: cellsCount,
+            temperatureSensorsCount: temperatureSensorsCount,
+          ),
+        ) {
     subscribe<DataSourceIncomingPackage>(dataSource.packageStream, (value) {
       value
-        ..voidOnModel<HighCurrent, HighCurrent1IncomingDataSourcePackage>(
-          (model) => emit(state.copyWith(highCurrent1: model)),
-        )
-        ..voidOnModel<HighCurrent, HighCurrent2IncomingDataSourcePackage>(
-          (model) => emit(state.copyWith(highCurrent2: model)),
-        )
-        ..voidOnModel<HighVoltage, HighVoltageIncomingDataSourcePackage>(
-          (model) => emit(state.copyWith(highVoltage: model)),
-        )
-        ..voidOnModel<MaxTemperature, MaxTemperatureIncomingDataSourcePackage>(
-          (model) => emit(state.copyWith(maxTemperature: model)),
-        )
-        ..voidOnModel<BatteryTemperatureFirstBatch,
-            BatteryTemperatureFirstBatchIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(temperatureFirstBatch: model),
+        ..voidOnPackage<HighCurrent, HighCurrentIncomingDataSourcePackage>(
+          (package) => emit(
+            state.copyWith(
+              highCurrent: state.highCurrent.updateAt(
+                package.batteryIndex,
+                package.dataModel,
+              ),
+            ),
           ),
         )
-        ..voidOnModel<BatteryTemperatureSecondBatch,
-            BatteryTemperatureSecondBatchIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(temperatureSecondBatch: model),
+        ..voidOnPackage<HighVoltage, HighVoltageIncomingDataSourcePackage>(
+          (package) => emit(
+            state.copyWith(
+              highVoltage: state.highVoltage.updateAt(
+                package.batteryIndex,
+                package.dataModel,
+              ),
+            ),
           ),
         )
-        ..voidOnModel<BatteryTemperatureThirdBatch,
-            BatteryTemperatureThirdBatchIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(temperatureThirdBatch: model),
-          ),
-        )
-        ..voidOnModel<BatteryLowVoltageOneToThree,
-            BatteryLowVoltageOneToThreeIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageOneToThree: model),
-          ),
-        )
-        ..voidOnModel<BatteryLowVoltageFourToSix,
-            BatteryLowVoltageFourToSixIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageFourToSix: model),
-          ),
-        )
-        ..voidOnModel<LowVoltageMinMaxDelta,
+        ..voidOnPackage<LowVoltageMinMaxDelta,
             LowVoltageMinMaxDeltaIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageMinMaxDelta: model),
+          (package) => emit(
+            state.copyWith(
+              lowVoltageMinMaxDelta: state.lowVoltageMinMaxDelta.updateAt(
+                package.batteryIndex,
+                package.dataModel,
+              ),
+            ),
           ),
         )
-        ..voidOnModel<BatteryLowVoltageSevenToNine,
-            BatteryLowVoltageSevenToNineIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageSevenToNine: model),
+        ..voidOnPackage<MaxTemperature,
+            MaxTemperatureIncomingDataSourcePackage>(
+          (package) => emit(
+            state.copyWith(
+              maxTemperature: state.maxTemperature.updateAt(
+                package.batteryIndex,
+                package.dataModel,
+              ),
+            ),
           ),
         )
-        ..voidOnModel<BatteryLowVoltageTenToTwelve,
-            BatteryLowVoltageTenToTwelveIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageTenToTwelve: model),
-          ),
+        ..voidOnPackage<BatteryTemperature,
+            BatteryTemperatureIncomingDataSourcePackage>(
+          (package) {
+            final temperatures = state.temperature.getAt(package.batteryIndex);
+            if (temperatures == null) return;
+            // no 0 is reserved
+            if (package.dataModel.no == 0) return;
+            emit(
+              state.copyWith(
+                temperature: state.temperature.updateAt(
+                  package.batteryIndex,
+                  temperatures.updateAt(
+                    package.dataModel.no - 1,
+                    package.dataModel,
+                  ),
+                ),
+              ),
+            );
+          },
         )
-        ..voidOnModel<BatteryLowVoltageThirteenToFifteen,
-            BatteryLowVoltageThirteenToFifteenIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageThirteenToFifteen: model),
-          ),
-        )
-        ..voidOnModel<BatteryLowVoltageSixteenToEighteen,
-            BatteryLowVoltageSixteenToEighteenIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageSixteenToEighteen: model),
-          ),
-        )
-        ..voidOnModel<BatteryLowVoltageNineteenToTwentyOne,
-            BatteryLowVoltageNineteenToTwentyOneIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageNineteenToTwentyOne: model),
-          ),
-        )
-        ..voidOnModel<BatteryLowVoltageTwentyTwoToTwentyFour,
-            BatteryLowVoltageTwentyTwoToTwentyFourIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageTwentyTwoToTwentyFour: model),
-          ),
-        )
-        ..voidOnModel<BatteryLowVoltageTwentyFiveToTwentySeven,
-            BatteryLowVoltageTwentyFiveToTwentySevenIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageTwentyFiveToTwentySeven: model),
-          ),
-        )
-        ..voidOnModel<BatteryLowVoltageTwentyEightToThirty,
-            BatteryLowVoltageTwentyEightToThirtyIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageTwentyEightToThirty: model),
-          ),
-        )
-        ..voidOnModel<BatteryLowVoltageThirtyOneToThirtyThree,
-            BatteryLowVoltageThirtyOneToThirtyThreeIncomingDataSourcePackage>(
-          (model) => emit(
-            state.copyWith(lowVoltageThirtyOneToThirtyThree: model),
-          ),
+        ..voidOnPackage<BatteryLowVoltage,
+            BatteryLowVoltageIncomingDataSourcePackage>(
+          (package) {
+            final voltages =
+                state.batteryLowVoltage.getAt(package.batteryIndex);
+            if (voltages == null) return;
+            // no 0 is reserved
+            if (package.dataModel.no == 0) return;
+            emit(
+              state.copyWith(
+                batteryLowVoltage: state.batteryLowVoltage.updateAt(
+                  package.batteryIndex,
+                  voltages.updateAt(
+                    package.dataModel.no - 1,
+                    package.dataModel.value,
+                  ),
+                ),
+              ),
+            );
+          },
         );
     });
   }
@@ -290,8 +216,10 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
   static Set<DataSourceParameterId> kDefaultSubscribeParameters = {
     const DataSourceParameterId.highCurrent1(),
     const DataSourceParameterId.highCurrent2(),
-    const DataSourceParameterId.highVoltage(),
-    const DataSourceParameterId.maxTemperature(),
+    const DataSourceParameterId.highVoltage1(),
+    const DataSourceParameterId.highVoltage2(),
+    const DataSourceParameterId.maxTemperature1(),
+    const DataSourceParameterId.maxTemperature2(),
   };
 
   static const kDefaultTemperatureUpdateDuration = Duration(seconds: 3);
@@ -314,25 +242,16 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
 
   @visibleForTesting
   static const kDefaultVoltageParameterIds = [
-    DataSourceParameterId.lowVoltageMinMaxDelta(),
-    DataSourceParameterId.lowVoltageOneToThree(),
-    DataSourceParameterId.lowVoltageFourToSix(),
-    DataSourceParameterId.lowVoltageSevenToNine(),
-    DataSourceParameterId.lowVoltageTenToTwelve(),
-    DataSourceParameterId.lowVoltageThirteenToFifteen(),
-    DataSourceParameterId.lowVoltageSixteenToEighteen(),
-    DataSourceParameterId.lowVoltageNineteenToTwentyOne(),
-    DataSourceParameterId.lowVoltageTwentyTwoToTwentyFour(),
-    DataSourceParameterId.lowVoltageTwentyFiveToTwentySeven(),
-    DataSourceParameterId.lowVoltageTwentyEightToThirty(),
-    DataSourceParameterId.lowVoltageThirtyOneToThirtyThree(),
+    DataSourceParameterId.lowVoltageMinMaxDelta1(),
+    DataSourceParameterId.lowVoltageMinMaxDelta2(),
+    DataSourceParameterId.lowVoltage1(),
+    DataSourceParameterId.lowVoltage2(),
   ];
 
   @visibleForTesting
   static const kDefaultTemperatureParameterIds = [
-    DataSourceParameterId.temperatureFirstBatch(),
-    DataSourceParameterId.temperatureSecondBatch(),
-    DataSourceParameterId.temperatureThirdBatch(),
+    DataSourceParameterId.temperature1(),
+    DataSourceParameterId.temperature2(),
   ];
 
   @visibleForTesting

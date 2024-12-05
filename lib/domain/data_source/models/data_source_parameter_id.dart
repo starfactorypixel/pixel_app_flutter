@@ -17,45 +17,25 @@ abstract class DataSourceParameterId {
   const factory DataSourceParameterId.light() = LightParameterId;
   const factory DataSourceParameterId.voltage() = VoltageParameterId;
   const factory DataSourceParameterId.current() = CurrentParameterId;
-  const factory DataSourceParameterId.lowVoltageMinMaxDelta() =
-      LowVoltageMinMaxDeltaParameterId;
-  const factory DataSourceParameterId.highVoltage() = HighVoltageParameterId;
+  const factory DataSourceParameterId.lowVoltageMinMaxDelta1() =
+      LowVoltageMinMaxDelta1ParameterId;
+  const factory DataSourceParameterId.lowVoltageMinMaxDelta2() =
+      LowVoltageMinMaxDelta2ParameterId;
+  const factory DataSourceParameterId.highVoltage1() = HighVoltage1ParameterId;
+  const factory DataSourceParameterId.highVoltage2() = HighVoltage2ParameterId;
   const factory DataSourceParameterId.highCurrent1() = HighCurrent1ParameterId;
   const factory DataSourceParameterId.highCurrent2() = HighCurrent2ParameterId;
-  const factory DataSourceParameterId.maxTemperature() =
-      MaxTemperatureParameterId;
+  const factory DataSourceParameterId.maxTemperature1() =
+      MaxTemperature1ParameterId;
+  const factory DataSourceParameterId.maxTemperature2() =
+      MaxTemperature2ParameterId;
   const factory DataSourceParameterId.custom(int id) = CustomParameterId;
 
-  const factory DataSourceParameterId.temperatureFirstBatch() =
-      TemperatureFirstBatchParameterId;
-  const factory DataSourceParameterId.temperatureSecondBatch() =
-      TemperatureSecondBatchParameterId;
-  const factory DataSourceParameterId.temperatureThirdBatch() =
-      TemperatureThirdBatchParameterId;
+  const factory DataSourceParameterId.temperature1() = Temperature1ParameterId;
+  const factory DataSourceParameterId.temperature2() = Temperature2ParameterId;
   //
-  const factory DataSourceParameterId.lowVoltageOneToThree() =
-      LowVoltageOneToThreeParameterId;
-
-  const factory DataSourceParameterId.lowVoltageFourToSix() =
-      LowVoltageFourToSixParameterId;
-  const factory DataSourceParameterId.lowVoltageSevenToNine() =
-      LowVoltageSevenToNineParameterId;
-  const factory DataSourceParameterId.lowVoltageTenToTwelve() =
-      LowVoltageTenToTwelveParameterId;
-  const factory DataSourceParameterId.lowVoltageThirteenToFifteen() =
-      LowVoltageThirteenToFifteenParameterId;
-  const factory DataSourceParameterId.lowVoltageSixteenToEighteen() =
-      LowVoltageSixteenToEighteenParameterId;
-  const factory DataSourceParameterId.lowVoltageNineteenToTwentyOne() =
-      LowVoltageNineteenToTwentyOneParameterId;
-  const factory DataSourceParameterId.lowVoltageTwentyTwoToTwentyFour() =
-      LowVoltageTwentyTwoToTwentyFourParameterId;
-  const factory DataSourceParameterId.lowVoltageTwentyFiveToTwentySeven() =
-      LowVoltageTwentyFiveToTwentySevenParameterId;
-  const factory DataSourceParameterId.lowVoltageTwentyEightToThirty() =
-      LowVoltageTwentyEightToThirtyParameterId;
-  const factory DataSourceParameterId.lowVoltageThirtyOneToThirtyThree() =
-      LowVoltageThirtyOneToThirtyThreeParameterId;
+  const factory DataSourceParameterId.lowVoltage1() = LowVoltage1ParameterId;
+  const factory DataSourceParameterId.lowVoltage2() = LowVoltage2ParameterId;
   const factory DataSourceParameterId.batteryLevel() = BatteryLevelParameterId;
   const factory DataSourceParameterId.batteryPower() = BatteryPowerParameterId;
 
@@ -113,39 +93,27 @@ abstract class DataSourceParameterId {
 
   bool get isVoltage => this is VoltageParameterId;
 
-  bool get isLowVoltageMinMaxDelta => this is LowVoltageMinMaxDeltaParameterId;
+  bool get isLowVoltageMinMaxDelta1 =>
+      this is LowVoltageMinMaxDelta1ParameterId;
+  bool get isLowVoltageMinMaxDelta2 =>
+      this is LowVoltageMinMaxDelta2ParameterId;
 
-  bool get isHighVoltage => this is HighVoltageParameterId;
+  bool get isHighVoltage1 => this is HighVoltage1ParameterId;
+  bool get isHighVoltage2 => this is HighVoltage2ParameterId;
 
   bool get isHighCurrent1 => this is HighCurrent1ParameterId;
   bool get isHighCurrent2 => this is HighCurrent2ParameterId;
 
-  bool get isMaxTemperature => this is MaxTemperatureParameterId;
+  bool get isMaxTemperature1 => this is MaxTemperature1ParameterId;
+  bool get isMaxTemperature2 => this is MaxTemperature2ParameterId;
 
-  bool get isTemperatureFirst => this is TemperatureFirstBatchParameterId;
-  bool get isTemperatureSecond => this is TemperatureSecondBatchParameterId;
-  bool get isTemperatureThird => this is TemperatureThirdBatchParameterId;
+  bool get isTemperature1 => this is Temperature1ParameterId;
+  bool get isTemperature2 => this is Temperature2ParameterId;
 
   //
 
-  bool get isLowVoltageOneToThree => this is LowVoltageOneToThreeParameterId;
-  bool get isLowVoltageFourToSix => this is LowVoltageFourToSixParameterId;
-  bool get isLowVoltageSevenToNine => this is LowVoltageSevenToNineParameterId;
-  bool get isLowVoltageTenToTwelve => this is LowVoltageTenToTwelveParameterId;
-  bool get isLowVoltageThirteenToFifteen =>
-      this is LowVoltageThirteenToFifteenParameterId;
-  bool get isLowVoltageSixteenToEighteen =>
-      this is LowVoltageSixteenToEighteenParameterId;
-  bool get isLowVoltageNineteenToTwentyOne =>
-      this is LowVoltageNineteenToTwentyOneParameterId;
-  bool get isLowVoltageTwentyTwoToTwentyFour =>
-      this is LowVoltageTwentyTwoToTwentyFourParameterId;
-  bool get isLowVoltageTwentyFiveToTwentySeven =>
-      this is LowVoltageTwentyFiveToTwentySevenParameterId;
-  bool get isLowVoltageTwentyEightToThirty =>
-      this is LowVoltageTwentyEightToThirtyParameterId;
-  bool get isLowVoltageThirtyOneToThirtyThree =>
-      this is LowVoltageThirtyOneToThirtyThreeParameterId;
+  bool get isLowVoltage1 => this is LowVoltage1ParameterId;
+  bool get isLowVoltage2 => this is LowVoltage2ParameterId;
   bool get isBatteryLevel => this is BatteryLevelParameterId;
   bool get isBatteryPower => this is BatteryPowerParameterId;
 
@@ -196,25 +164,18 @@ abstract class DataSourceParameterId {
       //
       DataSourceParameterId.highCurrent1(),
       DataSourceParameterId.highCurrent2(),
-      DataSourceParameterId.highVoltage(),
-      DataSourceParameterId.maxTemperature(),
-      DataSourceParameterId.lowVoltageMinMaxDelta(),
+      DataSourceParameterId.highVoltage1(),
+      DataSourceParameterId.highVoltage2(),
+      DataSourceParameterId.maxTemperature1(),
+      DataSourceParameterId.maxTemperature2(),
+      DataSourceParameterId.lowVoltageMinMaxDelta1(),
+      DataSourceParameterId.lowVoltageMinMaxDelta2(),
       //
-      DataSourceParameterId.temperatureFirstBatch(),
-      DataSourceParameterId.temperatureSecondBatch(),
-      DataSourceParameterId.temperatureThirdBatch(),
+      DataSourceParameterId.temperature1(),
+      DataSourceParameterId.temperature2(),
       //
-      DataSourceParameterId.lowVoltageOneToThree(),
-      DataSourceParameterId.lowVoltageFourToSix(),
-      DataSourceParameterId.lowVoltageSevenToNine(),
-      DataSourceParameterId.lowVoltageTenToTwelve(),
-      DataSourceParameterId.lowVoltageThirteenToFifteen(),
-      DataSourceParameterId.lowVoltageSixteenToEighteen(),
-      DataSourceParameterId.lowVoltageNineteenToTwentyOne(),
-      DataSourceParameterId.lowVoltageTwentyTwoToTwentyFour(),
-      DataSourceParameterId.lowVoltageTwentyFiveToTwentySeven(),
-      DataSourceParameterId.lowVoltageTwentyEightToThirty(),
-      DataSourceParameterId.lowVoltageThirtyOneToThirtyThree(),
+      DataSourceParameterId.lowVoltage1(),
+      DataSourceParameterId.lowVoltage2(),
       //
       DataSourceParameterId.frontSideBeam(),
       DataSourceParameterId.tailSideBeam(),
@@ -290,12 +251,20 @@ class CustomParameterId extends DataSourceParameterId {
   const CustomParameterId(super.id);
 }
 
-class LowVoltageMinMaxDeltaParameterId extends DataSourceParameterId {
-  const LowVoltageMinMaxDeltaParameterId() : super(0x0047);
+class LowVoltageMinMaxDelta1ParameterId extends DataSourceParameterId {
+  const LowVoltageMinMaxDelta1ParameterId() : super(0x018E);
 }
 
-class HighVoltageParameterId extends DataSourceParameterId {
-  const HighVoltageParameterId() : super(0x0044);
+class LowVoltageMinMaxDelta2ParameterId extends DataSourceParameterId {
+  const LowVoltageMinMaxDelta2ParameterId() : super(0x018F);
+}
+
+class HighVoltage1ParameterId extends DataSourceParameterId {
+  const HighVoltage1ParameterId() : super(0x018C);
+}
+
+class HighVoltage2ParameterId extends DataSourceParameterId {
+  const HighVoltage2ParameterId() : super(0x018D);
 }
 
 class HighCurrent1ParameterId extends DataSourceParameterId {
@@ -306,66 +275,28 @@ class HighCurrent2ParameterId extends DataSourceParameterId {
   const HighCurrent2ParameterId() : super(0x0185);
 }
 
-class MaxTemperatureParameterId extends DataSourceParameterId {
-  const MaxTemperatureParameterId() : super(0x0046);
+class MaxTemperature1ParameterId extends DataSourceParameterId {
+  const MaxTemperature1ParameterId() : super(0x0192);
 }
 
-class TemperatureFirstBatchParameterId extends DataSourceParameterId {
-  const TemperatureFirstBatchParameterId() : super(0x0048);
+class MaxTemperature2ParameterId extends DataSourceParameterId {
+  const MaxTemperature2ParameterId() : super(0x0193);
 }
 
-class TemperatureSecondBatchParameterId extends DataSourceParameterId {
-  const TemperatureSecondBatchParameterId() : super(0x0049);
+class Temperature1ParameterId extends DataSourceParameterId {
+  const Temperature1ParameterId() : super(0x0194);
 }
 
-class TemperatureThirdBatchParameterId extends DataSourceParameterId {
-  const TemperatureThirdBatchParameterId() : super(0x004A);
+class Temperature2ParameterId extends DataSourceParameterId {
+  const Temperature2ParameterId() : super(0x0195);
 }
 
-class LowVoltageOneToThreeParameterId extends DataSourceParameterId {
-  const LowVoltageOneToThreeParameterId() : super(0x004B);
+class LowVoltage1ParameterId extends DataSourceParameterId {
+  const LowVoltage1ParameterId() : super(0x0190);
 }
 
-class LowVoltageFourToSixParameterId extends DataSourceParameterId {
-  const LowVoltageFourToSixParameterId() : super(0x004C);
-}
-
-class LowVoltageSevenToNineParameterId extends DataSourceParameterId {
-  const LowVoltageSevenToNineParameterId() : super(0x004D);
-}
-
-class LowVoltageTenToTwelveParameterId extends DataSourceParameterId {
-  const LowVoltageTenToTwelveParameterId() : super(0x004E);
-}
-
-class LowVoltageThirteenToFifteenParameterId extends DataSourceParameterId {
-  const LowVoltageThirteenToFifteenParameterId() : super(0x004F);
-}
-
-class LowVoltageSixteenToEighteenParameterId extends DataSourceParameterId {
-  const LowVoltageSixteenToEighteenParameterId() : super(0x0050);
-}
-
-class LowVoltageNineteenToTwentyOneParameterId extends DataSourceParameterId {
-  const LowVoltageNineteenToTwentyOneParameterId() : super(0x0051);
-}
-
-class LowVoltageTwentyTwoToTwentyFourParameterId extends DataSourceParameterId {
-  const LowVoltageTwentyTwoToTwentyFourParameterId() : super(0x0052);
-}
-
-class LowVoltageTwentyFiveToTwentySevenParameterId
-    extends DataSourceParameterId {
-  const LowVoltageTwentyFiveToTwentySevenParameterId() : super(0x0053);
-}
-
-class LowVoltageTwentyEightToThirtyParameterId extends DataSourceParameterId {
-  const LowVoltageTwentyEightToThirtyParameterId() : super(0x0054);
-}
-
-class LowVoltageThirtyOneToThirtyThreeParameterId
-    extends DataSourceParameterId {
-  const LowVoltageThirtyOneToThirtyThreeParameterId() : super(0x0055);
+class LowVoltage2ParameterId extends DataSourceParameterId {
+  const LowVoltage2ParameterId() : super(0x0191);
 }
 
 class BatteryLevelParameterId extends DataSourceParameterId {

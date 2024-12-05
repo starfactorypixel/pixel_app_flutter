@@ -1,34 +1,29 @@
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/package/mixins/battery_index_mixin.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/mixins/function_id_validation_mixins.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/mixins/request_type_validation_mixins.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 
-class HighCurrent1IncomingDataSourcePackage
+class HighCurrentIncomingDataSourcePackage
     extends DataSourceIncomingPackage<HighCurrent>
     with
+        BatteryIndexMixin,
         IsEventOrBufferRequestOrSubscriptionAnswerRequestTypeMixin,
         IsPeriodicValueStatusOrSuccessEventFunctionIdMixin {
-  HighCurrent1IncomingDataSourcePackage(super.source);
+  HighCurrentIncomingDataSourcePackage(super.source);
 
   @override
   BytesConverter<HighCurrent> get bytesConverter =>
       const HighCurrentConverter();
 
   @override
-  bool get validParameterId => parameterId.isHighCurrent1;
-}
-
-class HighCurrent2IncomingDataSourcePackage
-    extends DataSourceIncomingPackage<HighCurrent>
-    with
-        IsEventOrBufferRequestOrSubscriptionAnswerRequestTypeMixin,
-        IsPeriodicValueStatusOrSuccessEventFunctionIdMixin {
-  HighCurrent2IncomingDataSourcePackage(super.source);
+  bool get validParameterId =>
+      parameterId.isHighCurrent1 || parameterId.isHighCurrent2;
 
   @override
-  BytesConverter<HighCurrent> get bytesConverter =>
-      const HighCurrentConverter();
-
-  @override
-  bool get validParameterId => parameterId.isHighCurrent2;
+  int? get batteryIndexImpl {
+    if (parameterId.isHighCurrent1) return 0;
+    if (parameterId.isHighCurrent2) return 1;
+    return null;
+  }
 }
