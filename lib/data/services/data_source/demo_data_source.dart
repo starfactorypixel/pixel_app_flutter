@@ -10,6 +10,7 @@ import 'package:pixel_app_flutter/data/services/data_source/mixins/send_packages
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/authorizartion.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/outgoing_data_source_packages.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/battery_percent.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:re_seedwork/re_seedwork.dart';
 
@@ -274,6 +275,12 @@ class DemoDataSource extends DataSource
             ..voidOn<MaxTemperature2ParameterId>(
               () => subscriptionCallbacks.remove(_sendMaxTemperature2Callback),
             )
+            ..voidOn<BatteryPercent1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendBatteryPercent1Callback),
+            )
+            ..voidOn<BatteryPercent2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendBatteryPercent2Callback),
+            )
             ..voidOn<BatteryLevelParameterId>(
               () => subscriptionCallbacks.remove(_sendNewBatteryLevelCallback),
             )
@@ -335,6 +342,12 @@ class DemoDataSource extends DataSource
           )
           ..voidOn<MaxTemperature2ParameterId>(
             () => subscriptionCallbacks.add(_sendMaxTemperature2Callback),
+          )
+          ..voidOn<BatteryPercent1ParameterId>(
+            () => subscriptionCallbacks.add(_sendBatteryPercent1Callback),
+          )
+          ..voidOn<BatteryPercent2ParameterId>(
+            () => subscriptionCallbacks.add(_sendBatteryPercent2Callback),
           )
           ..voidOn<BatteryLevelParameterId>(
             () => subscriptionCallbacks.add(_sendNewBatteryLevelCallback),
@@ -474,6 +487,8 @@ class DemoDataSource extends DataSource
       ..voidOn<HighCurrent2ParameterId>(_sendHighCurrent2Callback)
       ..voidOn<MaxTemperature1ParameterId>(_sendMaxTemperature1Callback)
       ..voidOn<MaxTemperature2ParameterId>(_sendMaxTemperature2Callback)
+      ..voidOn<BatteryPercent1ParameterId>(_sendBatteryPercent1Callback)
+      ..voidOn<BatteryPercent2ParameterId>(_sendBatteryPercent2Callback)
       ..voidOn<BatteryLevelParameterId>(
         () => _sendNewBatteryLevelCallback(version: v),
       )
@@ -842,6 +857,27 @@ class DemoDataSource extends DataSource
 
   void _sendHighCurrent2Callback() =>
       _sendHighCurrentCallback(const DataSourceParameterId.highCurrent2());
+
+  void _sendBatteryPercentCallback(DataSourceParameterId parameterId) {
+    _sendPackage(
+      DataSourceIncomingPackage.fromConvertible(
+        secondConfigByte: 0x95, // 10010101(incoming 0x15)
+        parameterId: parameterId.value,
+        convertible: BatteryPercent(
+          value: randomUint8,
+          status: _getRandomStatus,
+        ),
+      ),
+    );
+  }
+
+  void _sendBatteryPercent1Callback() => _sendBatteryPercentCallback(
+    const DataSourceParameterId.batteryPercent1(),
+  );
+
+  void _sendBatteryPercent2Callback() => _sendBatteryPercentCallback(
+    const DataSourceParameterId.batteryPercent2(),
+  );
 
   void _sendMaxTemperatureCallback(DataSourceParameterId parameterId) {
     _sendPackage(

@@ -16,11 +16,16 @@ class StatisticWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final batteriesCount =
+        context.read<GeneralDataCubit>().state.batteriesCount;
     final items = <Widget>[
-      BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus>(
-        selector: (state) => state.batteryLevel,
-        builder: (context, state) => BatteryLevelStatisticItem(item: state),
-      ),
+      for (int i = 0; i < batteriesCount; ++i)
+        BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus?>(
+          selector: (state) => state.batteryLevel.getAt(i),
+          builder: (context, state) {
+            return BatteryLevelStatisticItem(item: state);
+          },
+        ),
       BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus>(
         selector: (state) => state.odometer,
         builder: (context, state) => OdometerStatisticItem(item: state),
@@ -81,15 +86,17 @@ class BatteryLevelStatisticItem extends StatelessWidget {
   const BatteryLevelStatisticItem({super.key, required this.item});
 
   @protected
-  final IntWithStatus item;
+  final IntWithStatus? item;
 
   @override
   Widget build(BuildContext context) {
-    return StatisticItem(
-      icon: PixelIcons.battery,
-      value: '${item.value}%',
-      customColor: context.colorFromStatus(item.status),
-    );
+    return item == null
+        ? const SizedBox.shrink()
+        : StatisticItem(
+            icon: PixelIcons.battery,
+            value: '${item!.value}%',
+            customColor: context.colorFromStatus(item!.status),
+          );
   }
 }
 

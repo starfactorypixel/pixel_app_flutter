@@ -167,6 +167,7 @@ class SelectedDataSourceScope extends AutoRouter {
                         GeneralDataCubit.kDefaultSubscribeParameters,
                       );
                   return GeneralDataCubit(
+                    batteriesCount: 2, //TODO replace with variable
                     dataSource: context.read(),
                   );
                 },

@@ -13,73 +13,124 @@ abstract class DataSourceParameterId {
 
   const factory DataSourceParameterId.authorization() =
       AuthorizationParameterId;
+
   const factory DataSourceParameterId.speed() = SpeedParameterId;
+
   const factory DataSourceParameterId.light() = LightParameterId;
+
   const factory DataSourceParameterId.voltage() = VoltageParameterId;
+
   const factory DataSourceParameterId.current() = CurrentParameterId;
+
   const factory DataSourceParameterId.lowVoltageMinMaxDelta1() =
       LowVoltageMinMaxDelta1ParameterId;
+
   const factory DataSourceParameterId.lowVoltageMinMaxDelta2() =
       LowVoltageMinMaxDelta2ParameterId;
+
   const factory DataSourceParameterId.highVoltage1() = HighVoltage1ParameterId;
+
   const factory DataSourceParameterId.highVoltage2() = HighVoltage2ParameterId;
+
   const factory DataSourceParameterId.highCurrent1() = HighCurrent1ParameterId;
+
   const factory DataSourceParameterId.highCurrent2() = HighCurrent2ParameterId;
+
   const factory DataSourceParameterId.maxTemperature1() =
       MaxTemperature1ParameterId;
+
   const factory DataSourceParameterId.maxTemperature2() =
       MaxTemperature2ParameterId;
+
+  const factory DataSourceParameterId.batteryPercent1() =
+      BatteryPercent1ParameterId;
+
+  const factory DataSourceParameterId.batteryPercent2() =
+      BatteryPercent2ParameterId;
+
   const factory DataSourceParameterId.custom(int id) = CustomParameterId;
 
   const factory DataSourceParameterId.temperature1() = Temperature1ParameterId;
+
   const factory DataSourceParameterId.temperature2() = Temperature2ParameterId;
+
   //
   const factory DataSourceParameterId.lowVoltage1() = LowVoltage1ParameterId;
+
   const factory DataSourceParameterId.lowVoltage2() = LowVoltage2ParameterId;
+
   const factory DataSourceParameterId.batteryLevel() = BatteryLevelParameterId;
+
   const factory DataSourceParameterId.batteryPower() = BatteryPowerParameterId;
 
   //
   const factory DataSourceParameterId.frontSideBeam() =
       FrontSideBeamParameterId;
+
   const factory DataSourceParameterId.tailSideBeam() = TailSideBeamParameterId;
+
   const factory DataSourceParameterId.lowBeam() = LowBeamParameterId;
+
   const factory DataSourceParameterId.highBeam() = HighBeamParameterId;
+
   const factory DataSourceParameterId.frontHazardBeam() =
       FrontHazardBeamParameterId;
+
   const factory DataSourceParameterId.tailHazardBeam() =
       TailHazardBeamParameterId;
+
   const factory DataSourceParameterId.tailCustomBeam() =
       TailCustomBeamParameterId;
+
   const factory DataSourceParameterId.frontLeftTurnSignal() =
       FrontLeftTurnSignalParameterId;
+
   const factory DataSourceParameterId.frontRightTurnSignal() =
       FrontRightTurnSignalParameterId;
+
   const factory DataSourceParameterId.tailLeftTurnSignal() =
       TailLeftTurnSignalParameterId;
+
   const factory DataSourceParameterId.tailRightTurnSignal() =
       TailRightTurnSignalParameterId;
+
   const factory DataSourceParameterId.brakeLight() = BrakeLightParameterId;
+
   const factory DataSourceParameterId.reverseLight() = ReverseLightParameterId;
+
   const factory DataSourceParameterId.customImage() = CustomImageParameterId;
+
   //
   const factory DataSourceParameterId.rpm() = RPMParameterId;
+
   const factory DataSourceParameterId.motorSpeed() = MotorSpeedParameterId;
+
   const factory DataSourceParameterId.motorVoltage() = MotorVoltageParameterId;
+
   const factory DataSourceParameterId.motorCurrent() = MotorCurrentParameterId;
+
   const factory DataSourceParameterId.motorPower() = MotorPowerParameterId;
+
   const factory DataSourceParameterId.gearAndRoll() = GearAndRollParameterId;
+
   const factory DataSourceParameterId.motorTemperature() =
       MotorTemperatureParameterId;
+
   const factory DataSourceParameterId.controllerTemperature() =
       ControllerTemperatureParameterId;
+
   const factory DataSourceParameterId.odometer() = OdometerParameterId;
 
   const factory DataSourceParameterId.trunk() = TrunkParameterId;
+
   const factory DataSourceParameterId.hood() = HoodParameterId;
+
   const factory DataSourceParameterId.leftDoor() = LeftDoorParameterId;
+
   const factory DataSourceParameterId.rightDoor() = RightDoorParameterId;
+
   const factory DataSourceParameterId.cabinLight() = CabinLightParameterId;
+
   const factory DataSourceParameterId.windscreenWipers() =
       WindscreenWipersParameterId;
 
@@ -95,57 +146,95 @@ abstract class DataSourceParameterId {
 
   bool get isLowVoltageMinMaxDelta1 =>
       this is LowVoltageMinMaxDelta1ParameterId;
+
   bool get isLowVoltageMinMaxDelta2 =>
       this is LowVoltageMinMaxDelta2ParameterId;
 
   bool get isHighVoltage1 => this is HighVoltage1ParameterId;
+
   bool get isHighVoltage2 => this is HighVoltage2ParameterId;
 
   bool get isHighCurrent1 => this is HighCurrent1ParameterId;
+
   bool get isHighCurrent2 => this is HighCurrent2ParameterId;
 
   bool get isMaxTemperature1 => this is MaxTemperature1ParameterId;
+
   bool get isMaxTemperature2 => this is MaxTemperature2ParameterId;
 
+  bool get isBatteryPercent1 => this is BatteryPercent1ParameterId;
+
+  bool get isBatteryPercent2 => this is BatteryPercent2ParameterId;
+
   bool get isTemperature1 => this is Temperature1ParameterId;
+
   bool get isTemperature2 => this is Temperature2ParameterId;
 
   //
 
   bool get isLowVoltage1 => this is LowVoltage1ParameterId;
+
   bool get isLowVoltage2 => this is LowVoltage2ParameterId;
+
   bool get isBatteryLevel => this is BatteryLevelParameterId;
+
   bool get isBatteryPower => this is BatteryPowerParameterId;
 
   bool get isFrontSideBeam => this is FrontSideBeamParameterId;
+
   bool get isTailSideBeam => this is TailSideBeamParameterId;
+
   bool get isLowBeam => this is LowBeamParameterId;
+
   bool get isHighBeam => this is HighBeamParameterId;
+
   bool get isFrontHazardBeam => this is FrontHazardBeamParameterId;
+
   bool get isTailHazardBeam => this is TailHazardBeamParameterId;
+
   bool get isTailCustomBeam => this is TailCustomBeamParameterId;
+
   bool get isFrontLeftTurnSignal => this is FrontLeftTurnSignalParameterId;
+
   bool get isFrontRightTurnSignal => this is FrontRightTurnSignalParameterId;
+
   bool get isTailLeftTurnSignal => this is TailLeftTurnSignalParameterId;
+
   bool get isTailRightTurnSignal => this is TailRightTurnSignalParameterId;
+
   bool get isBrakeLight => this is BrakeLightParameterId;
+
   bool get isReverseLight => this is ReverseLightParameterId;
+
   bool get isCustomImage => this is CustomImageParameterId;
+
   //
   bool get isRPM => this is RPMParameterId;
+
   bool get isMotorSpeed => this is MotorSpeedParameterId;
+
   bool get isMotorVoltage => this is MotorVoltageParameterId;
+
   bool get isMotorCurrent => this is MotorCurrentParameterId;
+
   bool get isMotorPower => this is MotorPowerParameterId;
+
   bool get isGearAndRoll => this is GearAndRollParameterId;
+
   bool get isMotorTemperature => this is MotorTemperatureParameterId;
+
   bool get isControllerTemperature => this is ControllerTemperatureParameterId;
+
   bool get isOdometer => this is OdometerParameterId;
 
   bool get isTrunk => this is TrunkParameterId;
+
   bool get isHood => this is HoodParameterId;
+
   bool get isLeftDoor => this is LeftDoorParameterId;
+
   bool get isRightDoor => this is RightDoorParameterId;
+
   bool get isCabinLight => this is CabinLightParameterId;
 
   bool get isWindscreenWipers => this is WindscreenWipersParameterId;
@@ -170,6 +259,8 @@ abstract class DataSourceParameterId {
       DataSourceParameterId.maxTemperature2(),
       DataSourceParameterId.lowVoltageMinMaxDelta1(),
       DataSourceParameterId.lowVoltageMinMaxDelta2(),
+      DataSourceParameterId.batteryPercent1(),
+      DataSourceParameterId.batteryPercent2(),
       //
       DataSourceParameterId.temperature1(),
       DataSourceParameterId.temperature2(),
@@ -273,6 +364,14 @@ class HighCurrent1ParameterId extends DataSourceParameterId {
 
 class HighCurrent2ParameterId extends DataSourceParameterId {
   const HighCurrent2ParameterId() : super(0x0185);
+}
+
+class BatteryPercent1ParameterId extends DataSourceParameterId {
+  const BatteryPercent1ParameterId() : super(0x0186);
+}
+
+class BatteryPercent2ParameterId extends DataSourceParameterId {
+  const BatteryPercent2ParameterId() : super(0x0187);
 }
 
 class MaxTemperature1ParameterId extends DataSourceParameterId {

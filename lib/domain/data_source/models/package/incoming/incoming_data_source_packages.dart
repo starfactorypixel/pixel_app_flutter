@@ -1,5 +1,4 @@
 export 'authorization_response.dart';
-export 'battery_level.dart';
 export 'battery_low_voltage.dart';
 export 'battery_power.dart';
 export 'battery_temperature.dart';
