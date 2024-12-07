@@ -68,7 +68,7 @@ final class GeneralDataState with EquatableMixin {
     required this.batteriesCount,
   })  : power = const IntWithStatus.initial(),
         batteryLevel = Sequence<IntWithStatus>.fill(
-            batteriesCount, const IntWithStatus.initial()),
+            batteriesCount, const IntWithStatus.initial(),),
         odometer = const IntWithStatus.initial(),
         speed = const IntWithStatus.initial(),
         gear = MotorGear.unknown;
