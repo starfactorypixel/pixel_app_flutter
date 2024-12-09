@@ -17,9 +17,10 @@ final class MotorDataState with EquatableMixin {
     required this.rpm,
     required this.speed,
     required this.power,
+    required this.motorsCount,
   });
 
-  MotorDataState.initial()
+  MotorDataState.initial({required this.motorsCount})
       : current = const TwoInt16WithStatusBody.zero(),
         voltage = const TwoUint16WithStatusBody.zero(),
         motorTemperature = const TwoInt16WithStatusBody.zero(),
@@ -37,6 +38,7 @@ final class MotorDataState with EquatableMixin {
   final TwoUint16WithStatusBody rpm;
   final TwoUint16WithStatusBody speed;
   final TwoInt16WithStatusBody power;
+  final int motorsCount;
 
   MotorDataState copyWith({
     TwoInt16WithStatusBody? current,
@@ -47,6 +49,7 @@ final class MotorDataState with EquatableMixin {
     TwoUint16WithStatusBody? rpm,
     TwoUint16WithStatusBody? speed,
     TwoInt16WithStatusBody? power,
+    int? motorsCount,
   }) {
     return MotorDataState(
       current: current ?? this.current,
@@ -58,6 +61,7 @@ final class MotorDataState with EquatableMixin {
       rpm: rpm ?? this.rpm,
       speed: speed ?? this.speed,
       power: power ?? this.power,
+      motorsCount: motorsCount ?? this.motorsCount,
     );
   }
 
@@ -71,13 +75,15 @@ final class MotorDataState with EquatableMixin {
         rpm,
         speed,
         power,
+        motorsCount,
       ];
 }
 
 class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
   MotorDataCubit({
     required this.dataSource,
-  }) : super(MotorDataState.initial()) {
+    required int motorsCount,
+  }) : super(MotorDataState.initial(motorsCount: motorsCount)) {
     subscribe<DataSourceIncomingPackage>(dataSource.packageStream, (value) {
       value
         ..voidOnModel<TwoUint16WithStatusBody,
