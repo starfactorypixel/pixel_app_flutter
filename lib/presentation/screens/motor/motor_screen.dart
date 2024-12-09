@@ -16,17 +16,16 @@ class MotorScreen extends StatelessWidget {
     return ResponsivePadding(
       child: ListView(
         children: [
-           Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              itemHorizontal(value: '#1'),
-              itemHorizontal(value: '#2'),
-              itemHorizontal(value: '#3'),
-              itemHorizontal(value: '#4'),
+              _ItemHorizontal(value: '#1'),
+              _ItemHorizontal(value: '#2'),
+              _ItemHorizontal(value: '#3'),
+              _ItemHorizontal(value: '#4'),
             ],
           ),
           _TwoValuesTableRow.builder(
-            context: context,
             parameterName: context.l10n.speedTileTitle,
             builder: () {
               final state =
@@ -41,7 +40,6 @@ class MotorScreen extends StatelessWidget {
             unitOfMeasurement: context.l10n.kmPerHourMeasurenentUnit,
           ),
           _TwoValuesTableRow.builder(
-            context: context,
             parameterName: context.l10n.rpmTileTitle,
             builder: () {
               final state =
@@ -55,7 +53,6 @@ class MotorScreen extends StatelessWidget {
             unitOfMeasurement: context.l10n.rpmMeasurementUnit,
           ),
           _TwoValuesTableRow.builder(
-            context: context,
             parameterName: context.l10n.voltageTileTitle,
             builder: () {
               final state =
@@ -69,7 +66,6 @@ class MotorScreen extends StatelessWidget {
             unitOfMeasurement: context.l10n.voltMeasurementUnit,
           ),
           _TwoValuesTableRow.builder(
-            context: context,
             parameterName: context.l10n.currentTileTitle,
             builder: () {
               final state =
@@ -83,7 +79,6 @@ class MotorScreen extends StatelessWidget {
             unitOfMeasurement: context.l10n.amperMeasurementUnit,
           ),
           _TwoValuesTableRow.builder(
-            context: context,
             parameterName: context.l10n.powerTileTitle,
             builder: () {
               final state =
@@ -97,7 +92,6 @@ class MotorScreen extends StatelessWidget {
             unitOfMeasurement: context.l10n.wattMeasurementUnit,
           ),
           _TwoValuesTableRow.builder(
-            context: context,
             parameterName: context.l10n.motorsTemperatureTileTitle,
             builder: () {
               final state = context.select(
@@ -112,7 +106,6 @@ class MotorScreen extends StatelessWidget {
             unitOfMeasurement: context.l10n.celsiusMeasurementUnit,
           ),
           _TwoValuesTableRow.builder(
-            context: context,
             parameterName: context.l10n.controllersTemperatureTileTitle,
             builder: () {
               final state = context.select(
@@ -127,7 +120,6 @@ class MotorScreen extends StatelessWidget {
             unitOfMeasurement: context.l10n.celsiusMeasurementUnit,
           ),
           _TwoValuesTableRow.builder(
-            context: context,
             parameterName: context.l10n.motorGearTileTitle,
             builder: () {
               final state = context.select(
@@ -149,7 +141,6 @@ class MotorScreen extends StatelessWidget {
             unitOfMeasurement: '',
           ),
           _TwoValuesTableRow.builder(
-            context: context,
             parameterName: context.l10n.motorRollDirectionTileTitle,
             builder: () {
               final state = context.select(
@@ -174,15 +165,6 @@ class MotorScreen extends StatelessWidget {
       ),
     );
   }
-
-  static Expanded itemHorizontal({required String value, Color? color}) {
-    return Expanded(
-      child: Center(
-        child: Text(value, style: TextStyle(color: color),),
-      ),
-    );
-  }
-
 }
 
 extension on MotorGear {
@@ -209,52 +191,31 @@ extension on MotorRollDirection {
   }
 }
 
-class _TwoValuesTableRow extends Column {
-  _TwoValuesTableRow({
-    required String parameterName,
-    required String firstValue,
-    required String secondValue,
-    required String unitOfMeasurement,
-    Color? color,
-    required BuildContext context,
-  }) : super(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  parameterName,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                Text(
-                  unitOfMeasurement,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ],
+class _ItemHorizontal extends Expanded {
+  _ItemHorizontal({required String value, Color? color})
+      : super(
+          child: Center(
+            child: Text(
+              value,
+              style: TextStyle(color: color),
             ),
-            Container(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MotorScreen.itemHorizontal(value: firstValue, color: color),
-                MotorScreen.itemHorizontal(value: secondValue, color: color),
-                MotorScreen.itemHorizontal(value: '', color: color),
-                MotorScreen.itemHorizontal(value: '', color: color),
-              ],
-            ),
-            Container(
-              height: 24,
-            ),
-          ],
+          ),
         );
+}
+
+class _TwoValuesTableRow extends StatelessWidget {
+  const _TwoValuesTableRow({
+    required this.parameterName,
+    required this.firstValue,
+    required this.secondValue,
+    required this.unitOfMeasurement,
+    this.color,
+  });
 
   factory _TwoValuesTableRow.builder({
     required String parameterName,
     required String unitOfMeasurement,
     required (String, String, Color?) Function() builder,
-    required BuildContext context,
   }) {
     final state = builder();
 
@@ -264,7 +225,48 @@ class _TwoValuesTableRow extends Column {
       secondValue: state.$2,
       color: state.$3,
       unitOfMeasurement: unitOfMeasurement,
-      context: context,
+    );
+  }
+
+  final String parameterName;
+  final String firstValue;
+  final String secondValue;
+  final String unitOfMeasurement;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              parameterName,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            Text(
+              unitOfMeasurement,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ],
+        ),
+        Container(
+          height: 12,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _ItemHorizontal(value: firstValue, color: color),
+            _ItemHorizontal(value: secondValue, color: color),
+            _ItemHorizontal(value: '', color: color),
+            _ItemHorizontal(value: '', color: color),
+          ],
+        ),
+        Container(
+          height: 24,
+        ),
+      ],
     );
   }
 }
