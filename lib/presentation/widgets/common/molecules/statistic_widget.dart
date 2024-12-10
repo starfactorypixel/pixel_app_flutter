@@ -90,12 +90,13 @@ class BatteryLevelStatisticItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return item == null
+    final _item = item;
+    return _item == null
         ? const SizedBox.shrink()
         : StatisticItem(
             icon: PixelIcons.battery,
-            value: '${item!.value}%',
-            customColor: context.colorFromStatus(item!.status),
+            value: '${_item.value}%',
+            customColor: context.colorFromStatus(_item.status),
           );
   }
 }
