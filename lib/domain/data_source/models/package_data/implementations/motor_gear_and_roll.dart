@@ -72,93 +72,69 @@ enum MotorRollDirection {
 
 class MotorGearAndRoll extends IntBytesConvertibleWithStatus {
   MotorGearAndRoll({
-    required this.firstMotorGear,
-    required this.firstMotorRollDirection,
-    required this.secondMotorGear,
-    required this.secondMotorRollDirection,
+    required this.motorGear,
+    required this.motorRollDirection,
     required super.status,
   }) : super(
-          value: _toUint32(
-            firstMotorGear: firstMotorGear,
-            firstMotorRollDirection: firstMotorRollDirection,
-            secondMotorGear: secondMotorGear,
-            secondMotorRollDirection: secondMotorRollDirection,
+          value: _toUint16(
+            motorGear: motorGear,
+            motorRollDirection: motorRollDirection,
           ),
         );
 
   factory MotorGearAndRoll.unknown() => MotorGearAndRoll(
-        firstMotorGear: MotorGear.unknown,
-        firstMotorRollDirection: MotorRollDirection.unknown,
-        secondMotorGear: MotorGear.unknown,
-        secondMotorRollDirection: MotorRollDirection.unknown,
+        motorGear: MotorGear.unknown,
+        motorRollDirection: MotorRollDirection.unknown,
         status: PeriodicValueStatus.normal,
       );
 
   MotorGearAndRoll.fromId({
-    required this.firstMotorGear,
-    required this.firstMotorRollDirection,
-    required this.secondMotorGear,
-    required this.secondMotorRollDirection,
+    required this.motorGear,
+    required this.motorRollDirection,
     required super.id,
   }) : super.fromId(
-          value: _toUint32(
-            firstMotorGear: firstMotorGear,
-            firstMotorRollDirection: firstMotorRollDirection,
-            secondMotorGear: secondMotorGear,
-            secondMotorRollDirection: secondMotorRollDirection,
+          value: _toUint16(
+            motorGear: motorGear,
+            motorRollDirection: motorRollDirection,
           ),
         );
 
   factory MotorGearAndRoll.builder(int functionId, int value) {
-    final bytes = value.toBytesUint32;
+    final bytes = value.toBytesUint16;
 
     return MotorGearAndRoll.fromId(
       id: functionId,
-      firstMotorGear: MotorGear.fromId(bytes[0]),
-      firstMotorRollDirection: MotorRollDirection.fromId(bytes[1]),
-      secondMotorGear: MotorGear.fromId(bytes[2]),
-      secondMotorRollDirection: MotorRollDirection.fromId(bytes[3]),
+      motorGear: MotorGear.fromId(bytes[0]),
+      motorRollDirection: MotorRollDirection.fromId(bytes[1]),
     );
   }
 
-  final MotorGear firstMotorGear;
-  final MotorRollDirection firstMotorRollDirection;
-  final MotorGear secondMotorGear;
-  final MotorRollDirection secondMotorRollDirection;
+  final MotorGear motorGear;
+  final MotorRollDirection motorRollDirection;
 
-  MotorGear get gear =>
-      firstMotorGear == secondMotorGear ? firstMotorGear : MotorGear.unknown;
+  MotorGear get gear => motorGear;
 
-  MotorRollDirection get rollDirection =>
-      firstMotorRollDirection == secondMotorRollDirection
-          ? firstMotorRollDirection
-          : MotorRollDirection.unknown;
+  MotorRollDirection get rollDirection => motorRollDirection;
 
-  static int _toUint32({
-    required MotorGear firstMotorGear,
-    required MotorRollDirection firstMotorRollDirection,
-    required MotorGear secondMotorGear,
-    required MotorRollDirection secondMotorRollDirection,
+  static int _toUint16({
+    required MotorGear motorGear,
+    required MotorRollDirection motorRollDirection,
   }) {
     return [
-      firstMotorGear.id,
-      firstMotorRollDirection.id,
-      secondMotorGear.id,
-      secondMotorRollDirection.id,
-    ].toIntFromUint32;
+      motorGear.id,
+      motorRollDirection.id,
+    ].toIntFromUint16;
   }
 
   @override
   List<Object?> get props => [
         ...super.props,
-        firstMotorGear,
-        firstMotorRollDirection,
-        secondMotorGear,
-        secondMotorRollDirection,
+        motorGear,
+        motorRollDirection,
       ];
 
-  static Uint32WithStatusBytesConverter<MotorGearAndRoll> get converter =>
-      const Uint32WithStatusBytesConverter(MotorGearAndRoll.builder);
+  static UInt16WithStatusBytesConverter<MotorGearAndRoll> get converter =>
+      const UInt16WithStatusBytesConverter(MotorGearAndRoll.builder);
 
   @override
   BytesConverter<MotorGearAndRoll> get bytesConverter => converter;

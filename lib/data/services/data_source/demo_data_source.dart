@@ -228,34 +228,112 @@ class DemoDataSource extends DataSource
           DataSourceParameterId.fromInt(
             parameterId.value - OutgoingUnsubscribePackage.kOperand,
           )
-            ..voidOn<MotorSpeedParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewSpeedCallback),
+            ..voidOn<MotorSpeed1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewSpeed1Callback),
             )
-            ..voidOn<MotorVoltageParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewVoltageCallback),
+            ..voidOn<MotorSpeed2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewSpeed2Callback),
             )
-            ..voidOn<MotorCurrentParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewCurrentCallback),
+            ..voidOn<MotorSpeed3ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewSpeed3Callback),
             )
-            ..voidOn<MotorPowerParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewPowerCallback),
+            ..voidOn<MotorSpeed4ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewSpeed4Callback),
             )
-            ..voidOn<MotorTemperatureParameterId>(
+            ..voidOn<MotorVoltage1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewVoltage1Callback),
+            )
+            ..voidOn<MotorVoltage2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewVoltage2Callback),
+            )
+            ..voidOn<MotorVoltage3ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewVoltage3Callback),
+            )
+            ..voidOn<MotorVoltage4ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewVoltage4Callback),
+            )
+            ..voidOn<MotorCurrent1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewCurrent1Callback),
+            )
+            ..voidOn<MotorCurrent2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewCurrent2Callback),
+            )
+            ..voidOn<MotorCurrent3ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewCurrent3Callback),
+            )
+            ..voidOn<MotorCurrent4ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewCurrent4Callback),
+            )
+            ..voidOn<MotorPower1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewPower1Callback),
+            )
+            ..voidOn<MotorPower2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewPower2Callback),
+            )
+            ..voidOn<MotorPower3ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewPower3Callback),
+            )
+            ..voidOn<MotorPower4ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewPower4Callback),
+            )
+            ..voidOn<MotorTemperature1ParameterId>(
               () => subscriptionCallbacks
-                  .remove(_sendNewMotorTemperatureCallback),
+                  .remove(_sendNewMotorTemperature1Callback),
             )
-            ..voidOn<ControllerTemperatureParameterId>(
+            ..voidOn<MotorTemperature2ParameterId>(
               () => subscriptionCallbacks
-                  .remove(_sendNewControllerTemperatureCallback),
+                  .remove(_sendNewMotorTemperature2Callback),
+            )
+            ..voidOn<MotorTemperature3ParameterId>(
+              () => subscriptionCallbacks
+                  .remove(_sendNewMotorTemperature3Callback),
+            )
+            ..voidOn<MotorTemperature4ParameterId>(
+              () => subscriptionCallbacks
+                  .remove(_sendNewMotorTemperature4Callback),
+            )
+            ..voidOn<ControllerTemperature1ParameterId>(
+              () => subscriptionCallbacks
+                  .remove(_sendNewControllerTemperature1Callback),
+            )
+            ..voidOn<ControllerTemperature2ParameterId>(
+              () => subscriptionCallbacks
+                  .remove(_sendNewControllerTemperature2Callback),
+            )
+            ..voidOn<ControllerTemperature3ParameterId>(
+              () => subscriptionCallbacks
+                  .remove(_sendNewControllerTemperature3Callback),
+            )
+            ..voidOn<ControllerTemperature4ParameterId>(
+              () => subscriptionCallbacks
+                  .remove(_sendNewControllerTemperature4Callback),
             )
             ..voidOn<OdometerParameterId>(
               () => subscriptionCallbacks.remove(_sendNewOdometerCallback),
             )
-            ..voidOn<RPMParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewRPMCallback),
+            ..voidOn<RPM1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewRPM1Callback),
             )
-            ..voidOn<GearAndRollParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewGearAndRollCallback),
+            ..voidOn<RPM2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewRPM2Callback),
+            )
+            ..voidOn<RPM3ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewRPM3Callback),
+            )
+            ..voidOn<RPM4ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewRPM4Callback),
+            )
+            ..voidOn<GearAndRoll1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewGearAndRoll1Callback),
+            )
+            ..voidOn<GearAndRoll2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewGearAndRoll2Callback),
+            )
+            ..voidOn<GearAndRoll3ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewGearAndRoll3Callback),
+            )
+            ..voidOn<GearAndRoll4ParameterId>(
+              () => subscriptionCallbacks.remove(_sendNewGearAndRoll4Callback),
             )
             ..voidOn<HighVoltage1ParameterId>(
               () => subscriptionCallbacks.remove(_sendHighVoltage1Callback),
@@ -297,34 +375,112 @@ class DemoDataSource extends DataSource
         }
 
         parameterId
-          ..voidOn<MotorSpeedParameterId>(
-            () => subscriptionCallbacks.add(_sendNewSpeedCallback),
+          //region motor
+          ..voidOn<MotorSpeed1ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewSpeed1Callback),
           )
-          ..voidOn<MotorVoltageParameterId>(
-            () => subscriptionCallbacks.add(_sendNewVoltageCallback),
+          ..voidOn<MotorSpeed2ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewSpeed2Callback),
           )
-          ..voidOn<MotorCurrentParameterId>(
-            () => subscriptionCallbacks.add(_sendNewCurrentCallback),
+          ..voidOn<MotorSpeed3ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewSpeed3Callback),
           )
-          ..voidOn<MotorPowerParameterId>(
-            () => subscriptionCallbacks.add(_sendNewPowerCallback),
+          ..voidOn<MotorSpeed4ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewSpeed4Callback),
           )
-          ..voidOn<MotorTemperatureParameterId>(
-            () => subscriptionCallbacks.add(_sendNewMotorTemperatureCallback),
+          ..voidOn<MotorVoltage1ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewVoltage1Callback),
           )
-          ..voidOn<ControllerTemperatureParameterId>(
+          ..voidOn<MotorVoltage2ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewVoltage2Callback),
+          )
+          ..voidOn<MotorVoltage3ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewVoltage3Callback),
+          )
+          ..voidOn<MotorVoltage4ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewVoltage4Callback),
+          )
+          ..voidOn<MotorCurrent1ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewCurrent1Callback),
+          )
+          ..voidOn<MotorCurrent2ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewCurrent2Callback),
+          )
+          ..voidOn<MotorCurrent3ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewCurrent3Callback),
+          )
+          ..voidOn<MotorCurrent4ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewCurrent4Callback),
+          )
+          ..voidOn<MotorPower1ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewPower1Callback),
+          )
+          ..voidOn<MotorPower2ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewPower2Callback),
+          )
+          ..voidOn<MotorPower3ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewPower3Callback),
+          )
+          ..voidOn<MotorPower4ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewPower4Callback),
+          )
+          ..voidOn<MotorTemperature1ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewMotorTemperature1Callback),
+          )
+          ..voidOn<MotorTemperature2ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewMotorTemperature2Callback),
+          )
+          ..voidOn<MotorTemperature3ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewMotorTemperature3Callback),
+          )
+          ..voidOn<MotorTemperature4ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewMotorTemperature4Callback),
+          )
+          ..voidOn<ControllerTemperature1ParameterId>(
             () => subscriptionCallbacks
-                .add(_sendNewControllerTemperatureCallback),
+                .add(_sendNewControllerTemperature1Callback),
+          )
+          ..voidOn<ControllerTemperature2ParameterId>(
+            () => subscriptionCallbacks
+                .add(_sendNewControllerTemperature2Callback),
+          )
+          ..voidOn<ControllerTemperature3ParameterId>(
+            () => subscriptionCallbacks
+                .add(_sendNewControllerTemperature3Callback),
+          )
+          ..voidOn<ControllerTemperature4ParameterId>(
+            () => subscriptionCallbacks
+                .add(_sendNewControllerTemperature4Callback),
           )
           ..voidOn<OdometerParameterId>(
             () => subscriptionCallbacks.add(_sendNewOdometerCallback),
           )
-          ..voidOn<RPMParameterId>(
-            () => subscriptionCallbacks.add(_sendNewRPMCallback),
+          ..voidOn<RPM1ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewRPM1Callback),
           )
-          ..voidOn<GearAndRollParameterId>(
-            () => subscriptionCallbacks.add(_sendNewGearAndRollCallback),
+          ..voidOn<RPM2ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewRPM2Callback),
           )
+          ..voidOn<RPM3ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewRPM3Callback),
+          )
+          ..voidOn<RPM4ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewRPM4Callback),
+          )
+          ..voidOn<GearAndRoll1ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewGearAndRoll1Callback),
+          )
+          ..voidOn<GearAndRoll2ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewGearAndRoll2Callback),
+          )
+          ..voidOn<GearAndRoll3ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewGearAndRoll3Callback),
+          )
+          ..voidOn<GearAndRoll4ParameterId>(
+            () => subscriptionCallbacks.add(_sendNewGearAndRoll4Callback),
+          )
+          //endregion
+          //region battery
           ..voidOn<HighVoltage1ParameterId>(
             () => subscriptionCallbacks.add(_sendHighVoltage1Callback),
           )
@@ -355,7 +511,8 @@ class DemoDataSource extends DataSource
           ..voidOn<BatteryPowerParameterId>(
             () => subscriptionCallbacks.add(_sendNewBatteryPowerCallback),
           )
-          // Lights
+          //endregion
+          //region Lights
           ..voidOn<FrontSideBeamParameterId>(() {
             _sendSetBoolUint8ResultCallback(const FrontSideBeamParameterId());
           })
@@ -408,6 +565,7 @@ class DemoDataSource extends DataSource
               const CustomImageParameterId(),
             );
           })
+          //endregion
           ..voidOn<WindscreenWipersParameterId>(() {
             _sendSetBoolUint8ResultCallback(
               const WindscreenWipersParameterId(),
@@ -456,25 +614,79 @@ class DemoDataSource extends DataSource
     const v = DataSourceProtocolVersion.periodicRequests;
 
     id
-      ..voidOn<MotorSpeedParameterId>(() => _sendNewSpeedCallback(version: v))
-      ..voidOn<MotorCurrentParameterId>(
-        () => _sendNewCurrentCallback(version: v),
+      ..voidOn<MotorSpeed1ParameterId>(() => _sendNewSpeed1Callback(version: v))
+      ..voidOn<MotorSpeed2ParameterId>(() => _sendNewSpeed2Callback(version: v))
+      ..voidOn<MotorSpeed3ParameterId>(() => _sendNewSpeed3Callback(version: v))
+      ..voidOn<MotorSpeed4ParameterId>(() => _sendNewSpeed4Callback(version: v))
+      ..voidOn<MotorCurrent1ParameterId>(
+        () => _sendNewCurrent1Callback(version: v),
       )
-      ..voidOn<MotorVoltageParameterId>(
-        () => _sendNewVoltageCallback(version: v),
+      ..voidOn<MotorCurrent2ParameterId>(
+        () => _sendNewCurrent2Callback(version: v),
       )
-      ..voidOn<MotorPowerParameterId>(() => _sendNewPowerCallback(version: v))
+      ..voidOn<MotorCurrent3ParameterId>(
+        () => _sendNewCurrent3Callback(version: v),
+      )
+      ..voidOn<MotorCurrent4ParameterId>(
+        () => _sendNewCurrent4Callback(version: v),
+      )
+      ..voidOn<MotorVoltage1ParameterId>(
+        () => _sendNewVoltage1Callback(version: v),
+      )
+      ..voidOn<MotorVoltage2ParameterId>(
+        () => _sendNewVoltage2Callback(version: v),
+      )
+      ..voidOn<MotorVoltage3ParameterId>(
+        () => _sendNewVoltage3Callback(version: v),
+      )
+      ..voidOn<MotorVoltage4ParameterId>(
+        () => _sendNewVoltage4Callback(version: v),
+      )
+      ..voidOn<MotorPower1ParameterId>(() => _sendNewPower1Callback(version: v))
+      ..voidOn<MotorPower2ParameterId>(() => _sendNewPower2Callback(version: v))
+      ..voidOn<MotorPower3ParameterId>(() => _sendNewPower3Callback(version: v))
+      ..voidOn<MotorPower4ParameterId>(() => _sendNewPower4Callback(version: v))
       ..voidOn<OdometerParameterId>(() => _sendNewOdometerCallback(version: v))
-      ..voidOn<GearAndRollParameterId>(
-        () => _sendNewGearAndRollCallback(version: v),
+      ..voidOn<GearAndRoll1ParameterId>(
+        () => _sendNewGearAndRoll1Callback(version: v),
       )
-      ..voidOn<MotorTemperatureParameterId>(
-        () => _sendNewMotorTemperatureCallback(version: v),
+      ..voidOn<GearAndRoll2ParameterId>(
+        () => _sendNewGearAndRoll2Callback(version: v),
       )
-      ..voidOn<ControllerTemperatureParameterId>(
-        () => _sendNewControllerTemperatureCallback(version: v),
+      ..voidOn<GearAndRoll3ParameterId>(
+        () => _sendNewGearAndRoll3Callback(version: v),
       )
-      ..voidOn<RPMParameterId>(() => _sendNewRPMCallback(version: v))
+      ..voidOn<GearAndRoll4ParameterId>(
+        () => _sendNewGearAndRoll4Callback(version: v),
+      )
+      ..voidOn<MotorTemperature1ParameterId>(
+        () => _sendNewMotorTemperature1Callback(version: v),
+      )
+      ..voidOn<MotorTemperature2ParameterId>(
+        () => _sendNewMotorTemperature2Callback(version: v),
+      )
+      ..voidOn<MotorTemperature3ParameterId>(
+        () => _sendNewMotorTemperature3Callback(version: v),
+      )
+      ..voidOn<MotorTemperature4ParameterId>(
+        () => _sendNewMotorTemperature4Callback(version: v),
+      )
+      ..voidOn<ControllerTemperature1ParameterId>(
+        () => _sendNewControllerTemperature1Callback(version: v),
+      )
+      ..voidOn<ControllerTemperature2ParameterId>(
+        () => _sendNewControllerTemperature2Callback(version: v),
+      )
+      ..voidOn<ControllerTemperature3ParameterId>(
+        () => _sendNewControllerTemperature3Callback(version: v),
+      )
+      ..voidOn<ControllerTemperature4ParameterId>(
+        () => _sendNewControllerTemperature4Callback(version: v),
+      )
+      ..voidOn<RPM1ParameterId>(() => _sendNewRPM1Callback(version: v))
+      ..voidOn<RPM2ParameterId>(() => _sendNewRPM2Callback(version: v))
+      ..voidOn<RPM3ParameterId>(() => _sendNewRPM3Callback(version: v))
+      ..voidOn<RPM4ParameterId>(() => _sendNewRPM4Callback(version: v))
       ..voidOn<LowVoltageMinMaxDelta1ParameterId>(
         _sendLowVoltageMinMaxDelta1Callback,
       )
@@ -612,11 +824,44 @@ class DemoDataSource extends DataSource
     return const Result.value(null);
   }
 
-  void _sendNewSpeedCallback({
+  void _sendNewSpeed1Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewSpeedCallback(
+        const DataSourceParameterId.motorSpeed1(),
+        version: version,
+      );
+
+  void _sendNewSpeed2Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewSpeedCallback(
+        const DataSourceParameterId.motorSpeed2(),
+        version: version,
+      );
+
+  void _sendNewSpeed3Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewSpeedCallback(
+        const DataSourceParameterId.motorSpeed3(),
+        version: version,
+      );
+
+  void _sendNewSpeed4Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewSpeedCallback(
+        const DataSourceParameterId.motorSpeed4(),
+        version: version,
+      );
+
+  void _sendNewSpeedCallback(
+    DataSourceParameterId id, {
     DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
   }) {
     _updateValueCallback(
-      const DataSourceParameterId.motorSpeed(),
+      id,
       TwoUint16WithStatusBody(
         status: _getRandomStatus,
         first: Random().nextInt(1001),
@@ -626,56 +871,254 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendNewVoltageCallback({
+  void _sendNewVoltage1Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewVoltageCallback(
+        const DataSourceParameterId.motorVoltage1(),
+        version: version,
+      );
+
+  void _sendNewVoltage2Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewVoltageCallback(
+        const DataSourceParameterId.motorVoltage2(),
+        version: version,
+      );
+
+  void _sendNewVoltage3Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewVoltageCallback(
+        const DataSourceParameterId.motorVoltage3(),
+        version: version,
+      );
+
+  void _sendNewVoltage4Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewVoltageCallback(
+        const DataSourceParameterId.motorVoltage4(),
+        version: version,
+      );
+
+  void _sendNewVoltageCallback(
+    DataSourceParameterId id, {
     DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
   }) {
     _sendTwoUint16Callback(
-      const DataSourceParameterId.motorVoltage(),
+      id,
       version: version,
     );
   }
 
-  void _sendNewCurrentCallback({
+  void _sendNewCurrent1Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewCurrentCallback(
+        const DataSourceParameterId.motorCurrent1(),
+        version: version,
+      );
+
+  void _sendNewCurrent2Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewCurrentCallback(
+        const DataSourceParameterId.motorCurrent2(),
+        version: version,
+      );
+
+  void _sendNewCurrent3Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewCurrentCallback(
+        const DataSourceParameterId.motorCurrent3(),
+        version: version,
+      );
+
+  void _sendNewCurrent4Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewCurrentCallback(
+        const DataSourceParameterId.motorCurrent4(),
+        version: version,
+      );
+
+  void _sendNewCurrentCallback(
+    DataSourceParameterId id, {
     DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
   }) {
     _sendTwoInt16Callback(
-      const DataSourceParameterId.motorCurrent(),
+      id,
       version: version,
     );
   }
 
-  void _sendNewPowerCallback({
+  void _sendNewPower1Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewPowerCallback(
+        const DataSourceParameterId.motorPower1(),
+        version: version,
+      );
+
+  void _sendNewPower2Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewPowerCallback(
+        const DataSourceParameterId.motorPower2(),
+        version: version,
+      );
+
+  void _sendNewPower3Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewPowerCallback(
+        const DataSourceParameterId.motorPower3(),
+        version: version,
+      );
+
+  void _sendNewPower4Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewPowerCallback(
+        const DataSourceParameterId.motorPower4(),
+        version: version,
+      );
+
+  void _sendNewPowerCallback(
+    DataSourceParameterId id, {
     DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
   }) {
     _sendTwoInt16Callback(
-      const DataSourceParameterId.motorPower(),
+      id,
       version: version,
     );
   }
 
-  void _sendNewRPMCallback({
+  void _sendNewRPM1Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewRPMCallback(
+        const DataSourceParameterId.rpm1(),
+        version: version,
+      );
+
+  void _sendNewRPM2Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewRPMCallback(
+        const DataSourceParameterId.rpm2(),
+        version: version,
+      );
+
+  void _sendNewRPM3Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewRPMCallback(
+        const DataSourceParameterId.rpm3(),
+        version: version,
+      );
+
+  void _sendNewRPM4Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewRPMCallback(
+        const DataSourceParameterId.rpm4(),
+        version: version,
+      );
+
+  void _sendNewRPMCallback(
+    DataSourceParameterId id, {
     DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
   }) {
     _sendTwoUint16Callback(
-      const DataSourceParameterId.rpm(),
+      id,
       version: version,
     );
   }
 
-  void _sendNewMotorTemperatureCallback({
+  void _sendNewMotorTemperature1Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewMotorTemperatureCallback(
+        const DataSourceParameterId.motorTemperature1(),
+        version: version,
+      );
+
+  void _sendNewMotorTemperature2Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewMotorTemperatureCallback(
+        const DataSourceParameterId.motorTemperature2(),
+        version: version,
+      );
+
+  void _sendNewMotorTemperature3Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewMotorTemperatureCallback(
+        const DataSourceParameterId.motorTemperature3(),
+        version: version,
+      );
+
+  void _sendNewMotorTemperature4Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewMotorTemperatureCallback(
+        const DataSourceParameterId.motorTemperature4(),
+        version: version,
+      );
+
+  void _sendNewMotorTemperatureCallback(
+    DataSourceParameterId id, {
     DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
   }) {
     _sendTwoInt16Callback(
-      const MotorTemperatureParameterId(),
+      id,
       version: version,
     );
   }
 
-  void _sendNewControllerTemperatureCallback({
+  void _sendNewControllerTemperature1Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewControllerTemperatureCallback(
+        const DataSourceParameterId.controllerTemperature1(),
+        version: version,
+      );
+
+  void _sendNewControllerTemperature2Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewControllerTemperatureCallback(
+        const DataSourceParameterId.controllerTemperature2(),
+        version: version,
+      );
+
+  void _sendNewControllerTemperature3Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewControllerTemperatureCallback(
+        const DataSourceParameterId.controllerTemperature3(),
+        version: version,
+      );
+
+  void _sendNewControllerTemperature4Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewControllerTemperatureCallback(
+        const DataSourceParameterId.controllerTemperature4(),
+        version: version,
+      );
+
+  void _sendNewControllerTemperatureCallback(
+    DataSourceParameterId id, {
     DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
   }) {
     _sendTwoInt16Callback(
-      const ControllerTemperatureParameterId(),
+      id,
       version: version,
     );
   }
@@ -693,24 +1136,51 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendNewGearAndRollCallback({
+  void _sendNewGearAndRoll1Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewGearAndRollCallback(
+        const DataSourceParameterId.gearAndRoll1(),
+        version: version,
+      );
+
+  void _sendNewGearAndRoll2Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewGearAndRollCallback(
+        const DataSourceParameterId.gearAndRoll2(),
+        version: version,
+      );
+
+  void _sendNewGearAndRoll3Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewGearAndRollCallback(
+        const DataSourceParameterId.gearAndRoll3(),
+        version: version,
+      );
+
+  void _sendNewGearAndRoll4Callback({
+    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
+  }) =>
+      _sendNewGearAndRollCallback(
+        const DataSourceParameterId.gearAndRoll4(),
+        version: version,
+      );
+
+  void _sendNewGearAndRollCallback(
+    DataSourceParameterId id, {
     DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
   }) {
     final randomGear1 =
         MotorGear.values[Random().nextInt(MotorGear.values.length)];
-    final randomGear2 =
-        MotorGear.values[Random().nextInt(MotorGear.values.length)];
     final randomRoll1 = MotorRollDirection
         .values[Random().nextInt(MotorRollDirection.values.length)];
-    final randomRoll2 = MotorRollDirection
-        .values[Random().nextInt(MotorRollDirection.values.length)];
     _updateValueCallback(
-      const DataSourceParameterId.gearAndRoll(),
+      id,
       MotorGearAndRoll(
-        firstMotorGear: randomGear1,
-        firstMotorRollDirection: randomRoll1,
-        secondMotorGear: randomGear2,
-        secondMotorRollDirection: randomRoll2,
+        motorGear: randomGear1,
+        motorRollDirection: randomRoll1,
         status: _getRandomStatus,
       ),
       version,
@@ -872,12 +1342,12 @@ class DemoDataSource extends DataSource
   }
 
   void _sendBatteryPercent1Callback() => _sendBatteryPercentCallback(
-    const DataSourceParameterId.batteryPercent1(),
-  );
+        const DataSourceParameterId.batteryPercent1(),
+      );
 
   void _sendBatteryPercent2Callback() => _sendBatteryPercentCallback(
-    const DataSourceParameterId.batteryPercent2(),
-  );
+        const DataSourceParameterId.batteryPercent2(),
+      );
 
   void _sendMaxTemperatureCallback(DataSourceParameterId parameterId) {
     _sendPackage(
@@ -1048,10 +1518,13 @@ class DemoDataSource extends DataSource
   bool get randomBool => Random().nextBool();
 
   int get randomUint8 => Random().nextInt(0xFF);
+
   int get randomUint16 => Random().nextInt(0xFFFF);
+
   int get randomInt16 => Random().nextInt(0x8000).randomSign;
 
   double get randomDoubleUint16 => Random().nextDouble() * 0xFFFF;
+
   double get randomDoubleUint32 => Random().nextDouble() * 0xFFFFFFFF;
 
   void _updateValueCallback(

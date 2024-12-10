@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:pixel_app_flutter/domain/app/app.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/uint16_with_status_body.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:re_seedwork/re_seedwork.dart';
 
@@ -21,34 +23,40 @@ final class MotorDataState with EquatableMixin {
   });
 
   MotorDataState.initial({required this.motorsCount})
-      : current = const TwoInt16WithStatusBody.zero(),
-        voltage = const TwoUint16WithStatusBody.zero(),
-        motorTemperature = const TwoInt16WithStatusBody.zero(),
-        controllerTemperature = const TwoInt16WithStatusBody.zero(),
-        gearAndRoll = MotorGearAndRoll.unknown(),
-        rpm = const TwoUint16WithStatusBody.zero(),
-        speed = const TwoUint16WithStatusBody.zero(),
-        power = const TwoInt16WithStatusBody.zero();
+      : current = Sequence.fill(motorsCount, const UInt16WithStatusBody.zero()),
+        voltage = Sequence.fill(motorsCount, const UInt16WithStatusBody.zero()),
+        motorTemperature = Sequence.fill(
+          motorsCount,
+          const UInt16WithStatusBody.zero(),
+        ),
+        controllerTemperature = Sequence.fill(
+          motorsCount,
+          const UInt16WithStatusBody.zero(),
+        ),
+        gearAndRoll = Sequence.fill(motorsCount, MotorGearAndRoll.unknown()),
+        rpm = Sequence.fill(motorsCount, const UInt16WithStatusBody.zero()),
+        speed = Sequence.fill(motorsCount, const UInt16WithStatusBody.zero()),
+        power = Sequence.fill(motorsCount, const UInt16WithStatusBody.zero());
 
-  final TwoInt16WithStatusBody current;
-  final TwoUint16WithStatusBody voltage;
-  final TwoInt16WithStatusBody motorTemperature;
-  final TwoInt16WithStatusBody controllerTemperature;
-  final MotorGearAndRoll gearAndRoll;
-  final TwoUint16WithStatusBody rpm;
-  final TwoUint16WithStatusBody speed;
-  final TwoInt16WithStatusBody power;
+  final Sequence<UInt16WithStatusBody> current;
+  final Sequence<UInt16WithStatusBody> voltage;
+  final Sequence<UInt16WithStatusBody> motorTemperature;
+  final Sequence<UInt16WithStatusBody> controllerTemperature;
+  final Sequence<MotorGearAndRoll> gearAndRoll;
+  final Sequence<UInt16WithStatusBody> rpm;
+  final Sequence<UInt16WithStatusBody> speed;
+  final Sequence<UInt16WithStatusBody> power;
   final int motorsCount;
 
   MotorDataState copyWith({
-    TwoInt16WithStatusBody? current,
-    TwoUint16WithStatusBody? voltage,
-    TwoInt16WithStatusBody? motorTemperature,
-    TwoInt16WithStatusBody? controllerTemperature,
-    MotorGearAndRoll? gearAndRoll,
-    TwoUint16WithStatusBody? rpm,
-    TwoUint16WithStatusBody? speed,
-    TwoInt16WithStatusBody? power,
+    Sequence<UInt16WithStatusBody>? current,
+    Sequence<UInt16WithStatusBody>? voltage,
+    Sequence<UInt16WithStatusBody>? motorTemperature,
+    Sequence<UInt16WithStatusBody>? controllerTemperature,
+    Sequence<MotorGearAndRoll>? gearAndRoll,
+    Sequence<UInt16WithStatusBody>? rpm,
+    Sequence<UInt16WithStatusBody>? speed,
+    Sequence<UInt16WithStatusBody>? power,
     int? motorsCount,
   }) {
     return MotorDataState(
@@ -86,50 +94,126 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
   }) : super(MotorDataState.initial(motorsCount: motorsCount)) {
     subscribe<DataSourceIncomingPackage>(dataSource.packageStream, (value) {
       value
-        ..voidOnModel<TwoUint16WithStatusBody,
-            MotorVoltageIncomingDataSourcePackage>((model) {
-          emit(state.copyWith(voltage: model));
+        ..voidOnPackage<UInt16WithStatusBody,
+            MotorVoltageIncomingDataSourcePackage>((package) {
+          emit(
+            state.copyWith(
+              voltage: state.voltage.updateAt(
+                package.motorIndex,
+                package.dataModel,
+              ),
+            ),
+          );
         })
-        ..voidOnModel<TwoInt16WithStatusBody,
-            MotorCurrentIncomingDataSourcePackage>((model) {
-          emit(state.copyWith(current: model));
+        ..voidOnPackage<UInt16WithStatusBody,
+            MotorCurrentIncomingDataSourcePackage>((package) {
+          emit(
+            state.copyWith(
+              current: state.current.updateAt(
+                package.motorIndex,
+                package.dataModel,
+              ),
+            ),
+          );
         })
-        ..voidOnModel<TwoInt16WithStatusBody,
-            MotorTemperatureIncomingDataSourcePackage>((model) {
-          emit(state.copyWith(motorTemperature: model));
+        ..voidOnPackage<UInt16WithStatusBody,
+            MotorTemperatureIncomingDataSourcePackage>((package) {
+          emit(
+            state.copyWith(
+              motorTemperature: state.motorTemperature
+                  .updateAt(package.motorIndex, package.dataModel),
+            ),
+          );
         })
-        ..voidOnModel<TwoInt16WithStatusBody,
-            ControllerTemperatureIncomingDataSourcePackage>((model) {
-          emit(state.copyWith(controllerTemperature: model));
+        ..voidOnPackage<UInt16WithStatusBody,
+            ControllerTemperatureIncomingDataSourcePackage>((package) {
+          emit(
+            state.copyWith(
+              controllerTemperature: state.controllerTemperature
+                  .updateAt(package.motorIndex, package.dataModel),
+            ),
+          );
         })
-        ..voidOnModel<MotorGearAndRoll,
-            MotorGearAndRollIncomingDataSourcePackage>((model) {
-          emit(state.copyWith(gearAndRoll: model));
+        ..voidOnPackage<MotorGearAndRoll,
+            MotorGearAndRollIncomingDataSourcePackage>((package) {
+          emit(
+            state.copyWith(
+              gearAndRoll: state.gearAndRoll.updateAt(
+                package.motorIndex,
+                package.dataModel,
+              ),
+            ),
+          );
         })
-        ..voidOnModel<TwoUint16WithStatusBody, RPMIncomingDataSourcePackage>(
-            (model) {
-          emit(state.copyWith(rpm: model));
+        ..voidOnPackage<UInt16WithStatusBody, RPMIncomingDataSourcePackage>(
+            (package) {
+          emit(
+            state.copyWith(
+              rpm: state.rpm.updateAt(
+                package.motorIndex,
+                package.dataModel,
+              ),
+            ),
+          );
         })
-        ..voidOnModel<TwoUint16WithStatusBody,
-            MotorSpeedIncomingDataSourcePackage>((model) {
-          emit(state.copyWith(speed: model));
+        ..voidOnPackage<UInt16WithStatusBody,
+            MotorSpeedIncomingDataSourcePackage>((package) {
+          emit(
+            state.copyWith(
+              speed: state.speed.updateAt(
+                package.motorIndex,
+                package.dataModel,
+              ),
+            ),
+          );
         })
-        ..voidOnModel<TwoInt16WithStatusBody,
-            MotorPowerIncomingDataSourcePackage>((model) {
-          emit(state.copyWith(power: model));
+        ..voidOnPackage<UInt16WithStatusBody,
+            MotorPowerIncomingDataSourcePackage>((package) {
+          emit(
+            state.copyWith(
+              power: state.power.updateAt(
+                package.motorIndex,
+                package.dataModel,
+              ),
+            ),
+          );
         });
     });
   }
 
   static Set<DataSourceParameterId> kDefaultSubscribeParameters = {
-    const DataSourceParameterId.motorVoltage(),
-    const DataSourceParameterId.motorCurrent(),
-    const DataSourceParameterId.rpm(),
-    const DataSourceParameterId.gearAndRoll(),
-    const DataSourceParameterId.motorSpeed(),
-    const DataSourceParameterId.motorPower(),
-    const DataSourceParameterId.motorTemperature(),
-    const DataSourceParameterId.controllerTemperature(),
+    const DataSourceParameterId.motorVoltage1(),
+    const DataSourceParameterId.motorVoltage2(),
+    const DataSourceParameterId.motorVoltage3(),
+    const DataSourceParameterId.motorVoltage4(),
+    const DataSourceParameterId.motorCurrent1(),
+    const DataSourceParameterId.motorCurrent2(),
+    const DataSourceParameterId.motorCurrent3(),
+    const DataSourceParameterId.motorCurrent4(),
+    const DataSourceParameterId.rpm1(),
+    const DataSourceParameterId.rpm2(),
+    const DataSourceParameterId.rpm3(),
+    const DataSourceParameterId.rpm4(),
+    const DataSourceParameterId.gearAndRoll1(),
+    const DataSourceParameterId.gearAndRoll2(),
+    const DataSourceParameterId.gearAndRoll3(),
+    const DataSourceParameterId.gearAndRoll4(),
+    const DataSourceParameterId.motorSpeed1(),
+    const DataSourceParameterId.motorSpeed2(),
+    const DataSourceParameterId.motorSpeed3(),
+    const DataSourceParameterId.motorSpeed4(),
+    const DataSourceParameterId.motorPower1(),
+    const DataSourceParameterId.motorPower2(),
+    const DataSourceParameterId.motorPower3(),
+    const DataSourceParameterId.motorPower4(),
+    const DataSourceParameterId.motorTemperature1(),
+    const DataSourceParameterId.motorTemperature2(),
+    const DataSourceParameterId.motorTemperature3(),
+    const DataSourceParameterId.motorTemperature4(),
+    const DataSourceParameterId.controllerTemperature1(),
+    const DataSourceParameterId.controllerTemperature2(),
+    const DataSourceParameterId.controllerTemperature3(),
+    const DataSourceParameterId.controllerTemperature4(),
   };
 
   @protected

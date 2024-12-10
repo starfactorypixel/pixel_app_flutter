@@ -1,4 +1,5 @@
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/uint16_with_status_body.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/wrappers/empty_body.dart';
 
@@ -41,6 +42,13 @@ mixin Int16WithStatusBodyBytesConverterMixin
   @override
   BytesConverter<Int16WithStatusBody> get bytesConverter =>
       Int16WithStatusBody.converter;
+}
+
+mixin UInt16WithStatusBodyBytesConverterMixin
+    on DataSourceIncomingPackage<UInt16WithStatusBody> {
+  @override
+  BytesConverter<UInt16WithStatusBody> get bytesConverter =>
+      UInt16WithStatusBody.converter;
 }
 
 mixin TwoUint16WithStatusBodyBytesConverterMixin

@@ -101,23 +101,82 @@ abstract class DataSourceParameterId {
   const factory DataSourceParameterId.customImage() = CustomImageParameterId;
 
   //
-  const factory DataSourceParameterId.rpm() = RPMParameterId;
+  const factory DataSourceParameterId.rpm1() = RPM1ParameterId;
 
-  const factory DataSourceParameterId.motorSpeed() = MotorSpeedParameterId;
+  const factory DataSourceParameterId.rpm2() = RPM2ParameterId;
 
-  const factory DataSourceParameterId.motorVoltage() = MotorVoltageParameterId;
+  const factory DataSourceParameterId.rpm3() = RPM3ParameterId;
 
-  const factory DataSourceParameterId.motorCurrent() = MotorCurrentParameterId;
+  const factory DataSourceParameterId.rpm4() = RPM4ParameterId;
 
-  const factory DataSourceParameterId.motorPower() = MotorPowerParameterId;
+  const factory DataSourceParameterId.motorSpeed1() = MotorSpeed1ParameterId;
 
-  const factory DataSourceParameterId.gearAndRoll() = GearAndRollParameterId;
+  const factory DataSourceParameterId.motorSpeed2() = MotorSpeed2ParameterId;
 
-  const factory DataSourceParameterId.motorTemperature() =
-      MotorTemperatureParameterId;
+  const factory DataSourceParameterId.motorSpeed3() = MotorSpeed3ParameterId;
 
-  const factory DataSourceParameterId.controllerTemperature() =
-      ControllerTemperatureParameterId;
+  const factory DataSourceParameterId.motorSpeed4() = MotorSpeed4ParameterId;
+
+  const factory DataSourceParameterId.motorVoltage1() =
+      MotorVoltage1ParameterId;
+
+  const factory DataSourceParameterId.motorVoltage2() =
+      MotorVoltage2ParameterId;
+
+  const factory DataSourceParameterId.motorVoltage3() =
+      MotorVoltage3ParameterId;
+
+  const factory DataSourceParameterId.motorVoltage4() =
+      MotorVoltage4ParameterId;
+
+  const factory DataSourceParameterId.motorCurrent1() =
+      MotorCurrent1ParameterId;
+
+  const factory DataSourceParameterId.motorCurrent2() =
+      MotorCurrent2ParameterId;
+
+  const factory DataSourceParameterId.motorCurrent3() =
+      MotorCurrent3ParameterId;
+
+  const factory DataSourceParameterId.motorCurrent4() =
+      MotorCurrent4ParameterId;
+
+  const factory DataSourceParameterId.motorPower1() = MotorPower1ParameterId;
+  const factory DataSourceParameterId.motorPower2() = MotorPower2ParameterId;
+  const factory DataSourceParameterId.motorPower3() = MotorPower3ParameterId;
+  const factory DataSourceParameterId.motorPower4() = MotorPower4ParameterId;
+
+  const factory DataSourceParameterId.gearAndRoll1() = GearAndRoll1ParameterId;
+
+  const factory DataSourceParameterId.gearAndRoll2() = GearAndRoll2ParameterId;
+
+  const factory DataSourceParameterId.gearAndRoll3() = GearAndRoll3ParameterId;
+
+  const factory DataSourceParameterId.gearAndRoll4() = GearAndRoll4ParameterId;
+
+  const factory DataSourceParameterId.motorTemperature1() =
+      MotorTemperature1ParameterId;
+
+  const factory DataSourceParameterId.motorTemperature2() =
+      MotorTemperature2ParameterId;
+
+  const factory DataSourceParameterId.motorTemperature3() =
+      MotorTemperature3ParameterId;
+
+  const factory DataSourceParameterId.motorTemperature4() =
+      MotorTemperature4ParameterId;
+
+  const factory DataSourceParameterId.controllerTemperature1() =
+      ControllerTemperature1ParameterId;
+
+  const factory DataSourceParameterId.controllerTemperature2() =
+      ControllerTemperature2ParameterId;
+
+  const factory DataSourceParameterId.controllerTemperature3() =
+      ControllerTemperature3ParameterId;
+
+  const factory DataSourceParameterId.controllerTemperature4() =
+      ControllerTemperature4ParameterId;
 
   const factory DataSourceParameterId.odometer() = OdometerParameterId;
 
@@ -209,21 +268,70 @@ abstract class DataSourceParameterId {
   bool get isCustomImage => this is CustomImageParameterId;
 
   //
-  bool get isRPM => this is RPMParameterId;
+  bool get isRPM1 => this is RPM1ParameterId;
 
-  bool get isMotorSpeed => this is MotorSpeedParameterId;
+  bool get isRPM2 => this is RPM2ParameterId;
 
-  bool get isMotorVoltage => this is MotorVoltageParameterId;
+  bool get isRPM3 => this is RPM3ParameterId;
 
-  bool get isMotorCurrent => this is MotorCurrentParameterId;
+  bool get isRPM4 => this is RPM4ParameterId;
 
-  bool get isMotorPower => this is MotorPowerParameterId;
+  bool get isMotorSpeed1 => this is MotorSpeed1ParameterId;
 
-  bool get isGearAndRoll => this is GearAndRollParameterId;
+  bool get isMotorSpeed2 => this is MotorSpeed2ParameterId;
 
-  bool get isMotorTemperature => this is MotorTemperatureParameterId;
+  bool get isMotorSpeed3 => this is MotorSpeed3ParameterId;
 
-  bool get isControllerTemperature => this is ControllerTemperatureParameterId;
+  bool get isMotorSpeed4 => this is MotorSpeed4ParameterId;
+
+  bool get isMotorVoltage1 => this is MotorVoltage1ParameterId;
+
+  bool get isMotorVoltage2 => this is MotorVoltage2ParameterId;
+
+  bool get isMotorVoltage3 => this is MotorVoltage3ParameterId;
+
+  bool get isMotorVoltage4 => this is MotorVoltage4ParameterId;
+
+  bool get isMotorCurrent1 => this is MotorCurrent1ParameterId;
+
+  bool get isMotorCurrent2 => this is MotorCurrent2ParameterId;
+
+  bool get isMotorCurrent3 => this is MotorCurrent3ParameterId;
+
+  bool get isMotorCurrent4 => this is MotorCurrent4ParameterId;
+
+  bool get isMotorPower1 => this is MotorPower1ParameterId;
+  bool get isMotorPower2 => this is MotorPower2ParameterId;
+  bool get isMotorPower3 => this is MotorPower3ParameterId;
+  bool get isMotorPower4 => this is MotorPower4ParameterId;
+
+  bool get isGearAndRoll1 => this is GearAndRoll1ParameterId;
+
+  bool get isGearAndRoll2 => this is GearAndRoll2ParameterId;
+
+  bool get isGearAndRoll3 => this is GearAndRoll3ParameterId;
+
+  bool get isGearAndRoll4 => this is GearAndRoll4ParameterId;
+
+  bool get isMotorTemperature1 => this is MotorTemperature1ParameterId;
+
+  bool get isMotorTemperature2 => this is MotorTemperature2ParameterId;
+
+  bool get isMotorTemperature3 => this is MotorTemperature3ParameterId;
+
+  bool get isMotorTemperature4 => this is MotorTemperature4ParameterId;
+
+  bool get isControllerTemperature1 =>
+      this is ControllerTemperature1ParameterId;
+
+  bool get isControllerTemperature2 =>
+      this is ControllerTemperature2ParameterId;
+
+  bool get isControllerTemperature3 =>
+      this is ControllerTemperature3ParameterId;
+
+  bool get isControllerTemperature4 =>
+      this is ControllerTemperature4ParameterId;
 
   bool get isOdometer => this is OdometerParameterId;
 
@@ -283,14 +391,38 @@ abstract class DataSourceParameterId {
       DataSourceParameterId.reverseLight(),
       DataSourceParameterId.customImage(),
       //
-      DataSourceParameterId.rpm(),
-      DataSourceParameterId.motorSpeed(),
-      DataSourceParameterId.motorVoltage(),
-      DataSourceParameterId.motorCurrent(),
-      DataSourceParameterId.motorPower(),
-      DataSourceParameterId.gearAndRoll(),
-      DataSourceParameterId.motorTemperature(),
-      DataSourceParameterId.controllerTemperature(),
+      DataSourceParameterId.rpm1(),
+      DataSourceParameterId.rpm2(),
+      DataSourceParameterId.rpm3(),
+      DataSourceParameterId.rpm4(),
+      DataSourceParameterId.motorSpeed1(),
+      DataSourceParameterId.motorSpeed2(),
+      DataSourceParameterId.motorSpeed3(),
+      DataSourceParameterId.motorSpeed4(),
+      DataSourceParameterId.motorVoltage1(),
+      DataSourceParameterId.motorVoltage2(),
+      DataSourceParameterId.motorVoltage3(),
+      DataSourceParameterId.motorVoltage4(),
+      DataSourceParameterId.motorCurrent1(),
+      DataSourceParameterId.motorCurrent2(),
+      DataSourceParameterId.motorCurrent3(),
+      DataSourceParameterId.motorCurrent4(),
+      DataSourceParameterId.motorPower1(),
+      DataSourceParameterId.motorPower2(),
+      DataSourceParameterId.motorPower3(),
+      DataSourceParameterId.motorPower4(),
+      DataSourceParameterId.gearAndRoll1(),
+      DataSourceParameterId.gearAndRoll2(),
+      DataSourceParameterId.gearAndRoll3(),
+      DataSourceParameterId.gearAndRoll4(),
+      DataSourceParameterId.motorTemperature1(),
+      DataSourceParameterId.motorTemperature2(),
+      DataSourceParameterId.motorTemperature3(),
+      DataSourceParameterId.motorTemperature4(),
+      DataSourceParameterId.controllerTemperature1(),
+      DataSourceParameterId.controllerTemperature2(),
+      DataSourceParameterId.controllerTemperature3(),
+      DataSourceParameterId.controllerTemperature4(),
       DataSourceParameterId.odometer(),
       DataSourceParameterId.batteryLevel(),
       DataSourceParameterId.batteryPower(),
@@ -467,36 +599,129 @@ class CustomImageParameterId extends DataSourceParameterId {
   const CustomImageParameterId() : super(0x00EB);
 }
 
-class RPMParameterId extends DataSourceParameterId {
-  const RPMParameterId() : super(0x0105);
+class RPM1ParameterId extends DataSourceParameterId {
+  const RPM1ParameterId() : super(0x010E);
 }
 
-class MotorSpeedParameterId extends DataSourceParameterId {
-  const MotorSpeedParameterId() : super(0x0106);
+class RPM2ParameterId extends DataSourceParameterId {
+  const RPM2ParameterId() : super(0x010F);
 }
 
-class MotorVoltageParameterId extends DataSourceParameterId {
-  const MotorVoltageParameterId() : super(0x0107);
+class RPM3ParameterId extends DataSourceParameterId {
+  const RPM3ParameterId() : super(0x013E);
 }
 
-class MotorCurrentParameterId extends DataSourceParameterId {
-  const MotorCurrentParameterId() : super(0x0108);
+class RPM4ParameterId extends DataSourceParameterId {
+  const RPM4ParameterId() : super(0x013F);
 }
 
-class MotorPowerParameterId extends DataSourceParameterId {
-  const MotorPowerParameterId() : super(0x0109);
+class MotorSpeed1ParameterId extends DataSourceParameterId {
+  const MotorSpeed1ParameterId() : super(0x0110);
 }
 
-class GearAndRollParameterId extends DataSourceParameterId {
-  const GearAndRollParameterId() : super(0x010A);
+class MotorSpeed2ParameterId extends DataSourceParameterId {
+  const MotorSpeed2ParameterId() : super(0x0111);
 }
 
-class MotorTemperatureParameterId extends DataSourceParameterId {
-  const MotorTemperatureParameterId() : super(0x010B);
+class MotorSpeed3ParameterId extends DataSourceParameterId {
+  const MotorSpeed3ParameterId() : super(0x0140);
 }
 
-class ControllerTemperatureParameterId extends DataSourceParameterId {
-  const ControllerTemperatureParameterId() : super(0x010C);
+class MotorSpeed4ParameterId extends DataSourceParameterId {
+  const MotorSpeed4ParameterId() : super(0x0141);
+}
+
+class MotorVoltage1ParameterId extends DataSourceParameterId {
+  const MotorVoltage1ParameterId() : super(0x0112);
+}
+
+class MotorVoltage2ParameterId extends DataSourceParameterId {
+  const MotorVoltage2ParameterId() : super(0x0113);
+}
+
+class MotorVoltage3ParameterId extends DataSourceParameterId {
+  const MotorVoltage3ParameterId() : super(0x0142);
+}
+
+class MotorVoltage4ParameterId extends DataSourceParameterId {
+  const MotorVoltage4ParameterId() : super(0x0143);
+}
+
+class MotorCurrent1ParameterId extends DataSourceParameterId {
+  const MotorCurrent1ParameterId() : super(0x0114);
+}
+
+class MotorCurrent2ParameterId extends DataSourceParameterId {
+  const MotorCurrent2ParameterId() : super(0x0115);
+}
+
+class MotorCurrent3ParameterId extends DataSourceParameterId {
+  const MotorCurrent3ParameterId() : super(0x0144);
+}
+
+class MotorCurrent4ParameterId extends DataSourceParameterId {
+  const MotorCurrent4ParameterId() : super(0x0145);
+}
+
+class MotorPower1ParameterId extends DataSourceParameterId {
+  const MotorPower1ParameterId() : super(0x0116);
+}
+class MotorPower2ParameterId extends DataSourceParameterId {
+  const MotorPower2ParameterId() : super(0x0117);
+}
+class MotorPower3ParameterId extends DataSourceParameterId {
+  const MotorPower3ParameterId() : super(0x0146);
+}
+class MotorPower4ParameterId extends DataSourceParameterId {
+  const MotorPower4ParameterId() : super(0x0147);
+}
+
+class GearAndRoll1ParameterId extends DataSourceParameterId {
+  const GearAndRoll1ParameterId() : super(0x0118);
+}
+
+class GearAndRoll2ParameterId extends DataSourceParameterId {
+  const GearAndRoll2ParameterId() : super(0x0119);
+}
+
+class GearAndRoll3ParameterId extends DataSourceParameterId {
+  const GearAndRoll3ParameterId() : super(0x0148);
+}
+
+class GearAndRoll4ParameterId extends DataSourceParameterId {
+  const GearAndRoll4ParameterId() : super(0x0149);
+}
+
+class MotorTemperature1ParameterId extends DataSourceParameterId {
+  const MotorTemperature1ParameterId() : super(0x011A);
+}
+
+class MotorTemperature2ParameterId extends DataSourceParameterId {
+  const MotorTemperature2ParameterId() : super(0x011B);
+}
+
+class MotorTemperature3ParameterId extends DataSourceParameterId {
+  const MotorTemperature3ParameterId() : super(0x014A);
+}
+
+class MotorTemperature4ParameterId extends DataSourceParameterId {
+  const MotorTemperature4ParameterId() : super(0x014B);
+}
+
+class ControllerTemperature1ParameterId extends DataSourceParameterId {
+  const ControllerTemperature1ParameterId() : super(0x011C);
+}
+
+class ControllerTemperature2ParameterId extends DataSourceParameterId {
+  const ControllerTemperature2ParameterId() : super(0x011D);
+}
+
+class ControllerTemperature3ParameterId extends DataSourceParameterId {
+  const ControllerTemperature3ParameterId() : super(0x014C);
+}
+
+class ControllerTemperature4ParameterId extends DataSourceParameterId {
+  const ControllerTemperature4ParameterId() : super(0x014D);
 }
 
 class OdometerParameterId extends DataSourceParameterId {

@@ -28,142 +28,168 @@ class MotorScreen extends StatelessWidget {
           Container(
             height: 24,
           ),
-          _TwoValuesTableRow.builder(
+          _ValuesTableRow.builder(
             parameterName: context.l10n.speedTileTitle,
             builder: () {
               final state =
                   context.select((MotorDataCubit cubit) => cubit.state.speed);
 
               return (
-                ['${state.first ~/ 10}', '${state.second ~/ 10}'],
-                context.colorFromStatus(state.status),
+                state
+                    .map(
+                      (element) => _Value(
+                        '${element.value ~/ 10}',
+                        context.colorFromStatus(element.status),
+                      ),
+                    )
+                    .toList(),
               );
             },
             unitOfMeasurement: context.l10n.kmPerHourMeasurenentUnit,
           ),
-          _TwoValuesTableRow.builder(
+          _ValuesTableRow.builder(
             parameterName: context.l10n.rpmTileTitle,
             builder: () {
               final state =
                   context.select((MotorDataCubit cubit) => cubit.state.rpm);
               return (
-                ['${state.first}', '${state.second}'],
-                context.colorFromStatus(state.status),
+                state
+                    .map(
+                      (element) => _Value(
+                        '${element.value}',
+                        context.colorFromStatus(element.status),
+                      ),
+                    )
+                    .toList(),
               );
             },
             unitOfMeasurement: context.l10n.rpmMeasurementUnit,
           ),
-          _TwoValuesTableRow.builder(
+          _ValuesTableRow.builder(
             parameterName: context.l10n.voltageTileTitle,
             builder: () {
               final state =
                   context.select((MotorDataCubit cubit) => cubit.state.voltage);
               return (
-                [
-                  (state.first / 10).toStringAsFixed(1),
-                  (state.second / 10).toStringAsFixed(1),
-                ],
-                context.colorFromStatus(state.status),
+                state
+                    .map(
+                      (element) => _Value(
+                        (element.value / 10).toStringAsFixed(1),
+                        context.colorFromStatus(element.status),
+                      ),
+                    )
+                    .toList(),
               );
             },
             unitOfMeasurement: context.l10n.voltMeasurementUnit,
           ),
-          _TwoValuesTableRow.builder(
+          _ValuesTableRow.builder(
             parameterName: context.l10n.currentTileTitle,
             builder: () {
               final state =
                   context.select((MotorDataCubit cubit) => cubit.state.current);
               return (
-                [
-                  (state.first / 10).toStringAsFixed(1),
-                  (state.second / 10).toStringAsFixed(1),
-                ],
-                context.colorFromStatus(state.status),
+                state
+                    .map(
+                      (element) => _Value(
+                        (element.value / 10).toStringAsFixed(1),
+                        context.colorFromStatus(element.status),
+                      ),
+                    )
+                    .toList(),
               );
             },
             unitOfMeasurement: context.l10n.amperMeasurementUnit,
           ),
-          _TwoValuesTableRow.builder(
+          _ValuesTableRow.builder(
             parameterName: context.l10n.powerTileTitle,
             builder: () {
               final state =
                   context.select((MotorDataCubit cubit) => cubit.state.power);
               return (
-                ['${state.first}', '${state.second}'],
-                context.colorFromStatus(state.status),
+                state
+                    .map(
+                      (element) => _Value(
+                        '${element.value}',
+                        context.colorFromStatus(element.status),
+                      ),
+                    )
+                    .toList(),
               );
             },
             unitOfMeasurement: context.l10n.wattMeasurementUnit,
           ),
-          _TwoValuesTableRow.builder(
+          _ValuesTableRow.builder(
             parameterName: context.l10n.motorsTemperatureTileTitle,
             builder: () {
               final state = context.select(
                 (MotorDataCubit cubit) => cubit.state.motorTemperature,
               );
               return (
-                ['${state.first}', '${state.second}'],
-                context.colorFromStatus(state.status),
+                state
+                    .map(
+                      (element) => _Value(
+                        '${element.value}',
+                        context.colorFromStatus(element.status),
+                      ),
+                    )
+                    .toList(),
               );
             },
             unitOfMeasurement: context.l10n.celsiusMeasurementUnit,
           ),
-          _TwoValuesTableRow.builder(
+          _ValuesTableRow.builder(
             parameterName: context.l10n.controllersTemperatureTileTitle,
             builder: () {
               final state = context.select(
                 (MotorDataCubit cubit) => cubit.state.controllerTemperature,
               );
               return (
-                ['${state.first}', '${state.second}'],
-                context.colorFromStatus(state.status),
+                state
+                    .map(
+                      (element) => _Value(
+                        '${element.value}',
+                        context.colorFromStatus(element.status),
+                      ),
+                    )
+                    .toList(),
               );
             },
             unitOfMeasurement: context.l10n.celsiusMeasurementUnit,
           ),
-          _TwoValuesTableRow.builder(
+          _ValuesTableRow.builder(
             parameterName: context.l10n.motorGearTileTitle,
             builder: () {
-              final state = context.select(
-                (MotorDataCubit cubit) {
-                  final gr = cubit.state.gearAndRoll;
-                  return (
-                    gr.firstMotorGear,
-                    gr.secondMotorGear,
-                    gr.status,
-                  );
-                },
-              );
+              final state = context
+                  .select((MotorDataCubit cubit) => cubit.state.gearAndRoll);
               return (
-                [
-                  state.$1.toLocalizedString(context),
-                  state.$2.toLocalizedString(context),
-                ],
-                context.colorFromStatus(state.$3),
+                state
+                    .map(
+                      (element) => _Value(
+                        element.motorGear.toLocalizedString(context),
+                        context.colorFromStatus(element.status),
+                      ),
+                    )
+                    .toList(),
               );
             },
             unitOfMeasurement: '',
           ),
-          _TwoValuesTableRow.builder(
+          _ValuesTableRow.builder(
             parameterName: context.l10n.motorRollDirectionTileTitle,
             isLast: true,
             builder: () {
-              final state = context.select(
-                (MotorDataCubit cubit) {
-                  final gr = cubit.state.gearAndRoll;
-                  return (
-                    gr.firstMotorRollDirection,
-                    gr.secondMotorRollDirection,
-                    gr.status,
-                  );
-                },
-              );
+              final state = context
+                  .select((MotorDataCubit cubit) => cubit.state.gearAndRoll);
               return (
-                [
-                  state.$1.toLocalizedString(context),
-                  state.$2.toLocalizedString(context),
-                ],
-                context.colorFromStatus(state.$3),
+                state
+                    .map(
+                      (element) => _Value(
+                        element.motorRollDirection.toLocalizedString(context),
+                        context.colorFromStatus(element.status),
+                      ),
+                    )
+                    .toList(),
               );
             },
             unitOfMeasurement: '',
@@ -210,36 +236,40 @@ class _ItemHorizontal extends Expanded {
         );
 }
 
-class _TwoValuesTableRow extends StatelessWidget {
-  const _TwoValuesTableRow({
+class _Value {
+  _Value(this.message, this.color);
+
+  String message;
+  Color? color;
+}
+
+class _ValuesTableRow extends StatelessWidget {
+  const _ValuesTableRow({
     required this.parameterName,
     required this.values,
     required this.unitOfMeasurement,
-    this.color,
     this.isLast,
   });
 
-  factory _TwoValuesTableRow.builder({
+  factory _ValuesTableRow.builder({
     required String parameterName,
     required String unitOfMeasurement,
     bool? isLast,
-    required (List<String>, Color?) Function() builder,
+    required (List<_Value>,) Function() builder,
   }) {
     final state = builder();
 
-    return _TwoValuesTableRow(
+    return _ValuesTableRow(
       parameterName: parameterName,
       values: state.$1,
-      color: state.$2,
       unitOfMeasurement: unitOfMeasurement,
       isLast: isLast,
     );
   }
 
   final String parameterName;
-  final List<String> values;
+  final List<_Value> values;
   final String unitOfMeasurement;
-  final Color? color;
   final bool? isLast;
 
   @override
@@ -268,7 +298,10 @@ class _TwoValuesTableRow extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             for (int i = 0; i < motorsCount; ++i)
-              _ItemHorizontal(value: getValue(i), color: color),
+              _ItemHorizontal(
+                value: getValue(i)?.message ?? '',
+                color: getValue(i)?.color,
+              ),
           ],
         ),
         if (!(isLast ?? false))
@@ -279,8 +312,8 @@ class _TwoValuesTableRow extends StatelessWidget {
     );
   }
 
-  String getValue(int i) {
-    if (values.isEmpty || i > values.length - 1) return '';
+  _Value? getValue(int i) {
+    if (values.isEmpty || i > values.length - 1) return null;
     return values[i];
   }
 }

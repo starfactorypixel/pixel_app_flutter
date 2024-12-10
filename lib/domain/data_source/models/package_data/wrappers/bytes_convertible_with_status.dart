@@ -84,6 +84,27 @@ class Int16WithStatusBytesConverter<T extends IntBytesConvertibleWithStatus>
   }
 }
 
+class UInt16WithStatusBytesConverter<T extends IntBytesConvertibleWithStatus>
+    extends BytesConverter<T> {
+  const UInt16WithStatusBytesConverter(this.builder);
+
+  @protected
+  final T Function(int functionId, int value) builder;
+
+  @override
+  T fromBytes(List<int> bytes) {
+    return builder(bytes[0], bytes.sublist(1).toIntFromUint16);
+  }
+
+  @override
+  List<int> toBytes(T model) {
+    return [
+      ...model.status.toBytes,
+      ...model.value.toBytesUint16,
+    ];
+  }
+}
+
 class Uint32WithStatusBytesConverter<T extends IntBytesConvertibleWithStatus>
     extends BytesConverter<T> {
   const Uint32WithStatusBytesConverter(this.builder);

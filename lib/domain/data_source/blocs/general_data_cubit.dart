@@ -6,6 +6,7 @@ import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/battery_percent.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/battery_percent.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/uint16_with_status_body.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/wrappers/bytes_convertible_with_status.dart';
 import 'package:re_seedwork/re_seedwork.dart';
@@ -68,7 +69,9 @@ final class GeneralDataState with EquatableMixin {
     required this.batteriesCount,
   })  : power = const IntWithStatus.initial(),
         batteryLevel = Sequence<IntWithStatus>.fill(
-            batteriesCount, const IntWithStatus.initial(),),
+          batteriesCount,
+          const IntWithStatus.initial(),
+        ),
         odometer = const IntWithStatus.initial(),
         speed = const IntWithStatus.initial(),
         gear = MotorGear.unknown;
@@ -158,13 +161,21 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
         })
         ..voidOnModel<MotorGearAndRoll,
             MotorGearAndRollIncomingDataSourcePackage>((model) {
-          emit(state.copyWith(gear: model.gear));
+          emit(
+            state.copyWith(
+              gear: MotorGear.unknown,
+            ),
+          ); // TODO(alexandr): show something from 4 motors.
         })
-        ..voidOnModel<TwoUint16WithStatusBody,
-            MotorSpeedIncomingDataSourcePackage>((model) {
-          final avgHundredMetersPerHour = (model.first + model.second) / 2;
-          final avgKmPerHour = avgHundredMetersPerHour ~/ 10;
-          emit(state.copyWith(speed: model.toIntWithStatus(avgKmPerHour)));
+        ..voidOnModel<UInt16WithStatusBody,
+            MotorSpeedIncomingDataSourcePackage>((package) {
+          emit(
+            state.copyWith(
+              speed: package.toIntWithStatus(
+                0,
+              ),
+            ),
+          ); // TODO(alexandr): show something from 4 motors.
         })
         ..voidOnModel<Uint32WithStatusBody, OdometerIncomingDataSourcePackage>(
             (model) {
@@ -175,9 +186,15 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
   }
 
   static Set<DataSourceParameterId> kDefaultSubscribeParameters = {
-    const DataSourceParameterId.motorSpeed(),
+    const DataSourceParameterId.motorSpeed1(),
+    const DataSourceParameterId.motorSpeed2(),
+    const DataSourceParameterId.motorSpeed3(),
+    const DataSourceParameterId.motorSpeed4(),
     const DataSourceParameterId.odometer(),
-    const DataSourceParameterId.gearAndRoll(),
+    const DataSourceParameterId.gearAndRoll1(),
+    const DataSourceParameterId.gearAndRoll2(),
+    const DataSourceParameterId.gearAndRoll3(),
+    const DataSourceParameterId.gearAndRoll4(),
     const DataSourceParameterId.batteryPercent1(),
     const DataSourceParameterId.batteryPercent2(),
     const DataSourceParameterId.batteryPower(),
