@@ -10,6 +10,7 @@ import 'package:pixel_app_flutter/data/services/data_source/mixins/send_packages
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/authorizartion.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/outgoing_data_source_packages.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/battery_percent.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:re_seedwork/re_seedwork.dart';
 
@@ -256,14 +257,29 @@ class DemoDataSource extends DataSource
             ..voidOn<GearAndRollParameterId>(
               () => subscriptionCallbacks.remove(_sendNewGearAndRollCallback),
             )
-            ..voidOn<HighVoltageParameterId>(
-              () => subscriptionCallbacks.remove(_sendHighVoltageCallback),
+            ..voidOn<HighVoltage1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendHighVoltage1Callback),
             )
-            ..voidOn<HighCurrentParameterId>(
-              () => subscriptionCallbacks.remove(_sendHighCurrentCallback),
+            ..voidOn<HighVoltage2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendHighVoltage2Callback),
             )
-            ..voidOn<MaxTemperatureParameterId>(
-              () => subscriptionCallbacks.remove(_sendMaxTemperatureCallback),
+            ..voidOn<HighCurrent1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendHighCurrent1Callback),
+            )
+            ..voidOn<HighCurrent2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendHighCurrent2Callback),
+            )
+            ..voidOn<MaxTemperature1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendMaxTemperature1Callback),
+            )
+            ..voidOn<MaxTemperature2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendMaxTemperature2Callback),
+            )
+            ..voidOn<BatteryPercent1ParameterId>(
+              () => subscriptionCallbacks.remove(_sendBatteryPercent1Callback),
+            )
+            ..voidOn<BatteryPercent2ParameterId>(
+              () => subscriptionCallbacks.remove(_sendBatteryPercent2Callback),
             )
             ..voidOn<BatteryLevelParameterId>(
               () => subscriptionCallbacks.remove(_sendNewBatteryLevelCallback),
@@ -309,14 +325,29 @@ class DemoDataSource extends DataSource
           ..voidOn<GearAndRollParameterId>(
             () => subscriptionCallbacks.add(_sendNewGearAndRollCallback),
           )
-          ..voidOn<HighVoltageParameterId>(
-            () => subscriptionCallbacks.add(_sendHighVoltageCallback),
+          ..voidOn<HighVoltage1ParameterId>(
+            () => subscriptionCallbacks.add(_sendHighVoltage1Callback),
           )
-          ..voidOn<HighCurrentParameterId>(
-            () => subscriptionCallbacks.add(_sendHighCurrentCallback),
+          ..voidOn<HighVoltage2ParameterId>(
+            () => subscriptionCallbacks.add(_sendHighVoltage2Callback),
           )
-          ..voidOn<MaxTemperatureParameterId>(
-            () => subscriptionCallbacks.add(_sendMaxTemperatureCallback),
+          ..voidOn<HighCurrent1ParameterId>(
+            () => subscriptionCallbacks.add(_sendHighCurrent1Callback),
+          )
+          ..voidOn<HighCurrent2ParameterId>(
+            () => subscriptionCallbacks.add(_sendHighCurrent2Callback),
+          )
+          ..voidOn<MaxTemperature1ParameterId>(
+            () => subscriptionCallbacks.add(_sendMaxTemperature1Callback),
+          )
+          ..voidOn<MaxTemperature2ParameterId>(
+            () => subscriptionCallbacks.add(_sendMaxTemperature2Callback),
+          )
+          ..voidOn<BatteryPercent1ParameterId>(
+            () => subscriptionCallbacks.add(_sendBatteryPercent1Callback),
+          )
+          ..voidOn<BatteryPercent2ParameterId>(
+            () => subscriptionCallbacks.add(_sendBatteryPercent2Callback),
           )
           ..voidOn<BatteryLevelParameterId>(
             () => subscriptionCallbacks.add(_sendNewBatteryLevelCallback),
@@ -444,10 +475,20 @@ class DemoDataSource extends DataSource
         () => _sendNewControllerTemperatureCallback(version: v),
       )
       ..voidOn<RPMParameterId>(() => _sendNewRPMCallback(version: v))
-      ..voidOn<LowVoltageMinMaxDeltaParameterId>(_sendNewLowVoltageCallback)
-      ..voidOn<HighVoltageParameterId>(_sendHighVoltageCallback)
-      ..voidOn<HighCurrentParameterId>(_sendHighCurrentCallback)
-      ..voidOn<MaxTemperatureParameterId>(_sendMaxTemperatureCallback)
+      ..voidOn<LowVoltageMinMaxDelta1ParameterId>(
+        _sendLowVoltageMinMaxDelta1Callback,
+      )
+      ..voidOn<LowVoltageMinMaxDelta2ParameterId>(
+        _sendLowVoltageMinMaxDelta2Callback,
+      )
+      ..voidOn<HighVoltage1ParameterId>(_sendHighVoltage1Callback)
+      ..voidOn<HighVoltage2ParameterId>(_sendHighVoltage2Callback)
+      ..voidOn<HighCurrent1ParameterId>(_sendHighCurrent1Callback)
+      ..voidOn<HighCurrent2ParameterId>(_sendHighCurrent2Callback)
+      ..voidOn<MaxTemperature1ParameterId>(_sendMaxTemperature1Callback)
+      ..voidOn<MaxTemperature2ParameterId>(_sendMaxTemperature2Callback)
+      ..voidOn<BatteryPercent1ParameterId>(_sendBatteryPercent1Callback)
+      ..voidOn<BatteryPercent2ParameterId>(_sendBatteryPercent2Callback)
       ..voidOn<BatteryLevelParameterId>(
         () => _sendNewBatteryLevelCallback(version: v),
       )
@@ -455,47 +496,15 @@ class DemoDataSource extends DataSource
         () => _sendNewBatteryPowerCallback(version: v),
       )
       //
-      ..voidOn<TemperatureFirstBatchParameterId>(
-        _sendTemperatureFirstBatchCallback,
+      ..voidOn<Temperature1ParameterId>(
+        _sendTemperature1Callback,
       )
-      ..voidOn<TemperatureSecondBatchParameterId>(
-        _sendTemperatureSecondBatchCallback,
-      )
-      ..voidOn<TemperatureThirdBatchParameterId>(
-        _sendTemperatureThirdBatchCallback,
+      ..voidOn<Temperature2ParameterId>(
+        _sendTemperature2Callback,
       )
       //
-      ..voidOn<LowVoltageOneToThreeParameterId>(
-        _sendLowVoltageOneToThreeCallback,
-      )
-      ..voidOn<LowVoltageFourToSixParameterId>(_sendLowVoltageFourToSixCallback)
-      ..voidOn<LowVoltageSevenToNineParameterId>(
-        _sendLowVoltageSevenToNineCallback,
-      )
-      ..voidOn<LowVoltageTenToTwelveParameterId>(
-        _sendLowVoltageTenToTwelveCallback,
-      )
-      ..voidOn<LowVoltageThirteenToFifteenParameterId>(
-        _sendLowVoltageThirteenToFifteenCallback,
-      )
-      ..voidOn<LowVoltageSixteenToEighteenParameterId>(
-        _sendLowVoltageSixteenToEighteenCallback,
-      )
-      ..voidOn<LowVoltageNineteenToTwentyOneParameterId>(
-        _sendLowVoltageNineteenToTwentyOneCallback,
-      )
-      ..voidOn<LowVoltageTwentyTwoToTwentyFourParameterId>(
-        _sendLowVoltageTwentyTwoToTwentyFourCallback,
-      )
-      ..voidOn<LowVoltageTwentyFiveToTwentySevenParameterId>(
-        _sendLowVoltageTwentyFiveToTwentySevenCallback,
-      )
-      ..voidOn<LowVoltageTwentyEightToThirtyParameterId>(
-        _sendLowVoltageTwentyEightToThirtyCallback,
-      )
-      ..voidOn<LowVoltageThirtyOneToThirtyThreeParameterId>(
-        _sendLowVoltageThirtyOneToThirtyThreeCallback,
-      )
+      ..voidOn<LowVoltage1ParameterId>(_sendLowVoltage1Callback)
+      ..voidOn<LowVoltage2ParameterId>(_sendLowVoltage2Callback)
       // Lights
       ..voidOn<FrontSideBeamParameterId>(() {
         _sendSetBoolUint8ResultCallback(
@@ -786,11 +795,11 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendNewLowVoltageCallback() {
+  void _sendLowVoltageMinMaxDeltaCallback(DataSourceParameterId parameterId) {
     _sendPackage(
       DataSourceIncomingPackage.fromConvertible(
         secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.lowVoltageMinMaxDelta().value,
+        parameterId: parameterId.value,
         convertible: LowVoltageMinMaxDelta(
           min: Random().nextDouble() * 65535,
           max: Random().nextDouble() * 65535,
@@ -801,11 +810,21 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendHighVoltageCallback() {
+  void _sendLowVoltageMinMaxDelta1Callback() =>
+      _sendLowVoltageMinMaxDeltaCallback(
+        const DataSourceParameterId.lowVoltageMinMaxDelta1(),
+      );
+
+  void _sendLowVoltageMinMaxDelta2Callback() =>
+      _sendLowVoltageMinMaxDeltaCallback(
+        const DataSourceParameterId.lowVoltageMinMaxDelta2(),
+      );
+
+  void _sendHighVoltageCallback(DataSourceParameterId parameterId) {
     _sendPackage(
       DataSourceIncomingPackage.fromConvertible(
         secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.highVoltage().value,
+        parameterId: parameterId.value,
         convertible: HighVoltage(
           value: randomUint16,
           status: _getRandomStatus,
@@ -814,11 +833,17 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendHighCurrentCallback() {
+  void _sendHighVoltage1Callback() =>
+      _sendHighVoltageCallback(const DataSourceParameterId.highVoltage1());
+
+  void _sendHighVoltage2Callback() =>
+      _sendHighVoltageCallback(const DataSourceParameterId.highVoltage2());
+
+  void _sendHighCurrentCallback(DataSourceParameterId parameterId) {
     _sendPackage(
       DataSourceIncomingPackage.fromConvertible(
         secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.highCurrent().value,
+        parameterId: parameterId.value,
         convertible: HighCurrent(
           value: randomInt16,
           status: _getRandomStatus,
@@ -827,11 +852,38 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendMaxTemperatureCallback() {
+  void _sendHighCurrent1Callback() =>
+      _sendHighCurrentCallback(const DataSourceParameterId.highCurrent1());
+
+  void _sendHighCurrent2Callback() =>
+      _sendHighCurrentCallback(const DataSourceParameterId.highCurrent2());
+
+  void _sendBatteryPercentCallback(DataSourceParameterId parameterId) {
     _sendPackage(
       DataSourceIncomingPackage.fromConvertible(
         secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.maxTemperature().value,
+        parameterId: parameterId.value,
+        convertible: BatteryPercent(
+          value: randomUint8,
+          status: _getRandomStatus,
+        ),
+      ),
+    );
+  }
+
+  void _sendBatteryPercent1Callback() => _sendBatteryPercentCallback(
+    const DataSourceParameterId.batteryPercent1(),
+  );
+
+  void _sendBatteryPercent2Callback() => _sendBatteryPercentCallback(
+    const DataSourceParameterId.batteryPercent2(),
+  );
+
+  void _sendMaxTemperatureCallback(DataSourceParameterId parameterId) {
+    _sendPackage(
+      DataSourceIncomingPackage.fromConvertible(
+        secondConfigByte: 0x95, // 10010101(incoming 0x15)
+        parameterId: parameterId.value,
         convertible: MaxTemperature(
           value: randomInt8,
           status: _getRandomStatus,
@@ -840,222 +892,57 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendTemperatureFirstBatchCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.temperatureFirstBatch().value,
-        convertible: BatteryTemperatureFirstBatch(
-          balancer: randomInt8,
-          mos: randomInt8,
-          first: randomInt8,
-          second: randomInt8,
-          third: randomInt8,
-          fourth: randomInt8,
-          fifth: randomInt8,
+  void _sendMaxTemperature1Callback() => _sendMaxTemperatureCallback(
+        const DataSourceParameterId.maxTemperature1(),
+      );
+
+  void _sendMaxTemperature2Callback() => _sendMaxTemperatureCallback(
+        const DataSourceParameterId.maxTemperature2(),
+      );
+
+  void _sendTemperatureCallback(DataSourceParameterId parameterId) {
+    for (var i = 1; i <= 10; i++) {
+      _sendPackage(
+        DataSourceIncomingPackage.fromConvertible(
+          secondConfigByte: 0x95, // 10010101(incoming 0x15)
+          parameterId: parameterId.value,
+          convertible: BatteryTemperature(
+            no: i,
+            value: randomInt8,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
-  void _sendTemperatureSecondBatchCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.temperatureSecondBatch().value,
-        convertible: BatteryTemperatureSecondBatch(
-          sixth: randomInt8,
-          seventh: randomInt8,
-          eighth: randomInt8,
-          ninth: randomInt8,
-          tenth: randomInt8,
-          eleventh: randomInt8,
-          twelfth: randomInt8,
+  void _sendTemperature1Callback() => _sendTemperatureCallback(
+        const DataSourceParameterId.temperature1(),
+      );
+
+  void _sendTemperature2Callback() => _sendTemperatureCallback(
+        const DataSourceParameterId.temperature2(),
+      );
+
+  void _sendLowVoltageCallback(DataSourceParameterId parameterId) {
+    for (var i = 1; i <= 20; i++) {
+      _sendPackage(
+        DataSourceIncomingPackage.fromConvertible(
+          secondConfigByte: 0x95, // 10010101(incoming 0x15)
+          parameterId: parameterId.value,
+          convertible: BatteryLowVoltage(
+            no: i,
+            value: randomDoubleUint16,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
-  void _sendTemperatureThirdBatchCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.temperatureThirdBatch().value,
-        convertible: BatteryTemperatureThirdBatch(
-          thirteenth: randomInt8,
-          fourteenth: randomInt8,
-          fifteenth: randomInt8,
-          sixteenth: randomInt8,
-          seventeenth: randomInt8,
-          eighteenth: randomInt8,
-          nineteenth: randomInt8,
-        ),
-      ),
-    );
-  }
+  void _sendLowVoltage1Callback() =>
+      _sendLowVoltageCallback(const DataSourceParameterId.lowVoltage1());
 
-  void _sendLowVoltageOneToThreeCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.lowVoltageOneToThree().value,
-        convertible: BatteryLowVoltageOneToThree(
-          first: randomDoubleUint16,
-          second: randomDoubleUint16,
-          third: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageFourToSixCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.lowVoltageFourToSix().value,
-        convertible: BatteryLowVoltageFourToSix(
-          fourth: randomDoubleUint16,
-          fifth: randomDoubleUint16,
-          sixth: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageSevenToNineCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.lowVoltageSevenToNine().value,
-        convertible: BatteryLowVoltageSevenToNine(
-          seventh: randomDoubleUint16,
-          eighth: randomDoubleUint16,
-          ninth: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageTenToTwelveCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: const DataSourceParameterId.lowVoltageTenToTwelve().value,
-        convertible: BatteryLowVoltageTenToTwelve(
-          tenth: randomDoubleUint16,
-          eleventh: randomDoubleUint16,
-          twelfth: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageThirteenToFifteenCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId:
-            const DataSourceParameterId.lowVoltageThirteenToFifteen().value,
-        convertible: BatteryLowVoltageThirteenToFifteen(
-          thirteenth: randomDoubleUint16,
-          fourteenth: randomDoubleUint16,
-          fifteenth: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageSixteenToEighteenCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId:
-            const DataSourceParameterId.lowVoltageSixteenToEighteen().value,
-        convertible: BatteryLowVoltageSixteenToEighteen(
-          sixteenth: randomDoubleUint16,
-          seventeenth: randomDoubleUint16,
-          eighteenth: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageNineteenToTwentyOneCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId:
-            const DataSourceParameterId.lowVoltageNineteenToTwentyOne().value,
-        convertible: BatteryLowVoltageNineteenToTwentyOne(
-          nineteenth: randomDoubleUint16,
-          twentieth: randomDoubleUint16,
-          twentyFirst: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageTwentyTwoToTwentyFourCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId:
-            const DataSourceParameterId.lowVoltageTwentyTwoToTwentyFour().value,
-        convertible: BatteryLowVoltageTwentyTwoToTwentyFour(
-          twentySecond: randomDoubleUint16,
-          twentyThird: randomDoubleUint16,
-          twentyFourth: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageTwentyFiveToTwentySevenCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId:
-            const DataSourceParameterId.lowVoltageTwentyFiveToTwentySeven()
-                .value,
-        convertible: BatteryLowVoltageTwentyFiveToTwentySeven(
-          twentyFifth: randomDoubleUint16,
-          twentySixth: randomDoubleUint16,
-          twentySeventh: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageTwentyEightToThirtyCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId:
-            const DataSourceParameterId.lowVoltageTwentyEightToThirty().value,
-        convertible: BatteryLowVoltageTwentyEightToThirty(
-          twentyEighth: randomDoubleUint16,
-          twentyNinth: randomDoubleUint16,
-          thirtieth: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageThirtyOneToThirtyThreeCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId:
-            const DataSourceParameterId.lowVoltageThirtyOneToThirtyThree()
-                .value,
-        convertible: BatteryLowVoltageThirtyOneToThirtyThree(
-          thirtyFirst: randomDoubleUint16,
-          thirtySecond: randomDoubleUint16,
-          thirtyThird: randomDoubleUint16,
-        ),
-      ),
-    );
-  }
+  void _sendLowVoltage2Callback() =>
+      _sendLowVoltageCallback(const DataSourceParameterId.lowVoltage2());
 
   void _sendBackLightsBlocInfoCallback() {
     _sendPackage(

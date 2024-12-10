@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:auto_route/annotations.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
+import 'package:pixel_app_flutter/app/helpers/platform.dart';
 import 'package:pixel_app_flutter/l10n/l10n.dart';
 import 'package:pixel_app_flutter/presentation/app/assets.dart';
 import 'package:pixel_app_flutter/presentation/app/colors.dart';

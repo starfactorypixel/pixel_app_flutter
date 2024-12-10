@@ -6,14 +6,17 @@ import 'package:pixel_app_flutter/l10n/l10n.dart';
 import 'package:pixel_app_flutter/presentation/screens/charging/widgets/atoms/charging_screen_list_tile.dart';
 
 class GeneralCellsVoltage extends StatelessWidget {
-  const GeneralCellsVoltage({super.key});
+  const GeneralCellsVoltage({super.key, required this.batteryIndex});
+
+  final int batteryIndex;
 
   @override
   Widget build(BuildContext context) {
     return BlocSelector<BatteryDataCubit, BatteryDataState,
-        LowVoltageMinMaxDelta>(
-      selector: (state) => state.lowVoltageMinMaxDelta,
+        LowVoltageMinMaxDelta?>(
+      selector: (state) => state.lowVoltageMinMaxDelta.getAt(batteryIndex),
       builder: (context, state) {
+        if (state == null) return SliverList.list(children: const []);
         return SliverList(
           delegate: SliverChildListDelegate(
             [

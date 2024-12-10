@@ -6,7 +6,6 @@
 // https://opensource.org/licenses/MIT.
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -14,7 +13,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:flutter_libserialport/flutter_libserialport.dart';
+import 'package:flutter_libserialport/flutter_libserialport.dart'
+    if (dart.library.js) 'package:pixel_app_flutter/data/services/data_source/stubs/usb_data_source.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -24,12 +24,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pixel_app_flutter/app/helpers/app_bloc_observer.dart';
 import 'package:pixel_app_flutter/app/helpers/crashlytics_helper.dart';
 import 'package:pixel_app_flutter/app/helpers/logger_route_observer.dart';
+import 'package:pixel_app_flutter/app/helpers/platform.dart';
 import 'package:pixel_app_flutter/app/overlay.dart';
 import 'package:pixel_app_flutter/app/scopes/flows/main_scope.dart';
 import 'package:pixel_app_flutter/bootstrap.config.dart';
 import 'package:pixel_app_flutter/data/services/apps_service.dart';
 import 'package:pixel_app_flutter/data/services/data_source/bluetooth_data_source.dart';
-import 'package:pixel_app_flutter/data/services/data_source/usb_data_source.dart';
+import 'package:pixel_app_flutter/data/services/data_source/stubs/usb_data_source.dart'
+    show ListUsbPortsCallback;
 import 'package:pixel_app_flutter/data/services/data_source/usb_data_source_android.dart';
 import 'package:pixel_app_flutter/data/services/installed_apps_mock.dart';
 import 'package:pixel_app_flutter/data/storages/logger_storage.dart';

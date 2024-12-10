@@ -24,7 +24,7 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
   late final StreamSubscription<void> sub;
 
   final notifier = ValueNotifier<GeneralDataState>(
-    const GeneralDataState.initial(),
+    GeneralDataState.initial(batteriesCount: 2), //TODO replace with variable
   );
 
   @override
@@ -171,7 +171,10 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  BatteryLevelStatisticItem(item: batteryLevel),
+                                  for (int i = 0; i < batteryLevel.length; ++i)
+                                    BatteryLevelStatisticItem(
+                                      item: batteryLevel.getAt(i),
+                                    ),
                                   OdometerStatisticItem(item: odometer),
                                   PowerStatisticItem(item: power),
                                 ],
@@ -197,6 +200,7 @@ class OverlayManager extends StatefulWidget {
 
   @protected
   final Widget child;
+
   @override
   State<OverlayManager> createState() => _OverlayManagerState();
 }

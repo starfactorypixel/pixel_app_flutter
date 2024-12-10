@@ -6,29 +6,35 @@ import 'package:pixel_app_flutter/l10n/l10n.dart';
 import 'package:pixel_app_flutter/presentation/screens/charging/widgets/atoms/charging_screen_list_tile.dart';
 
 class MOSAndBalancerTemperature extends StatelessWidget {
-  const MOSAndBalancerTemperature({super.key});
+  const MOSAndBalancerTemperature({super.key, required this.batteryIndex});
+
+  final int batteryIndex;
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<BatteryDataCubit, BatteryDataState,
-        BatteryTemperatureFirstBatch>(
-      selector: (state) => state.temperatureFirstBatch,
-      builder: (context, state) {
-        return SliverList.list(
-          children: [
-            ChargingScreenListTile(
+    return SliverList.list(
+      children: [
+        BlocSelector<BatteryDataCubit, BatteryDataState, BatteryTemperature?>(
+          selector: (state) => state.temperature.getAt(batteryIndex)?.getAt(0),
+          builder: (context, state) {
+            return ChargingScreenListTile(
               title: context.l10n.mosTileTitle,
-              trailing: context.l10n.celsiusValue(state.mos),
+              trailing: context.l10n.celsiusValue(state?.value ?? 0),
               status: PeriodicValueStatus.normal,
-            ),
-            ChargingScreenListTile(
+            );
+          },
+        ),
+        BlocSelector<BatteryDataCubit, BatteryDataState, BatteryTemperature?>(
+          selector: (state) => state.temperature.getAt(batteryIndex)?.getAt(1),
+          builder: (context, state) {
+            return ChargingScreenListTile(
               title: context.l10n.balancerTileTitle,
-              trailing: context.l10n.celsiusValue(state.balancer),
+              trailing: context.l10n.celsiusValue(state?.value ?? 0),
               status: PeriodicValueStatus.normal,
-            ),
-          ],
-        );
-      },
+            );
+          },
+        ),
+      ],
     );
   }
 }
