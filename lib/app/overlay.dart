@@ -173,7 +173,8 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   BatteryPercentStatisticItem(
-                                      item: batteryPercent),
+                                    item: batteryPercent,
+                                  ),
                                   OdometerStatisticItem(item: odometer),
                                   PowerStatisticItem(item: power),
                                 ],
