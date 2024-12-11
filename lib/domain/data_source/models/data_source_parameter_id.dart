@@ -59,8 +59,6 @@ abstract class DataSourceParameterId {
 
   const factory DataSourceParameterId.lowVoltage2() = LowVoltage2ParameterId;
 
-  const factory DataSourceParameterId.batteryLevel() = BatteryLevelParameterId;
-
   const factory DataSourceParameterId.batteryPower() = BatteryPowerParameterId;
 
   //
@@ -176,8 +174,6 @@ abstract class DataSourceParameterId {
 
   bool get isLowVoltage2 => this is LowVoltage2ParameterId;
 
-  bool get isBatteryLevel => this is BatteryLevelParameterId;
-
   bool get isBatteryPower => this is BatteryPowerParameterId;
 
   bool get isFrontSideBeam => this is FrontSideBeamParameterId;
@@ -292,7 +288,6 @@ abstract class DataSourceParameterId {
       DataSourceParameterId.motorTemperature(),
       DataSourceParameterId.controllerTemperature(),
       DataSourceParameterId.odometer(),
-      DataSourceParameterId.batteryLevel(),
       DataSourceParameterId.batteryPower(),
       //
       DataSourceParameterId.trunk(),
@@ -396,10 +391,6 @@ class LowVoltage1ParameterId extends DataSourceParameterId {
 
 class LowVoltage2ParameterId extends DataSourceParameterId {
   const LowVoltage2ParameterId() : super(0x0191);
-}
-
-class BatteryLevelParameterId extends DataSourceParameterId {
-  const BatteryLevelParameterId() : super(0x0056);
 }
 
 class BatteryPowerParameterId extends DataSourceParameterId {

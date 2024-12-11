@@ -18,9 +18,9 @@ class StatisticWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = <Widget>[
       BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus>(
-        selector: (state) => state.mergedBatteryLevel,
+        selector: (state) => state.mergedBatteryPercent,
         builder: (context, state) {
-          return BatteryLevelStatisticItem(item: state);
+          return BatteryPercentStatisticItem(item: state);
         },
       ),
       BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus>(
@@ -79,8 +79,8 @@ class StatisticWidget extends StatelessWidget {
   }
 }
 
-class BatteryLevelStatisticItem extends StatelessWidget {
-  const BatteryLevelStatisticItem({super.key, required this.item});
+class BatteryPercentStatisticItem extends StatelessWidget {
+  const BatteryPercentStatisticItem({super.key, required this.item});
 
   @protected
   final IntWithStatus item;

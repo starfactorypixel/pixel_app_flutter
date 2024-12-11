@@ -281,9 +281,6 @@ class DemoDataSource extends DataSource
             ..voidOn<BatteryPercent2ParameterId>(
               () => subscriptionCallbacks.remove(_sendBatteryPercent2Callback),
             )
-            ..voidOn<BatteryLevelParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewBatteryLevelCallback),
-            )
             ..voidOn<BatteryPowerParameterId>(
               () => subscriptionCallbacks.remove(_sendNewBatteryPowerCallback),
             )
@@ -348,9 +345,6 @@ class DemoDataSource extends DataSource
           )
           ..voidOn<BatteryPercent2ParameterId>(
             () => subscriptionCallbacks.add(_sendBatteryPercent2Callback),
-          )
-          ..voidOn<BatteryLevelParameterId>(
-            () => subscriptionCallbacks.add(_sendNewBatteryLevelCallback),
           )
           ..voidOn<BatteryPowerParameterId>(
             () => subscriptionCallbacks.add(_sendNewBatteryPowerCallback),
@@ -489,9 +483,6 @@ class DemoDataSource extends DataSource
       ..voidOn<MaxTemperature2ParameterId>(_sendMaxTemperature2Callback)
       ..voidOn<BatteryPercent1ParameterId>(_sendBatteryPercent1Callback)
       ..voidOn<BatteryPercent2ParameterId>(_sendBatteryPercent2Callback)
-      ..voidOn<BatteryLevelParameterId>(
-        () => _sendNewBatteryLevelCallback(version: v),
-      )
       ..voidOn<BatteryPowerParameterId>(
         () => _sendNewBatteryPowerCallback(version: v),
       )
@@ -717,16 +708,6 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendNewBatteryLevelCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _sendUint8Callback(
-      const DataSourceParameterId.batteryLevel(),
-      version: version,
-      customValueGenerator: () => Random().nextInt(101),
-    );
-  }
-
   void _sendNewBatteryPowerCallback({
     DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
   }) {
@@ -864,7 +845,7 @@ class DemoDataSource extends DataSource
         secondConfigByte: 0x95, // 10010101(incoming 0x15)
         parameterId: parameterId.value,
         convertible: BatteryPercent(
-          value: randomUint8,
+          value: Random().nextInt(101),
           status: _getRandomStatus,
         ),
       ),
@@ -872,12 +853,12 @@ class DemoDataSource extends DataSource
   }
 
   void _sendBatteryPercent1Callback() => _sendBatteryPercentCallback(
-    const DataSourceParameterId.batteryPercent1(),
-  );
+        const DataSourceParameterId.batteryPercent1(),
+      );
 
   void _sendBatteryPercent2Callback() => _sendBatteryPercentCallback(
-    const DataSourceParameterId.batteryPercent2(),
-  );
+        const DataSourceParameterId.batteryPercent2(),
+      );
 
   void _sendMaxTemperatureCallback(DataSourceParameterId parameterId) {
     _sendPackage(

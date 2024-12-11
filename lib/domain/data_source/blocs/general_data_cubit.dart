@@ -50,7 +50,7 @@ final class GeneralDataState with EquatableMixin {
   const GeneralDataState({
     required this.hardwareCount,
     required this.power,
-    required this.batteryLevel,
+    required this.batteryPercent,
     required this.odometer,
     required this.speed,
     required this.gear,
@@ -59,7 +59,7 @@ final class GeneralDataState with EquatableMixin {
   GeneralDataState.initial({
     required this.hardwareCount,
   })  : power = const IntWithStatus.initial(),
-        batteryLevel = Sequence.fill(
+        batteryPercent = Sequence.fill(
           hardwareCount.batteries,
           const IntWithStatus.initial(),
         ),
@@ -71,8 +71,8 @@ final class GeneralDataState with EquatableMixin {
     return GeneralDataState(
       hardwareCount: map.parseAndMap('hardwareCount', HardwareCount.fromMap),
       power: map.parseAndMap('power', IntWithStatus.fromMap),
-      batteryLevel: Sequence.fromIterable(
-        map.tryParseAndMapList('batteryLevel', IntWithStatus.fromMap),
+      batteryPercent: Sequence.fromIterable(
+        map.tryParseAndMapList('batteryPercent', IntWithStatus.fromMap),
       ),
       odometer: map.parseAndMap('odometer', IntWithStatus.fromMap),
       speed: map.parseAndMap('speed', IntWithStatus.fromMap),
@@ -85,18 +85,18 @@ final class GeneralDataState with EquatableMixin {
   final IntWithStatus odometer;
   final IntWithStatus speed;
   final MotorGear gear;
-  final Sequence<IntWithStatus> batteryLevel;
+  final Sequence<IntWithStatus> batteryPercent;
 
-  IntWithStatus get mergedBatteryLevel {
-    if (batteryLevel.length == 1) return batteryLevel.first;
+  IntWithStatus get mergedBatteryPercent {
+    if (batteryPercent.length == 1) return batteryPercent.first;
     //
     final (levelSum, status) =
-        batteryLevel.fold((0, PeriodicValueStatus.normal), (a, b) {
+        batteryPercent.fold((0, PeriodicValueStatus.normal), (a, b) {
       return (a.$1 + b.value, a.$2.id > b.status.id ? a.$2 : b.status);
     });
     //
     return IntWithStatus(
-      value: levelSum ~/ batteryLevel.length,
+      value: levelSum ~/ batteryPercent.length,
       status: status,
     );
   }
@@ -104,7 +104,7 @@ final class GeneralDataState with EquatableMixin {
   @override
   List<Object?> get props => [
         power,
-        batteryLevel,
+        batteryPercent,
         odometer,
         speed,
         gear,
@@ -112,7 +112,7 @@ final class GeneralDataState with EquatableMixin {
 
   GeneralDataState copyWith({
     IntWithStatus? power,
-    Sequence<IntWithStatus>? batteryLevel,
+    Sequence<IntWithStatus>? batteryPercent,
     IntWithStatus? odometer,
     IntWithStatus? speed,
     MotorGear? gear,
@@ -120,7 +120,7 @@ final class GeneralDataState with EquatableMixin {
     return GeneralDataState(
       hardwareCount: hardwareCount,
       power: power ?? this.power,
-      batteryLevel: batteryLevel ?? this.batteryLevel,
+      batteryPercent: batteryPercent ?? this.batteryPercent,
       odometer: odometer ?? this.odometer,
       speed: speed ?? this.speed,
       gear: gear ?? this.gear,
@@ -131,7 +131,7 @@ final class GeneralDataState with EquatableMixin {
     return {
       'hardwareCount': hardwareCount.toMap(),
       'power': power.toMap(),
-      'batteryLevel': batteryLevel.map((e) => e.toMap()).toList(),
+      'batteryPercent': batteryPercent.map((e) => e.toMap()).toList(),
       'odometer': odometer.toMap(),
       'speed': speed.toMap(),
       'gear': gear.id,
@@ -150,7 +150,7 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
             BatteryPercentIncomingDataSourcePackage>(
           (package) => emit(
             state.copyWith(
-              batteryLevel: state.batteryLevel.updateAt(
+              batteryPercent: state.batteryPercent.updateAt(
                 package.batteryIndex,
                 package.dataModel.toIntWithStatus(),
               ),

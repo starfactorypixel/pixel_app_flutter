@@ -103,7 +103,7 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
                       valueListenable: notifier,
                       builder: (context, value, child) {
                         final power = value.power;
-                        final batteryLevel = value.mergedBatteryLevel;
+                        final batteryPercent = value.mergedBatteryPercent;
                         final odometer = value.odometer;
 
                         return Column(
@@ -172,7 +172,8 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  BatteryLevelStatisticItem(item: batteryLevel),
+                                  BatteryPercentStatisticItem(
+                                      item: batteryPercent),
                                   OdometerStatisticItem(item: odometer),
                                   PowerStatisticItem(item: power),
                                 ],
