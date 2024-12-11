@@ -46,7 +46,10 @@ class MainScope extends SingleChildStatelessWidget {
         ),
 
         BlocProvider(
-          create: (context) => OverlayBloc(storage: GetIt.I()),
+          create: (context) {
+            return OverlayBloc(storage: GetIt.I())
+              ..add(const OverlayEvent.load());
+          },
           lazy: false,
         ),
 
