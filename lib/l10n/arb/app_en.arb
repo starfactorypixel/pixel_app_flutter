@@ -60,6 +60,7 @@
   "errorDiscoveringDevicesMessage": "Error while discovering devices",
   "errorConnectingToDataSourceMessage": "Error connecting to the data source",
   "successfullyConnectedToDataSourceMessage": "Successfully connected to the data source",
+  "errorGettingHardwareCountMessage": "Error getting hardware count",
   "cancelButtonCaption": "Cancel",
   "saveButtonCaption": "Save",
   "sendButtonCaption": "Send",

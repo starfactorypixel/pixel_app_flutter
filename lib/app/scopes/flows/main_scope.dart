@@ -57,6 +57,7 @@ class MainScope extends SingleChildStatelessWidget {
         BlocProvider(
           create: (context) => LEDConfigsCubit(storage: context.read()),
         ),
+        BlocProvider(create: (context) => GetHardwareCountBloc()),
 
         if (GetIt.I.get<Environment>().isDev) ...[
           BlocProvider(

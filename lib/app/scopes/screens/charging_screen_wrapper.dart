@@ -26,12 +26,7 @@ class ChargingScreenWrapper extends StatelessWidget
                 .subscribeTo(BatteryDataCubit.kDefaultSubscribeParameters);
             return BatteryDataCubit(
               dataSource: context.read(),
-              // TODO(Radomir): implement dynamic arguments passing
-              // when esp32 will be able to send battery,
-              // cells and temperature sensors count
-              batteriesCount: 2,
-              cellsCount: 20,
-              temperatureSensorsCount: 10,
+              hardwareCount: context.read<HardwareCount>(),
             );
           },
         ),

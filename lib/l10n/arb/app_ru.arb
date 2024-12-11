@@ -60,6 +60,7 @@
   "errorDiscoveringDevicesMessage": "Ошибка при обнаружении устройств",
   "errorConnectingToDataSourceMessage": "Ошибка при подключении к источнику данных",
   "successfullyConnectedToDataSourceMessage": "Успешное подключение к источнику данных",
+  "errorGettingHardwareCountMessage": "Ошибка при получении количества устройств",
   "cancelButtonCaption": "Отменить",
   "saveButtonCaption": "Сохранить",
   "sendButtonCaption": "Отправить",

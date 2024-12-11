@@ -15,6 +15,7 @@ import 'package:pixel_app_flutter/l10n/l10n.dart';
 import 'package:pixel_app_flutter/presentation/screens/common/loading_screen.dart';
 import 'package:pixel_app_flutter/presentation/widgets/app/atoms/gradient_scaffold.dart';
 import 'package:provider/provider.dart';
+import 'package:re_seedwork/re_seedwork.dart';
 import 'package:re_widgets/re_widgets.dart';
 
 @RoutePage(name: 'SelectedDataSourceFlow')
@@ -37,10 +38,7 @@ class SelectedDataSourceScope extends AutoRouter {
 
       return BlocBuilder<DataSourceCubit, DataSourceState>(
         builder: (context, state) {
-          final dswa = state.ds.when(
-            presented: (d) => d,
-            undefined: () => null,
-          );
+          final dswa = state.ds.toNullable;
 
           if (dswa == null) {
             return GradientScaffold(body: const SizedBox.shrink());
@@ -50,6 +48,16 @@ class SelectedDataSourceScope extends AutoRouter {
             key: ValueKey('${dswa.dataSource.key}_${dswa.address}'),
             providers: [
               Provider<DataSource>.value(value: dswa.dataSource),
+              Provider<HardwareCount>.value(
+                value: context
+                    .read<GetHardwareCountBloc>()
+                    .state
+                    .value
+                    .toNullable
+                    // should not be null at this point
+                    // higher level should handle this case
+                    .checkNotNull('Hardware count'),
+              ),
               Provider<AppsService>(create: (context) => GetIt.I()),
 
               // storages
@@ -167,7 +175,7 @@ class SelectedDataSourceScope extends AutoRouter {
                         GeneralDataCubit.kDefaultSubscribeParameters,
                       );
                   return GeneralDataCubit(
-                    batteriesCount: 2, //TODO replace with variable
+                    hardwareCount: context.read<HardwareCount>(),
                     dataSource: context.read(),
                   );
                 },
