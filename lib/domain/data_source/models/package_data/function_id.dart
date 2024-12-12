@@ -102,4 +102,9 @@ enum ButtonFunctionId {
 
   static const leftDoorId = 0x0130;
   static const rightDoorId = 0x0131;
+
+  static ButtonFunctionId fromValue(int value) {
+    return ButtonFunctionId.values
+        .firstWhere((element) => element.value == value);
+  }
 }

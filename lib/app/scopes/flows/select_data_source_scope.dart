@@ -14,6 +14,7 @@ import 'package:pixel_app_flutter/l10n/l10n.dart';
 import 'package:pixel_app_flutter/presentation/app/icons.dart';
 import 'package:pixel_app_flutter/presentation/routes/main_router.dart';
 import 'package:provider/provider.dart';
+import 'package:re_seedwork/re_seedwork.dart';
 import 'package:re_widgets/re_widgets.dart';
 
 @RoutePage(name: 'SelectDataSourceFlow')
@@ -71,6 +72,7 @@ class SelectDataSourceScope extends StatelessWidget
           create: (context) {
             final devToolsParamsStorage =
                 context.read<DeveloperToolsParametersStorage>();
+            final getHardwareCountBloc = context.read<GetHardwareCountBloc>();
             final env = context.read<Environment>();
 
             return [
@@ -119,6 +121,12 @@ class SelectDataSourceScope extends StatelessWidget
                     },
                     updatePeriodMillis: () {
                       return devToolsParamsStorage.data.requestsPeriodInMillis;
+                    },
+                    hardwareCount: () {
+                      return getHardwareCountBloc.state.value.toNullable
+                          // When this callback is called,
+                          // the hardware count should be already fetched
+                          .checkNotNull('hardwareCount');
                     },
                   );
                 },

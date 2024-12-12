@@ -23,7 +23,8 @@ class DemoDataSource extends DataSource
   DemoDataSource({
     required this.generateRandomErrors,
     required this.updatePeriodMillis,
-  })  : subscriptionCallbacks = {},
+    required this.hardwareCount,
+  })  : subscriptionParameters = {},
         isInitialHandshake = true,
         super(key: kKey);
 
@@ -32,6 +33,22 @@ class DemoDataSource extends DataSource
 
   @protected
   final bool Function() generateRandomErrors;
+
+  @protected
+  final HardwareCount Function() hardwareCount;
+
+  MainEcuMockManager? _mockManager;
+
+  @visibleForTesting
+  MainEcuMockManager get mockManager {
+    return _mockManager ??
+        MainEcuMockManager(
+          mockedResponses: mockedResponses,
+          hardwareCount: hardwareCount(),
+          sendPackage: _sendPackage,
+          updateCallback: _updateValueCallback,
+        );
+  }
 
   static const kKey = 'demo';
 
@@ -57,7 +74,7 @@ class DemoDataSource extends DataSource
   StreamController<List<DataSourceDevice>>? deviceStream;
 
   @visibleForTesting
-  final Set<void Function()> subscriptionCallbacks;
+  final Set<DataSourceParameterId> subscriptionParameters;
 
   @visibleForTesting
   Timer? timer;
@@ -158,11 +175,9 @@ class DemoDataSource extends DataSource
   ) async {
     observeOutgoing(package);
 
-    final parameterId = package.parameterId;
-
     return package.requestType.maybeWhen(
-      bufferRequest: () => _updateValue(package),
-      event: () => _updateValue(package),
+      bufferRequest: () => mockManager.handlePeriodicPackage(package),
+      event: () => mockManager.handlePeriodicPackage(package),
       handshake: () {
         const secondConfigByte = 0x90; // 10010000(incoming 0x10)
         Future<void>.delayed(const Duration(seconds: 1)).then(
@@ -202,7 +217,7 @@ class DemoDataSource extends DataSource
                   : ping;
 
               if (isInitialHandshake) {
-                Future<void>.delayed(const Duration(seconds: 1)).then(
+                Future<void>.delayed(const Duration(milliseconds: 300)).then(
                   (value) {
                     observeIncoming(ping);
 
@@ -223,210 +238,30 @@ class DemoDataSource extends DataSource
         return const Result.value(null);
       },
       subscription: () {
+        final parameterId = package.parameterId;
         if (parameterId.value > OutgoingUnsubscribePackage.kOperand) {
           // Unsubscribe package
-          DataSourceParameterId.fromInt(
-            parameterId.value - OutgoingUnsubscribePackage.kOperand,
-          )
-            ..voidOn<MotorSpeedParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewSpeedCallback),
-            )
-            ..voidOn<MotorVoltageParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewVoltageCallback),
-            )
-            ..voidOn<MotorCurrentParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewCurrentCallback),
-            )
-            ..voidOn<MotorPowerParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewPowerCallback),
-            )
-            ..voidOn<MotorTemperatureParameterId>(
-              () => subscriptionCallbacks
-                  .remove(_sendNewMotorTemperatureCallback),
-            )
-            ..voidOn<ControllerTemperatureParameterId>(
-              () => subscriptionCallbacks
-                  .remove(_sendNewControllerTemperatureCallback),
-            )
-            ..voidOn<OdometerParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewOdometerCallback),
-            )
-            ..voidOn<RPMParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewRPMCallback),
-            )
-            ..voidOn<GearAndRollParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewGearAndRollCallback),
-            )
-            ..voidOn<HighVoltage1ParameterId>(
-              () => subscriptionCallbacks.remove(_sendHighVoltage1Callback),
-            )
-            ..voidOn<HighVoltage2ParameterId>(
-              () => subscriptionCallbacks.remove(_sendHighVoltage2Callback),
-            )
-            ..voidOn<HighCurrent1ParameterId>(
-              () => subscriptionCallbacks.remove(_sendHighCurrent1Callback),
-            )
-            ..voidOn<HighCurrent2ParameterId>(
-              () => subscriptionCallbacks.remove(_sendHighCurrent2Callback),
-            )
-            ..voidOn<MaxTemperature1ParameterId>(
-              () => subscriptionCallbacks.remove(_sendMaxTemperature1Callback),
-            )
-            ..voidOn<MaxTemperature2ParameterId>(
-              () => subscriptionCallbacks.remove(_sendMaxTemperature2Callback),
-            )
-            ..voidOn<BatteryPercent1ParameterId>(
-              () => subscriptionCallbacks.remove(_sendBatteryPercent1Callback),
-            )
-            ..voidOn<BatteryPercent2ParameterId>(
-              () => subscriptionCallbacks.remove(_sendBatteryPercent2Callback),
-            )
-            ..voidOn<BatteryPowerParameterId>(
-              () => subscriptionCallbacks.remove(_sendNewBatteryPowerCallback),
-            )
-            ..voidOn<CustomParameterId>(() {
-              if (parameterId.value == 0x00E0) {
-                subscriptionCallbacks.remove(_sendBackLightsBlocInfoCallback);
-              }
-            });
+          subscriptionParameters.remove(
+            DataSourceParameterId.fromInt(
+              parameterId.value - OutgoingUnsubscribePackage.kOperand,
+            ),
+          );
 
           return const Result.value(null);
         }
 
-        parameterId
-          ..voidOn<MotorSpeedParameterId>(
-            () => subscriptionCallbacks.add(_sendNewSpeedCallback),
-          )
-          ..voidOn<MotorVoltageParameterId>(
-            () => subscriptionCallbacks.add(_sendNewVoltageCallback),
-          )
-          ..voidOn<MotorCurrentParameterId>(
-            () => subscriptionCallbacks.add(_sendNewCurrentCallback),
-          )
-          ..voidOn<MotorPowerParameterId>(
-            () => subscriptionCallbacks.add(_sendNewPowerCallback),
-          )
-          ..voidOn<MotorTemperatureParameterId>(
-            () => subscriptionCallbacks.add(_sendNewMotorTemperatureCallback),
-          )
-          ..voidOn<ControllerTemperatureParameterId>(
-            () => subscriptionCallbacks
-                .add(_sendNewControllerTemperatureCallback),
-          )
-          ..voidOn<OdometerParameterId>(
-            () => subscriptionCallbacks.add(_sendNewOdometerCallback),
-          )
-          ..voidOn<RPMParameterId>(
-            () => subscriptionCallbacks.add(_sendNewRPMCallback),
-          )
-          ..voidOn<GearAndRollParameterId>(
-            () => subscriptionCallbacks.add(_sendNewGearAndRollCallback),
-          )
-          ..voidOn<HighVoltage1ParameterId>(
-            () => subscriptionCallbacks.add(_sendHighVoltage1Callback),
-          )
-          ..voidOn<HighVoltage2ParameterId>(
-            () => subscriptionCallbacks.add(_sendHighVoltage2Callback),
-          )
-          ..voidOn<HighCurrent1ParameterId>(
-            () => subscriptionCallbacks.add(_sendHighCurrent1Callback),
-          )
-          ..voidOn<HighCurrent2ParameterId>(
-            () => subscriptionCallbacks.add(_sendHighCurrent2Callback),
-          )
-          ..voidOn<MaxTemperature1ParameterId>(
-            () => subscriptionCallbacks.add(_sendMaxTemperature1Callback),
-          )
-          ..voidOn<MaxTemperature2ParameterId>(
-            () => subscriptionCallbacks.add(_sendMaxTemperature2Callback),
-          )
-          ..voidOn<BatteryPercent1ParameterId>(
-            () => subscriptionCallbacks.add(_sendBatteryPercent1Callback),
-          )
-          ..voidOn<BatteryPercent2ParameterId>(
-            () => subscriptionCallbacks.add(_sendBatteryPercent2Callback),
-          )
-          ..voidOn<BatteryPowerParameterId>(
-            () => subscriptionCallbacks.add(_sendNewBatteryPowerCallback),
-          )
-          // Lights
-          ..voidOn<FrontSideBeamParameterId>(() {
-            _sendSetBoolUint8ResultCallback(const FrontSideBeamParameterId());
-          })
-          ..voidOn<TailSideBeamParameterId>(() {
-            _sendSetBoolUint8ResultCallback(const TailSideBeamParameterId());
-          })
-          ..voidOn<LowBeamParameterId>(() {
-            _sendSetBoolUint8ResultCallback(const LowBeamParameterId());
-          })
-          ..voidOn<ReverseLightParameterId>(() {
-            _sendSetBoolUint8ResultCallback(const ReverseLightParameterId());
-          })
-          ..voidOn<BrakeLightParameterId>(() {
-            _sendSetBoolUint8ResultCallback(const BrakeLightParameterId());
-          })
-          ..voidOn<CabinLightParameterId>(() {
-            _sendSetBoolUint8ResultCallback(const CabinLightParameterId());
-          })
-          ..voidOn<HighBeamParameterId>(() {
-            _sendSetBoolUint8ResultCallback(const HighBeamParameterId());
-          })
-          ..voidOn<FrontHazardBeamParameterId>(() {
-            _sendSetBoolUint8ResultCallback(const FrontHazardBeamParameterId());
-          })
-          ..voidOn<TailHazardBeamParameterId>(() {
-            _sendSetBoolUint8ResultCallback(const TailHazardBeamParameterId());
-          })
-          ..voidOn<FrontLeftTurnSignalParameterId>(() {
-            _sendSetBoolUint8ResultCallback(
-              const FrontLeftTurnSignalParameterId(),
-            );
-          })
-          ..voidOn<FrontRightTurnSignalParameterId>(() {
-            _sendSetBoolUint8ResultCallback(
-              const FrontRightTurnSignalParameterId(),
-            );
-          })
-          ..voidOn<TailLeftTurnSignalParameterId>(() {
-            _sendSetBoolUint8ResultCallback(
-              const TailLeftTurnSignalParameterId(),
-            );
-          })
-          ..voidOn<TailRightTurnSignalParameterId>(() {
-            _sendSetBoolUint8ResultCallback(
-              const TailRightTurnSignalParameterId(),
-            );
-          })
-          ..voidOn<CustomImageParameterId>(() {
-            _sendSetUint8ResultCallback(
-              const CustomImageParameterId(),
-            );
-          })
-          ..voidOn<WindscreenWipersParameterId>(() {
-            _sendSetBoolUint8ResultCallback(
-              const WindscreenWipersParameterId(),
-            );
-          })
-          ..voidOn<CustomParameterId>(() {
-            switch (parameterId.value) {
-              case 0x00E0:
-                subscriptionCallbacks.add(_sendBackLightsBlocInfoCallback);
-                break;
-              case ButtonFunctionId.leftDoorId:
-                _sendDoorToggleResultCallback(ButtonFunctionId.leftDoor);
-                break;
-              case ButtonFunctionId.rightDoorId:
-                _sendDoorToggleResultCallback(ButtonFunctionId.rightDoor);
-                break;
-            }
-          });
+        if (mockManager.checkAvailableForSubscription(parameterId)) {
+          subscriptionParameters.add(parameterId);
+        } else {
+          mockManager.handlePeriodicPackage(package);
+        }
 
         timer ??= Timer.periodic(
           Duration(milliseconds: updatePeriodMillis()),
           (timer) {
-            for (final element in subscriptionCallbacks) {
+            for (final element in subscriptionParameters) {
               try {
-                element();
+                mockManager.handleSubscriptionParameterId(element);
               } catch (e, s) {
                 Future<void>.error(
                   'Got error trying to send a package:\n$e',
@@ -443,300 +278,220 @@ class DemoDataSource extends DataSource
     );
   }
 
-  Result<SendPackageError, void> _updateValue(
-    DataSourceOutgoingPackage package,
-  ) {
-    final id = package.parameterId;
-    const v = DataSourceProtocolVersion.periodicRequests;
-
-    id
-      ..voidOn<MotorSpeedParameterId>(() => _sendNewSpeedCallback(version: v))
-      ..voidOn<MotorCurrentParameterId>(
-        () => _sendNewCurrentCallback(version: v),
-      )
-      ..voidOn<MotorVoltageParameterId>(
-        () => _sendNewVoltageCallback(version: v),
-      )
-      ..voidOn<MotorPowerParameterId>(() => _sendNewPowerCallback(version: v))
-      ..voidOn<OdometerParameterId>(() => _sendNewOdometerCallback(version: v))
-      ..voidOn<GearAndRollParameterId>(
-        () => _sendNewGearAndRollCallback(version: v),
-      )
-      ..voidOn<MotorTemperatureParameterId>(
-        () => _sendNewMotorTemperatureCallback(version: v),
-      )
-      ..voidOn<ControllerTemperatureParameterId>(
-        () => _sendNewControllerTemperatureCallback(version: v),
-      )
-      ..voidOn<RPMParameterId>(() => _sendNewRPMCallback(version: v))
-      ..voidOn<LowVoltageMinMaxDelta1ParameterId>(
-        _sendLowVoltageMinMaxDelta1Callback,
-      )
-      ..voidOn<LowVoltageMinMaxDelta2ParameterId>(
-        _sendLowVoltageMinMaxDelta2Callback,
-      )
-      ..voidOn<HighVoltage1ParameterId>(_sendHighVoltage1Callback)
-      ..voidOn<HighVoltage2ParameterId>(_sendHighVoltage2Callback)
-      ..voidOn<HighCurrent1ParameterId>(_sendHighCurrent1Callback)
-      ..voidOn<HighCurrent2ParameterId>(_sendHighCurrent2Callback)
-      ..voidOn<MaxTemperature1ParameterId>(_sendMaxTemperature1Callback)
-      ..voidOn<MaxTemperature2ParameterId>(_sendMaxTemperature2Callback)
-      ..voidOn<BatteryPercent1ParameterId>(_sendBatteryPercent1Callback)
-      ..voidOn<BatteryPercent2ParameterId>(_sendBatteryPercent2Callback)
-      ..voidOn<BatteryPowerParameterId>(
-        () => _sendNewBatteryPowerCallback(version: v),
-      )
-      //
-      ..voidOn<Temperature1ParameterId>(
-        _sendTemperature1Callback,
-      )
-      ..voidOn<Temperature2ParameterId>(
-        _sendTemperature2Callback,
-      )
-      //
-      ..voidOn<LowVoltage1ParameterId>(_sendLowVoltage1Callback)
-      ..voidOn<LowVoltage2ParameterId>(_sendLowVoltage2Callback)
-      // Lights
-      ..voidOn<FrontSideBeamParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const FrontSideBeamParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<TailSideBeamParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const TailSideBeamParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<LowBeamParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const LowBeamParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<ReverseLightParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const ReverseLightParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<BrakeLightParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const BrakeLightParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<CabinLightParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const CabinLightParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<HighBeamParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const HighBeamParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<FrontHazardBeamParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const FrontHazardBeamParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<TailHazardBeamParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const TailHazardBeamParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<FrontLeftTurnSignalParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const FrontLeftTurnSignalParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<FrontRightTurnSignalParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const FrontRightTurnSignalParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<TailLeftTurnSignalParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const TailLeftTurnSignalParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<TailRightTurnSignalParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const TailRightTurnSignalParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<WindscreenWipersParameterId>(() {
-        _sendSetBoolUint8ResultCallback(
-          const WindscreenWipersParameterId(),
-          package.boolData,
-        );
-      })
-      ..voidOn<CustomImageParameterId>(() {
-        _sendSetUint8ResultCallback(
-          const CustomImageParameterId(),
-          package.data[1],
-        );
-      })
-      // Doors
-      ..voidOn<LeftDoorParameterId>(() {
-        _sendDoorToggleResultCallback(ButtonFunctionId.leftDoor);
-      })
-      ..voidOn<RightDoorParameterId>(() {
-        _sendDoorToggleResultCallback(ButtonFunctionId.rightDoor);
-      });
-
-    return const Result.value(null);
-  }
-
   @override
   Future<Result<DisconnectError, void>> disconnect() async {
     return const Result.value(null);
   }
 
-  void _sendNewSpeedCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _updateValueCallback(
-      const DataSourceParameterId.motorSpeed(),
-      TwoUint16WithStatusBody(
-        status: _getRandomStatus,
-        first: Random().nextInt(1001),
-        second: Random().nextInt(1001),
-      ),
-      version,
-    );
-  }
+  @visibleForTesting
+  List<MainEcuMockResponse> get mockedResponses => [
+        MainEcuMockResponseUpdateCallbackWrapper(
+          ids: {const DataSourceParameterId.motorSpeed()},
+          convertible: TwoUint16WithStatusBody(
+            status: _getRandomStatus,
+            first: Random().nextInt(1001),
+            second: Random().nextInt(1001),
+          ),
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {const DataSourceParameterId.motorVoltage()},
+          respondCallback: (id, version, _, [__]) => _sendTwoUint16Callback(
+            id,
+            version,
+          ),
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {
+            const DataSourceParameterId.motorCurrent(),
+            const DataSourceParameterId.motorPower(),
+          },
+          respondCallback: (id, version, _, [__]) => _sendTwoInt16Callback(
+            id,
+            version,
+          ),
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {
+            const DataSourceParameterId.temperature1(),
+            const DataSourceParameterId.temperature2(),
+          },
+          respondCallback: (id, version, manager, [_]) {
+            for (var i = 1;
+                i <= manager.hardwareCount.temperatureSensors;
+                i++) {
+              manager.updateCallback(
+                id,
+                BatteryTemperature(
+                  no: i,
+                  value: randomInt8,
+                ),
+                version,
+              );
+            }
 
-  void _sendNewVoltageCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _sendTwoUint16Callback(
-      const DataSourceParameterId.motorVoltage(),
-      version: version,
-    );
-  }
+            return const Result.value(null);
+          },
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {
+            const DataSourceParameterId.lowVoltage1(),
+            const DataSourceParameterId.lowVoltage2(),
+          },
+          respondCallback: (id, version, manager, [_]) {
+            for (var i = 1; i <= manager.hardwareCount.batteryCells; i++) {
+              manager.updateCallback(
+                id,
+                BatteryLowVoltage(
+                  no: i,
+                  value: randomDoubleUint16,
+                ),
+                version,
+              );
+            }
 
-  void _sendNewCurrentCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _sendTwoInt16Callback(
-      const DataSourceParameterId.motorCurrent(),
-      version: version,
-    );
-  }
+            return const Result.value(null);
+          },
+        ),
+        MainEcuMockResponseUpdateCallbackWrapper(
+          ids: {
+            const DataSourceParameterId.lowVoltageMinMaxDelta1(),
+            const DataSourceParameterId.lowVoltageMinMaxDelta2(),
+          },
+          convertible: LowVoltageMinMaxDelta(
+            min: Random().nextDouble() * 65535,
+            max: Random().nextDouble() * 65535,
+            delta: Random().nextDouble() * 65535,
+            status: _getRandomStatus,
+          ),
+        ),
+        MainEcuMockResponseUpdateCallbackWrapper(
+          ids: {
+            const DataSourceParameterId.highVoltage1(),
+            const DataSourceParameterId.highVoltage2(),
+          },
+          convertible: HighVoltage(
+            value: randomUint16,
+            status: _getRandomStatus,
+          ),
+        ),
+        MainEcuMockResponseUpdateCallbackWrapper(
+          ids: {
+            const DataSourceParameterId.highCurrent1(),
+            const DataSourceParameterId.highCurrent2(),
+          },
+          convertible: HighCurrent(
+            value: randomInt16,
+            status: _getRandomStatus,
+          ),
+        ),
+        MainEcuMockResponseUpdateCallbackWrapper(
+          ids: {
+            const DataSourceParameterId.batteryPercent1(),
+            const DataSourceParameterId.batteryPercent2(),
+          },
+          convertible: BatteryPercent(
+            value: Random().nextInt(101),
+            status: _getRandomStatus,
+          ),
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {
+            const DataSourceParameterId.batteryPower1(),
+            const DataSourceParameterId.batteryPower2(),
+          },
+          respondCallback: (id, version, manager, [_]) => _sendInt16Callback(
+            id,
+            version,
+          ),
+        ),
+        MainEcuMockResponseUpdateCallbackWrapper(
+          ids: {
+            const DataSourceParameterId.maxTemperature1(),
+            const DataSourceParameterId.maxTemperature2(),
+          },
+          convertible: MaxTemperature(
+            value: randomInt8,
+            status: _getRandomStatus,
+          ),
+        ),
+        // Lights
+        MainEcuMockResponseWrapper(
+          ids: {
+            const FrontSideBeamParameterId(),
+            const TailSideBeamParameterId(),
+            const LowBeamParameterId(),
+            const ReverseLightParameterId(),
+            const BrakeLightParameterId(),
+            const CabinLightParameterId(),
+            const HighBeamParameterId(),
+            const FrontHazardBeamParameterId(),
+            const TailHazardBeamParameterId(),
+            const FrontLeftTurnSignalParameterId(),
+            const FrontRightTurnSignalParameterId(),
+            const TailLeftTurnSignalParameterId(),
+            const TailRightTurnSignalParameterId(),
+            const WindscreenWipersParameterId(),
+          },
+          // All of the ids above are unavailable for subscription
+          unavailableForSubscriptionIds: {},
+          respondCallback: (id, version, manager, [package]) {
+            _sendSetBoolUint8ResultCallback(
+              id,
+              DataSourceProtocolVersion.subscription,
+              package?.requestType.maybeWhen(
+                orElse: () => null,
+                bufferRequest: () => package.boolData,
+                event: () => package.boolData,
+              ),
+            );
 
-  void _sendNewPowerCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _sendTwoInt16Callback(
-      const DataSourceParameterId.motorPower(),
-      version: version,
-    );
-  }
+            return const Result.value(null);
+          },
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {const CustomImageParameterId()},
+          respondCallback: (id, version, manager, [package]) {
+            _sendSetUint8ResultCallback(id, version, package?.data[1]);
 
-  void _sendNewRPMCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _sendTwoUint16Callback(
-      const DataSourceParameterId.rpm(),
-      version: version,
-    );
-  }
+            return const Result.value(null);
+          },
+        ),
+        MainEcuMockResponseUpdateCallbackWrapper(
+          ids: {const CustomParameterId(0x00E0)},
+          convertible: PlainBytesConvertible(
+            [
+              _getRandomStatus.id,
+              ...List.generate(7, (index) => randomUint8),
+            ],
+          ),
+        ),
+        // Doors
+        MainEcuMockResponseWrapper(
+          ids: {
+            const LeftDoorParameterId(),
+            const RightDoorParameterId(),
+            const CustomParameterId(ButtonFunctionId.leftDoorId),
+            const CustomParameterId(ButtonFunctionId.rightDoorId),
+          },
+          unavailableForSubscriptionIds: {},
+          respondCallback: (id, version, manager, [_]) {
+            final functionId = switch (id) {
+              const LeftDoorParameterId() => ButtonFunctionId.leftDoor,
+              const RightDoorParameterId() => ButtonFunctionId.rightDoor,
+              _ => ButtonFunctionId.fromValue(id.value),
+            };
+            _sendDoorToggleResultCallback(functionId);
 
-  void _sendNewMotorTemperatureCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _sendTwoInt16Callback(
-      const MotorTemperatureParameterId(),
-      version: version,
-    );
-  }
+            return const Result.value(null);
+          },
+        ),
+      ];
 
-  void _sendNewControllerTemperatureCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _sendTwoInt16Callback(
-      const ControllerTemperatureParameterId(),
-      version: version,
-    );
-  }
-
-  void _sendNewOdometerCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _updateValueCallback(
-      const DataSourceParameterId.odometer(),
-      Uint32WithStatusBody(
-        value: Random().nextInt(0xFFFFFFFF),
-        status: _getRandomStatus,
-      ),
-      version,
-    );
-  }
-
-  void _sendNewGearAndRollCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    final randomGear1 =
-        MotorGear.values[Random().nextInt(MotorGear.values.length)];
-    final randomGear2 =
-        MotorGear.values[Random().nextInt(MotorGear.values.length)];
-    final randomRoll1 = MotorRollDirection
-        .values[Random().nextInt(MotorRollDirection.values.length)];
-    final randomRoll2 = MotorRollDirection
-        .values[Random().nextInt(MotorRollDirection.values.length)];
-    _updateValueCallback(
-      const DataSourceParameterId.gearAndRoll(),
-      MotorGearAndRoll(
-        firstMotorGear: randomGear1,
-        firstMotorRollDirection: randomRoll1,
-        secondMotorGear: randomGear2,
-        secondMotorRollDirection: randomRoll2,
-        status: _getRandomStatus,
-      ),
-      version,
-    );
-  }
-
-  void _sendNewBatteryPowerCallback({
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _sendInt16Callback(
-      const DataSourceParameterId.batteryPower(),
-      version: version,
-    );
-  }
-
-  void _sendUint8Callback(
-    DataSourceParameterId id, {
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-    int Function()? customValueGenerator,
-  }) {
-    _updateValueCallback(
-      id,
-      Uint8WithStatusBody(
-        status: _getRandomStatus,
-        value: customValueGenerator?.call() ?? randomUint8,
-      ),
-      version,
-    );
-  }
-
-  void _sendInt16Callback(
-    DataSourceParameterId id, {
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _updateValueCallback(
+  Result<SendPackageError, void> _sendInt16Callback(
+    DataSourceParameterId id,
+    DataSourceProtocolVersion version,
+  ) {
+    return _updateValueCallback(
       id,
       Int16WithStatusBody(
         status: _getRandomStatus,
@@ -746,11 +501,11 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendTwoInt16Callback(
-    DataSourceParameterId id, {
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _updateValueCallback(
+  Result<SendPackageError, void> _sendTwoInt16Callback(
+    DataSourceParameterId id,
+    DataSourceProtocolVersion version,
+  ) {
+    return _updateValueCallback(
       id,
       TwoInt16WithStatusBody(
         status: _getRandomStatus,
@@ -761,11 +516,11 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendTwoUint16Callback(
-    DataSourceParameterId id, {
-    DataSourceProtocolVersion version = DataSourceProtocolVersion.subscription,
-  }) {
-    _updateValueCallback(
+  Result<SendPackageError, void> _sendTwoUint16Callback(
+    DataSourceParameterId id,
+    DataSourceProtocolVersion version,
+  ) {
+    return _updateValueCallback(
       id,
       TwoUint16WithStatusBody(
         status: _getRandomStatus,
@@ -776,192 +531,23 @@ class DemoDataSource extends DataSource
     );
   }
 
-  void _sendLowVoltageMinMaxDeltaCallback(DataSourceParameterId parameterId) {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: parameterId.value,
-        convertible: LowVoltageMinMaxDelta(
-          min: Random().nextDouble() * 65535,
-          max: Random().nextDouble() * 65535,
-          delta: Random().nextDouble() * 65535,
-          status: _getRandomStatus,
-        ),
-      ),
-    );
-  }
-
-  void _sendLowVoltageMinMaxDelta1Callback() =>
-      _sendLowVoltageMinMaxDeltaCallback(
-        const DataSourceParameterId.lowVoltageMinMaxDelta1(),
-      );
-
-  void _sendLowVoltageMinMaxDelta2Callback() =>
-      _sendLowVoltageMinMaxDeltaCallback(
-        const DataSourceParameterId.lowVoltageMinMaxDelta2(),
-      );
-
-  void _sendHighVoltageCallback(DataSourceParameterId parameterId) {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: parameterId.value,
-        convertible: HighVoltage(
-          value: randomUint16,
-          status: _getRandomStatus,
-        ),
-      ),
-    );
-  }
-
-  void _sendHighVoltage1Callback() =>
-      _sendHighVoltageCallback(const DataSourceParameterId.highVoltage1());
-
-  void _sendHighVoltage2Callback() =>
-      _sendHighVoltageCallback(const DataSourceParameterId.highVoltage2());
-
-  void _sendHighCurrentCallback(DataSourceParameterId parameterId) {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: parameterId.value,
-        convertible: HighCurrent(
-          value: randomInt16,
-          status: _getRandomStatus,
-        ),
-      ),
-    );
-  }
-
-  void _sendHighCurrent1Callback() =>
-      _sendHighCurrentCallback(const DataSourceParameterId.highCurrent1());
-
-  void _sendHighCurrent2Callback() =>
-      _sendHighCurrentCallback(const DataSourceParameterId.highCurrent2());
-
-  void _sendBatteryPercentCallback(DataSourceParameterId parameterId) {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: parameterId.value,
-        convertible: BatteryPercent(
-          value: Random().nextInt(101),
-          status: _getRandomStatus,
-        ),
-      ),
-    );
-  }
-
-  void _sendBatteryPercent1Callback() => _sendBatteryPercentCallback(
-        const DataSourceParameterId.batteryPercent1(),
-      );
-
-  void _sendBatteryPercent2Callback() => _sendBatteryPercentCallback(
-        const DataSourceParameterId.batteryPercent2(),
-      );
-
-  void _sendMaxTemperatureCallback(DataSourceParameterId parameterId) {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: parameterId.value,
-        convertible: MaxTemperature(
-          value: randomInt8,
-          status: _getRandomStatus,
-        ),
-      ),
-    );
-  }
-
-  void _sendMaxTemperature1Callback() => _sendMaxTemperatureCallback(
-        const DataSourceParameterId.maxTemperature1(),
-      );
-
-  void _sendMaxTemperature2Callback() => _sendMaxTemperatureCallback(
-        const DataSourceParameterId.maxTemperature2(),
-      );
-
-  void _sendTemperatureCallback(DataSourceParameterId parameterId) {
-    for (var i = 1; i <= 10; i++) {
-      _sendPackage(
-        DataSourceIncomingPackage.fromConvertible(
-          secondConfigByte: 0x95, // 10010101(incoming 0x15)
-          parameterId: parameterId.value,
-          convertible: BatteryTemperature(
-            no: i,
-            value: randomInt8,
-          ),
-        ),
-      );
-    }
-  }
-
-  void _sendTemperature1Callback() => _sendTemperatureCallback(
-        const DataSourceParameterId.temperature1(),
-      );
-
-  void _sendTemperature2Callback() => _sendTemperatureCallback(
-        const DataSourceParameterId.temperature2(),
-      );
-
-  void _sendLowVoltageCallback(DataSourceParameterId parameterId) {
-    for (var i = 1; i <= 20; i++) {
-      _sendPackage(
-        DataSourceIncomingPackage.fromConvertible(
-          secondConfigByte: 0x95, // 10010101(incoming 0x15)
-          parameterId: parameterId.value,
-          convertible: BatteryLowVoltage(
-            no: i,
-            value: randomDoubleUint16,
-          ),
-        ),
-      );
-    }
-  }
-
-  void _sendLowVoltage1Callback() =>
-      _sendLowVoltageCallback(const DataSourceParameterId.lowVoltage1());
-
-  void _sendLowVoltage2Callback() =>
-      _sendLowVoltageCallback(const DataSourceParameterId.lowVoltage2());
-
-  void _sendBackLightsBlocInfoCallback() {
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: 0x00E0,
-        convertible: PlainBytesConvertible(
-          [
-            [
-              FunctionId.okIncomingPeriodicValueId,
-              FunctionId.warningIncomingPeriodicValueId,
-              FunctionId.criticalIncomingPeriodicValueId,
-            ][Random().nextInt(3)],
-            ...List.generate(7, (index) => randomUint8),
-          ],
-        ),
-      ),
-    );
-  }
-
   Future<void> _sendSetBoolUint8ResultCallback(
-    DataSourceParameterId parameterId, [
+    DataSourceParameterId parameterId,
+    DataSourceProtocolVersion version, [
     bool? requiredResult,
   ]) async {
     await Future<void>.delayed(const Duration(milliseconds: 100));
     final _requiredResult = requiredResult ?? randomBool;
 
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: parameterId.value,
-        convertible: SuccessEventUint8Body(
-          (!generateRandomErrors() || ninetyPercentSuccessBool
-                  ? _requiredResult
-                  : !_requiredResult)
-              .toInt,
-        ),
+    _updateValueCallback(
+      parameterId,
+      SuccessEventUint8Body(
+        (!generateRandomErrors() || ninetyPercentSuccessBool
+                ? _requiredResult
+                : !_requiredResult)
+            .toInt,
       ),
+      version,
     );
   }
 
@@ -985,29 +571,29 @@ class DemoDataSource extends DataSource
   }
 
   Future<void> _sendSetUint8ResultCallback(
-    DataSourceParameterId parameterId, [
+    DataSourceParameterId parameterId,
+    DataSourceProtocolVersion version, [
     int? requiredResult,
   ]) async {
     await Future<void>.delayed(const Duration(milliseconds: 100));
     final _requiredResult = requiredResult ?? randomUint8;
 
-    _sendPackage(
-      DataSourceIncomingPackage.fromConvertible(
-        secondConfigByte: 0x95, // 10010101(incoming 0x15)
-        parameterId: parameterId.value,
-        convertible: SuccessEventUint8Body(
-          generateRandomErrors()
-              ? randomBool
-                  ? randomUint8
-                  : _requiredResult
-              : _requiredResult,
-        ),
+    _updateValueCallback(
+      parameterId,
+      SuccessEventUint8Body(
+        generateRandomErrors()
+            ? randomBool
+                ? randomUint8
+                : _requiredResult
+            : _requiredResult,
       ),
+      version,
     );
   }
 
   void _sendPackage(DataSourceIncomingPackage package) {
     if (controller.isClosed) return;
+
     onNewPackage(
       rawPackage: package.toUint8List,
       onNewPackageCallback: controller.sink.add,
@@ -1035,12 +621,12 @@ class DemoDataSource extends DataSource
   double get randomDoubleUint16 => Random().nextDouble() * 0xFFFF;
   double get randomDoubleUint32 => Random().nextDouble() * 0xFFFFFFFF;
 
-  void _updateValueCallback(
+  Result<SendPackageError, void> _updateValueCallback(
     DataSourceParameterId parameterId,
-    // int value,
     BytesConvertible convertible,
-    DataSourceProtocolVersion version,
-  ) {
+    DataSourceProtocolVersion version, [
+    DataSourceOutgoingPackage? package,
+  ]) {
     final requestType = version.when(
       subscription: () => 0x95, //'10010101'
       periodicRequests: () => 0x81, //'10000001'
@@ -1053,6 +639,8 @@ class DemoDataSource extends DataSource
         convertible: convertible,
       ),
     );
+
+    return const Result.value(null);
   }
 }
 
@@ -1072,4 +660,144 @@ extension on bool {
 
 extension on int {
   bool get toBool => this == 255;
+}
+
+@visibleForTesting
+final class MainEcuMockManager {
+  const MainEcuMockManager({
+    required this.mockedResponses,
+    required this.hardwareCount,
+    required this.sendPackage,
+    required this.updateCallback,
+  });
+
+  final List<MainEcuMockResponse> mockedResponses;
+  final HardwareCount hardwareCount;
+  final void Function(DataSourceIncomingPackage package) sendPackage;
+  final Result<SendPackageError, void> Function(
+    DataSourceParameterId parameterId,
+    BytesConvertible convertible,
+    DataSourceProtocolVersion version, [
+    DataSourceOutgoingPackage? package,
+  ]) updateCallback;
+
+  bool checkAvailableForSubscription(DataSourceParameterId id) {
+    return mockedResponses.any(
+      (element) => element.checkAvailableForSubscription(id),
+    );
+  }
+
+  Result<SendPackageError, void> handle(
+    DataSourceParameterId id,
+    DataSourceProtocolVersion version, [
+    DataSourceOutgoingPackage? package,
+  ]) {
+    for (final response in mockedResponses) {
+      if (response.ids.contains(id)) {
+        return response.respond(
+          id,
+          version,
+          this,
+          package,
+        );
+      }
+    }
+
+    return const Result.error(SendPackageError.unknown);
+  }
+
+  Result<SendPackageError, void> handlePeriodicPackage(
+    DataSourceOutgoingPackage package,
+  ) {
+    return handle(
+      package.parameterId,
+      DataSourceProtocolVersion.periodicRequests,
+      package,
+    );
+  }
+
+  Result<SendPackageError, void> handleSubscriptionParameterId(
+    DataSourceParameterId id,
+  ) {
+    return handle(
+      id,
+      DataSourceProtocolVersion.subscription,
+    );
+  }
+}
+
+abstract class MainEcuMockResponse {
+  const MainEcuMockResponse({
+    required this.ids,
+    this.unavailableForSubscriptionIds,
+  });
+
+  final Set<DataSourceParameterId> ids;
+
+  /// Null - if all [ids] are available for subscription
+  /// Empty - if all [ids] are unavailable for subscription
+  /// Otherwise - list of unavailable ids
+  ///
+  /// By default all [ids] are available for subscription
+  final Set<DataSourceParameterId>? unavailableForSubscriptionIds;
+
+  bool checkAvailableForSubscription(DataSourceParameterId id) {
+    if (!ids.contains(id)) return false;
+    final unavailableIds = unavailableForSubscriptionIds;
+    if (unavailableIds == null) return true;
+    if (unavailableIds.isEmpty) return false;
+    return !unavailableIds.contains(id);
+  }
+
+  Result<SendPackageError, void> respond(
+    DataSourceParameterId id,
+    DataSourceProtocolVersion version,
+    MainEcuMockManager manager, [
+    DataSourceOutgoingPackage? package,
+  ]);
+}
+
+final class MainEcuMockResponseWrapper extends MainEcuMockResponse {
+  const MainEcuMockResponseWrapper({
+    required super.ids,
+    required this.respondCallback,
+    super.unavailableForSubscriptionIds,
+  });
+
+  final Result<SendPackageError, void> Function(
+    DataSourceParameterId id,
+    DataSourceProtocolVersion version,
+    MainEcuMockManager manager, [
+    DataSourceOutgoingPackage? package,
+  ]) respondCallback;
+
+  @override
+  Result<SendPackageError, void> respond(
+    DataSourceParameterId id,
+    DataSourceProtocolVersion version,
+    MainEcuMockManager manager, [
+    DataSourceOutgoingPackage? package,
+  ]) =>
+      respondCallback(id, version, manager, package);
+}
+
+final class MainEcuMockResponseUpdateCallbackWrapper
+    extends MainEcuMockResponse {
+  const MainEcuMockResponseUpdateCallbackWrapper({
+    required super.ids,
+    required this.convertible,
+    super.unavailableForSubscriptionIds,
+  });
+
+  final BytesConvertible convertible;
+
+  @override
+  Result<SendPackageError, void> respond(
+    DataSourceParameterId id,
+    DataSourceProtocolVersion version,
+    MainEcuMockManager manager, [
+    DataSourceOutgoingPackage? package,
+  ]) {
+    return manager.updateCallback(id, convertible, version, package);
+  }
 }
