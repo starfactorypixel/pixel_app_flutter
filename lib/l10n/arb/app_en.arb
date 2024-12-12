@@ -169,6 +169,22 @@
       }
     }
   },
+  "powerNTileTitle": "Consumption/charging power {number} battery",
+  "@powerNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "batteryPercentNTileTitle": "Battery level {number}",
+  "@batteryPercentNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "totalCurrentTileTitle": "Total discharge/charge current",
   "totalCurrentNTileTitle": "Total discharge/charge current {number} battery",
   "@totalCurrentNTileTitle": {

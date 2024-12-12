@@ -16,6 +16,33 @@ class GeneralInfoSection extends StatelessWidget {
 
     return SliverList.list(
       children: [
+        if (!isOneBattery)
+          for (int i = 0; i < batteriesCount; i++)
+            BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus?>(
+              selector: (state) => state.batteryPercent.getAt(i),
+              builder: (context, batteryPercent) {
+                if (batteryPercent == null) return const SizedBox.shrink();
+                return ChargingScreenListTile(
+                  title: context.l10n.batteryPercentNTileTitle(i + 1),
+                  trailing: '${batteryPercent.value}%',
+                  status: batteryPercent.status,
+                );
+              },
+            ),
+        if (!isOneBattery)
+          for (int i = 0; i < batteriesCount; i++)
+            BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus?>(
+              selector: (state) => state.power.getAt(i),
+              builder: (context, power) {
+                if (power == null) return const SizedBox.shrink();
+                return ChargingScreenListTile(
+                  title: context.l10n.powerNTileTitle(i + 1),
+                  trailing:
+                      '${power.value} ${context.l10n.wattMeasurementUnit}',
+                  status: power.status,
+                );
+              },
+            ),
         for (int i = 0; i < batteriesCount; i++)
           BlocSelector<BatteryDataCubit, BatteryDataState, HighVoltage?>(
             selector: (state) => state.highVoltage.getAt(i),

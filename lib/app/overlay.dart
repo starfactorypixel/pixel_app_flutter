@@ -102,7 +102,7 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
                     child: ValueListenableBuilder<GeneralDataState>(
                       valueListenable: notifier,
                       builder: (context, value, child) {
-                        final power = value.power;
+                        final power = value.mergedPower;
                         final batteryPercent = value.mergedBatteryPercent;
                         final odometer = value.odometer;
 

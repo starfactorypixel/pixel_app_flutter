@@ -169,6 +169,22 @@
       }
     }
   },
+  "powerNTileTitle": "Мощность потребления/зарядки {number} батарея",
+  "@powerNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "batteryPercentNTileTitle": "Уровень заряда батареи {number}",
+  "@batteryPercentNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "totalCurrentTileTitle": "Общий ток разряда/заряда",
   "totalCurrentNTileTitle": "Общий ток разряда/заряда {number} батарея",
   "@totalCurrentNTileTitle": {

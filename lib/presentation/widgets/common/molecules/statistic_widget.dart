@@ -28,7 +28,7 @@ class StatisticWidget extends StatelessWidget {
         builder: (context, state) => OdometerStatisticItem(item: state),
       ),
       BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus>(
-        selector: (state) => state.power,
+        selector: (state) => state.mergedPower,
         builder: (context, state) => PowerStatisticItem(item: state),
       ),
     ];

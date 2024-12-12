@@ -59,7 +59,11 @@ abstract class DataSourceParameterId {
 
   const factory DataSourceParameterId.lowVoltage2() = LowVoltage2ParameterId;
 
-  const factory DataSourceParameterId.batteryPower() = BatteryPowerParameterId;
+  const factory DataSourceParameterId.batteryPower1() =
+      BatteryPower1ParameterId;
+
+  const factory DataSourceParameterId.batteryPower2() =
+      BatteryPower2ParameterId;
 
   //
   const factory DataSourceParameterId.frontSideBeam() =
@@ -174,7 +178,9 @@ abstract class DataSourceParameterId {
 
   bool get isLowVoltage2 => this is LowVoltage2ParameterId;
 
-  bool get isBatteryPower => this is BatteryPowerParameterId;
+  bool get isBatteryPower1 => this is BatteryPower1ParameterId;
+
+  bool get isBatteryPower2 => this is BatteryPower2ParameterId;
 
   bool get isFrontSideBeam => this is FrontSideBeamParameterId;
 
@@ -288,7 +294,8 @@ abstract class DataSourceParameterId {
       DataSourceParameterId.motorTemperature(),
       DataSourceParameterId.controllerTemperature(),
       DataSourceParameterId.odometer(),
-      DataSourceParameterId.batteryPower(),
+      DataSourceParameterId.batteryPower1(),
+      DataSourceParameterId.batteryPower2(),
       //
       DataSourceParameterId.trunk(),
       DataSourceParameterId.hood(),
@@ -393,8 +400,12 @@ class LowVoltage2ParameterId extends DataSourceParameterId {
   const LowVoltage2ParameterId() : super(0x0191);
 }
 
-class BatteryPowerParameterId extends DataSourceParameterId {
-  const BatteryPowerParameterId() : super(0x0057);
+class BatteryPower1ParameterId extends DataSourceParameterId {
+  const BatteryPower1ParameterId() : super(0x0188);
+}
+
+class BatteryPower2ParameterId extends DataSourceParameterId {
+  const BatteryPower2ParameterId() : super(0x0189);
 }
 
 // Lights

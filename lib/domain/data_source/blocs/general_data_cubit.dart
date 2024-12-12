@@ -58,7 +58,10 @@ final class GeneralDataState with EquatableMixin {
 
   GeneralDataState.initial({
     required this.hardwareCount,
-  })  : power = const IntWithStatus.initial(),
+  })  : power = Sequence.fill(
+          hardwareCount.batteries,
+          const IntWithStatus.initial(),
+        ),
         batteryPercent = Sequence.fill(
           hardwareCount.batteries,
           const IntWithStatus.initial(),
@@ -70,7 +73,9 @@ final class GeneralDataState with EquatableMixin {
   factory GeneralDataState.fromMap(Map<String, dynamic> map) {
     return GeneralDataState(
       hardwareCount: map.parseAndMap('hardwareCount', HardwareCount.fromMap),
-      power: map.parseAndMap('power', IntWithStatus.fromMap),
+      power: Sequence.fromIterable(
+        map.tryParseAndMapList('power', IntWithStatus.fromMap),
+      ),
       batteryPercent: Sequence.fromIterable(
         map.tryParseAndMapList('batteryPercent', IntWithStatus.fromMap),
       ),
@@ -81,7 +86,7 @@ final class GeneralDataState with EquatableMixin {
   }
 
   final HardwareCount hardwareCount;
-  final IntWithStatus power;
+  final Sequence<IntWithStatus> power;
   final IntWithStatus odometer;
   final IntWithStatus speed;
   final MotorGear gear;
@@ -101,6 +106,20 @@ final class GeneralDataState with EquatableMixin {
     );
   }
 
+  IntWithStatus get mergedPower {
+    if (power.length == 1) return power.first;
+    //
+    final (powerSum, status) = power.fold(
+      (0, PeriodicValueStatus.normal),
+      (a, b) => (a.$1 + b.value, a.$2.id > b.status.id ? a.$2 : b.status),
+    );
+    //
+    return IntWithStatus(
+      value: powerSum ~/ power.length,
+      status: status,
+    );
+  }
+
   @override
   List<Object?> get props => [
         power,
@@ -111,7 +130,7 @@ final class GeneralDataState with EquatableMixin {
       ];
 
   GeneralDataState copyWith({
-    IntWithStatus? power,
+    Sequence<IntWithStatus>? power,
     Sequence<IntWithStatus>? batteryPercent,
     IntWithStatus? odometer,
     IntWithStatus? speed,
@@ -130,7 +149,7 @@ final class GeneralDataState with EquatableMixin {
   Map<String, dynamic> toMap() {
     return {
       'hardwareCount': hardwareCount.toMap(),
-      'power': power.toMap(),
+      'power': power.map((e) => e.toMap()).toList(),
       'batteryPercent': batteryPercent.map((e) => e.toMap()).toList(),
       'odometer': odometer.toMap(),
       'speed': speed.toMap(),
@@ -157,9 +176,16 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
             ),
           ),
         )
-        ..voidOnModel<Int16WithStatusBody,
-            BatteryPowerIncomingDataSourcePackage>((model) {
-          emit(state.copyWith(power: model.toIntWithStatus()));
+        ..voidOnPackage<Int16WithStatusBody,
+            BatteryPowerIncomingDataSourcePackage>((package) {
+          emit(
+            state.copyWith(
+              power: state.power.updateAt(
+                package.batteryIndex,
+                package.dataModel.toIntWithStatus(),
+              ),
+            ),
+          );
         })
         ..voidOnModel<MotorGearAndRoll,
             MotorGearAndRollIncomingDataSourcePackage>((model) {
@@ -185,7 +211,8 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
     const DataSourceParameterId.gearAndRoll(),
     const DataSourceParameterId.batteryPercent1(),
     const DataSourceParameterId.batteryPercent2(),
-    const DataSourceParameterId.batteryPower(),
+    const DataSourceParameterId.batteryPower1(),
+    const DataSourceParameterId.batteryPower2(),
   };
 
   @protected
