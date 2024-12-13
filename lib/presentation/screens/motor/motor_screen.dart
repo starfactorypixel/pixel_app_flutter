@@ -166,7 +166,7 @@ class MotorScreen extends StatelessWidget {
                 state
                     .map(
                       (element) => _Value(
-                        element.motorGear.toLocalizedString(context),
+                        element.gear.toLocalizedString(context),
                         context.colorFromStatus(element.status),
                       ),
                     )
@@ -185,7 +185,7 @@ class MotorScreen extends StatelessWidget {
                 state
                     .map(
                       (element) => _Value(
-                        element.motorRollDirection.toLocalizedString(context),
+                        element.rollDirection.toLocalizedString(context),
                         context.colorFromStatus(element.status),
                       ),
                     )
