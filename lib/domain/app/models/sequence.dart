@@ -6,6 +6,13 @@ class Sequence<T> extends UnmodifiableListView<T> {
     required this.expectedLength,
   });
 
+  factory Sequence.fromIterable(Iterable<T> iterable) {
+    return Sequence<T>(
+      List<T>.from(iterable),
+      expectedLength: iterable.length,
+    );
+  }
+
   factory Sequence.fill(int length, T fillValue) {
     return Sequence<T>(
       List<T>.filled(length, fillValue),

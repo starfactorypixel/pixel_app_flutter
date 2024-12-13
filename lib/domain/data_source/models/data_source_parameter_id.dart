@@ -59,9 +59,11 @@ abstract class DataSourceParameterId {
 
   const factory DataSourceParameterId.lowVoltage2() = LowVoltage2ParameterId;
 
-  const factory DataSourceParameterId.batteryLevel() = BatteryLevelParameterId;
+  const factory DataSourceParameterId.batteryPower1() =
+      BatteryPower1ParameterId;
 
-  const factory DataSourceParameterId.batteryPower() = BatteryPowerParameterId;
+  const factory DataSourceParameterId.batteryPower2() =
+      BatteryPower2ParameterId;
 
   //
   const factory DataSourceParameterId.frontSideBeam() =
@@ -235,9 +237,9 @@ abstract class DataSourceParameterId {
 
   bool get isLowVoltage2 => this is LowVoltage2ParameterId;
 
-  bool get isBatteryLevel => this is BatteryLevelParameterId;
+  bool get isBatteryPower1 => this is BatteryPower1ParameterId;
 
-  bool get isBatteryPower => this is BatteryPowerParameterId;
+  bool get isBatteryPower2 => this is BatteryPower2ParameterId;
 
   bool get isFrontSideBeam => this is FrontSideBeamParameterId;
 
@@ -424,8 +426,8 @@ abstract class DataSourceParameterId {
       DataSourceParameterId.controllerTemperature3(),
       DataSourceParameterId.controllerTemperature4(),
       DataSourceParameterId.odometer(),
-      DataSourceParameterId.batteryLevel(),
-      DataSourceParameterId.batteryPower(),
+      DataSourceParameterId.batteryPower1(),
+      DataSourceParameterId.batteryPower2(),
       //
       DataSourceParameterId.trunk(),
       DataSourceParameterId.hood(),
@@ -530,12 +532,12 @@ class LowVoltage2ParameterId extends DataSourceParameterId {
   const LowVoltage2ParameterId() : super(0x0191);
 }
 
-class BatteryLevelParameterId extends DataSourceParameterId {
-  const BatteryLevelParameterId() : super(0x0056);
+class BatteryPower1ParameterId extends DataSourceParameterId {
+  const BatteryPower1ParameterId() : super(0x0188);
 }
 
-class BatteryPowerParameterId extends DataSourceParameterId {
-  const BatteryPowerParameterId() : super(0x0057);
+class BatteryPower2ParameterId extends DataSourceParameterId {
+  const BatteryPower2ParameterId() : super(0x0189);
 }
 
 // Lights
@@ -666,12 +668,15 @@ class MotorCurrent4ParameterId extends DataSourceParameterId {
 class MotorPower1ParameterId extends DataSourceParameterId {
   const MotorPower1ParameterId() : super(0x0116);
 }
+
 class MotorPower2ParameterId extends DataSourceParameterId {
   const MotorPower2ParameterId() : super(0x0117);
 }
+
 class MotorPower3ParameterId extends DataSourceParameterId {
   const MotorPower3ParameterId() : super(0x0146);
 }
+
 class MotorPower4ParameterId extends DataSourceParameterId {
   const MotorPower4ParameterId() : super(0x0147);
 }

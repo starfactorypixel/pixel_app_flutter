@@ -111,18 +111,16 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
         BlocLoggerMixin<DataSourcePackage, BatteryDataState> {
   BatteryDataCubit({
     required this.dataSource,
-    required int batteriesCount,
-    required int cellsCount,
-    required int temperatureSensorsCount,
+    required HardwareCount hardwareCount,
     this.temperatureUpdateDuration = kDefaultTemperatureUpdateDuration,
     this.voltageUpdateDuration = kDefaultVoltageUpdateDuration,
     this.temperatureParametersId = kDefaultTemperatureParameterIds,
     this.voltageParametersId = kDefaultVoltageParameterIds,
   }) : super(
           BatteryDataState.initial(
-            batteriesCount: batteriesCount,
-            cellsCount: cellsCount,
-            temperatureSensorsCount: temperatureSensorsCount,
+            batteriesCount: hardwareCount.batteries,
+            cellsCount: hardwareCount.batteryCells,
+            temperatureSensorsCount: hardwareCount.temperatureSensors,
           ),
         ) {
     subscribe<DataSourceIncomingPackage>(dataSource.packageStream, (value) {

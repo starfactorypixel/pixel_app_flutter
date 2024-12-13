@@ -14,6 +14,7 @@ import 'package:pixel_app_flutter/l10n/l10n.dart';
 import 'package:pixel_app_flutter/presentation/app/icons.dart';
 import 'package:pixel_app_flutter/presentation/routes/main_router.dart';
 import 'package:provider/provider.dart';
+import 'package:re_seedwork/re_seedwork.dart';
 import 'package:re_widgets/re_widgets.dart';
 
 @RoutePage(name: 'SelectDataSourceFlow')
@@ -28,16 +29,20 @@ class SelectDataSourceScope extends StatelessWidget
     final authorizationState =
         context.watch<DataSourceAuthorizationCubit>().state;
     final connectState = context.watch<DataSourceConnectBloc>().state;
+    final hardwareCountState = context.watch<GetHardwareCountBloc>().state;
 
     return AutoRouter.declarative(
       routes: (handler) {
         return [
           const SelectDataSourceGeneralFlow(),
-          if (authorizationState.isFailure || connectState.isFailure)
+          if (authorizationState.isFailure ||
+              connectState.isFailure ||
+              hardwareCountState.isFailure)
             ...[]
           else if (isInitial ||
               authorizationState.isLoading ||
-              connectState.isLoading)
+              connectState.isLoading ||
+              hardwareCountState.isLoading)
             const NonPopableLoadingRoute()
           else
             ...authorizationState.maybeWhen(
@@ -67,6 +72,7 @@ class SelectDataSourceScope extends StatelessWidget
           create: (context) {
             final devToolsParamsStorage =
                 context.read<DeveloperToolsParametersStorage>();
+            final getHardwareCountBloc = context.read<GetHardwareCountBloc>();
             final env = context.read<Environment>();
 
             return [
@@ -116,6 +122,12 @@ class SelectDataSourceScope extends StatelessWidget
                     updatePeriodMillis: () {
                       return devToolsParamsStorage.data.requestsPeriodInMillis;
                     },
+                    hardwareCount: () {
+                      return getHardwareCountBloc.state.value.toNullable
+                          // When this callback is called,
+                          // the hardware count should be already fetched
+                          .checkNotNull('hardwareCount');
+                    },
                   );
                 },
               ),
@@ -147,6 +159,17 @@ class SelectDataSourceScope extends StatelessWidget
           create: (context) => DataSourceAuthorizationCubit(
             dataSourceStorage: context.read(),
             serialNumberStorage: context.read(),
+            shouldWriteDataSourceCallback: () {
+              context.read<GetHardwareCountBloc>().add(
+                    const GetHardwareCountEvent.get(),
+                  );
+              return context
+                  .read<GetHardwareCountBloc>()
+                  .stream
+                  .where((state) => state.isExecuted)
+                  .map<bool>((state) => state.isSuccess)
+                  .first;
+            },
           ),
         ),
 
@@ -182,6 +205,12 @@ class SelectDataSourceScope extends StatelessWidget
                 );
               },
             );
+          },
+        ),
+        BlocListener<GetHardwareCountBloc, GetHardwareCountState>(
+          listenWhen: (previous, current) => current.isFailure,
+          listener: (context, state) {
+            context.showSnackBar(l10n.errorGettingHardwareCountMessage);
           },
         ),
       ],

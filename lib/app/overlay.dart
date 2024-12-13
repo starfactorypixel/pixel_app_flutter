@@ -24,7 +24,8 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
   late final StreamSubscription<void> sub;
 
   final notifier = ValueNotifier<GeneralDataState>(
-    GeneralDataState.initial(batteriesCount: 2), //TODO replace with variable
+    // initial state does not play any role here
+    GeneralDataState.initial(hardwareCount: HardwareCount.all(1)),
   );
 
   @override
@@ -101,8 +102,8 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
                     child: ValueListenableBuilder<GeneralDataState>(
                       valueListenable: notifier,
                       builder: (context, value, child) {
-                        final power = value.power;
-                        final batteryLevel = value.batteryLevel;
+                        final power = value.mergedPower;
+                        final batteryPercent = value.mergedBatteryPercent;
                         final odometer = value.odometer;
 
                         return Column(
@@ -171,10 +172,9 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  for (int i = 0; i < batteryLevel.length; ++i)
-                                    BatteryLevelStatisticItem(
-                                      item: batteryLevel.getAt(i),
-                                    ),
+                                  BatteryPercentStatisticItem(
+                                    item: batteryPercent,
+                                  ),
                                   OdometerStatisticItem(item: odometer),
                                   PowerStatisticItem(item: power),
                                 ],

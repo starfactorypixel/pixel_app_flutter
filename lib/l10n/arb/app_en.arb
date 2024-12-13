@@ -60,6 +60,7 @@
   "errorDiscoveringDevicesMessage": "Error while discovering devices",
   "errorConnectingToDataSourceMessage": "Error connecting to the data source",
   "successfullyConnectedToDataSourceMessage": "Successfully connected to the data source",
+  "errorGettingHardwareCountMessage": "Error getting hardware count",
   "cancelButtonCaption": "Cancel",
   "saveButtonCaption": "Save",
   "sendButtonCaption": "Send",
@@ -162,6 +163,22 @@
   "totalVoltageTileTitle": "Total voltage",
   "totalVoltageNTileTitle": "Total voltage {number} battery",
   "@totalVoltageNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "powerNTileTitle": "Consumption/charging power {number} battery",
+  "@powerNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "batteryPercentNTileTitle": "Battery level {number}",
+  "@batteryPercentNTileTitle": {
     "placeholders": {
       "number": {
         "type": "int"

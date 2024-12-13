@@ -6,7 +6,6 @@ import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/battery_percent.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/battery_percent.dart';
-import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/uint16_with_status_body.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/wrappers/bytes_convertible_with_status.dart';
 import 'package:re_seedwork/re_seedwork.dart';
@@ -57,19 +56,22 @@ extension on Sequence<IntWithStatus> {
 @immutable
 final class GeneralDataState with EquatableMixin {
   const GeneralDataState({
-    required this.batteriesCount,
+    required this.hardwareCount,
     required this.power,
-    required this.batteryLevel,
+    required this.batteryPercent,
     required this.odometer,
     required this.speed,
     required this.gear,
   });
 
   GeneralDataState.initial({
-    required this.batteriesCount,
-  })  : power = const IntWithStatus.initial(),
-        batteryLevel = Sequence<IntWithStatus>.fill(
-          batteriesCount,
+    required this.hardwareCount,
+  })  : power = Sequence.fill(
+          hardwareCount.batteries,
+          const IntWithStatus.initial(),
+        ),
+        batteryPercent = Sequence.fill(
+          hardwareCount.batteries,
           const IntWithStatus.initial(),
         ),
         odometer = const IntWithStatus.initial(),
@@ -78,47 +80,74 @@ final class GeneralDataState with EquatableMixin {
 
   factory GeneralDataState.fromMap(Map<String, dynamic> map) {
     return GeneralDataState(
-      batteriesCount: map.parse('batteriesCount'),
-      power: map.parseAndMap('power', IntWithStatus.fromMap),
-      batteryLevel: map.parseAndMap('batteryLevel', sequenceFromMap),
+      hardwareCount: map.parseAndMap('hardwareCount', HardwareCount.fromMap),
+      power: Sequence.fromIterable(
+        map.tryParseAndMapList('power', IntWithStatus.fromMap),
+      ),
+      batteryPercent: Sequence.fromIterable(
+        map.tryParseAndMapList('batteryPercent', IntWithStatus.fromMap),
+      ),
       odometer: map.parseAndMap('odometer', IntWithStatus.fromMap),
       speed: map.parseAndMap('speed', IntWithStatus.fromMap),
       gear: map.parseAndMap('gear', MotorGear.fromId),
     );
   }
 
-  static Sequence<IntWithStatus> sequenceFromMap(Map<String, dynamic> map) {
-    return map.parse('value');
-  }
-
-  final int batteriesCount;
-  final IntWithStatus power;
-  final Sequence<IntWithStatus> batteryLevel;
+  final HardwareCount hardwareCount;
+  final Sequence<IntWithStatus> power;
   final IntWithStatus odometer;
   final IntWithStatus speed;
   final MotorGear gear;
+  final Sequence<IntWithStatus> batteryPercent;
+
+  IntWithStatus get mergedBatteryPercent {
+    if (batteryPercent.length == 1) return batteryPercent.first;
+    //
+    final (levelSum, status) =
+        batteryPercent.fold((0, PeriodicValueStatus.normal), (a, b) {
+      return (a.$1 + b.value, a.$2.id > b.status.id ? a.$2 : b.status);
+    });
+    //
+    return IntWithStatus(
+      value: levelSum ~/ batteryPercent.length,
+      status: status,
+    );
+  }
+
+  IntWithStatus get mergedPower {
+    if (power.length == 1) return power.first;
+    //
+    final (powerSum, status) = power.fold(
+      (0, PeriodicValueStatus.normal),
+      (a, b) => (a.$1 + b.value, a.$2.id > b.status.id ? a.$2 : b.status),
+    );
+    //
+    return IntWithStatus(
+      value: powerSum ~/ power.length,
+      status: status,
+    );
+  }
 
   @override
   List<Object?> get props => [
         power,
-        batteryLevel,
+        batteryPercent,
         odometer,
         speed,
         gear,
       ];
 
   GeneralDataState copyWith({
-    int? batteriesCount,
-    IntWithStatus? power,
-    Sequence<IntWithStatus>? batteryLevel,
+    Sequence<IntWithStatus>? power,
+    Sequence<IntWithStatus>? batteryPercent,
     IntWithStatus? odometer,
     IntWithStatus? speed,
     MotorGear? gear,
   }) {
     return GeneralDataState(
-      batteriesCount: batteriesCount ?? this.batteriesCount,
+      hardwareCount: hardwareCount,
       power: power ?? this.power,
-      batteryLevel: batteryLevel ?? this.batteryLevel,
+      batteryPercent: batteryPercent ?? this.batteryPercent,
       odometer: odometer ?? this.odometer,
       speed: speed ?? this.speed,
       gear: gear ?? this.gear,
@@ -127,9 +156,9 @@ final class GeneralDataState with EquatableMixin {
 
   Map<String, dynamic> toMap() {
     return {
-      'batteriesCount': batteriesCount,
-      'power': power.toMap(),
-      'batteryLevel': batteryLevel.toMap(),
+      'hardwareCount': hardwareCount.toMap(),
+      'power': power.map((e) => e.toMap()).toList(),
+      'batteryPercent': batteryPercent.map((e) => e.toMap()).toList(),
       'odometer': odometer.toMap(),
       'speed': speed.toMap(),
       'gear': gear.id,
@@ -140,24 +169,31 @@ final class GeneralDataState with EquatableMixin {
 class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
   GeneralDataCubit({
     required this.dataSource,
-    required int batteriesCount,
-  }) : super(GeneralDataState.initial(batteriesCount: batteriesCount)) {
+    required HardwareCount hardwareCount,
+  }) : super(GeneralDataState.initial(hardwareCount: hardwareCount)) {
     subscribe<DataSourceIncomingPackage>(dataSource.packageStream, (package) {
       package
         ..voidOnPackage<BatteryPercent,
             BatteryPercentIncomingDataSourcePackage>(
           (package) => emit(
             state.copyWith(
-              batteryLevel: state.batteryLevel.updateAt(
+              batteryPercent: state.batteryPercent.updateAt(
                 package.batteryIndex,
                 package.dataModel.toIntWithStatus(),
               ),
             ),
           ),
         )
-        ..voidOnModel<Int16WithStatusBody,
-            BatteryPowerIncomingDataSourcePackage>((model) {
-          emit(state.copyWith(power: model.toIntWithStatus()));
+        ..voidOnPackage<Int16WithStatusBody,
+            BatteryPowerIncomingDataSourcePackage>((package) {
+          emit(
+            state.copyWith(
+              power: state.power.updateAt(
+                package.batteryIndex,
+                package.dataModel.toIntWithStatus(),
+              ),
+            ),
+          );
         })
         ..voidOnModel<MotorGearAndRoll,
             MotorGearAndRollIncomingDataSourcePackage>((model) {
@@ -191,13 +227,11 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
     const DataSourceParameterId.motorSpeed3(),
     const DataSourceParameterId.motorSpeed4(),
     const DataSourceParameterId.odometer(),
-    const DataSourceParameterId.gearAndRoll1(),
-    const DataSourceParameterId.gearAndRoll2(),
-    const DataSourceParameterId.gearAndRoll3(),
-    const DataSourceParameterId.gearAndRoll4(),
+    const DataSourceParameterId.gearAndRoll(),
     const DataSourceParameterId.batteryPercent1(),
     const DataSourceParameterId.batteryPercent2(),
-    const DataSourceParameterId.batteryPower(),
+    const DataSourceParameterId.batteryPower1(),
+    const DataSourceParameterId.batteryPower2(),
   };
 
   @protected

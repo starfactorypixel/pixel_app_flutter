@@ -8,7 +8,7 @@ class LowVoltageMinMaxDeltaIncomingDataSourcePackage
     extends DataSourceIncomingPackage<LowVoltageMinMaxDelta>
     with
         BatteryIndexMixin,
-        IsEventRequestTypeMixin,
+        IsEventOrBufferRequestOrSubscriptionAnswerRequestTypeMixin,
         IsPeriodicValueStatusOrSuccessEventFunctionIdMixin {
   LowVoltageMinMaxDeltaIncomingDataSourcePackage(super.source);
 

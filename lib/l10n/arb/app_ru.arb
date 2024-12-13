@@ -60,6 +60,7 @@
   "errorDiscoveringDevicesMessage": "Ошибка при обнаружении устройств",
   "errorConnectingToDataSourceMessage": "Ошибка при подключении к источнику данных",
   "successfullyConnectedToDataSourceMessage": "Успешное подключение к источнику данных",
+  "errorGettingHardwareCountMessage": "Ошибка при получении количества устройств",
   "cancelButtonCaption": "Отменить",
   "saveButtonCaption": "Сохранить",
   "sendButtonCaption": "Отправить",
@@ -162,6 +163,22 @@
   "totalVoltageTileTitle": "Общее напряжение",
   "totalVoltageNTileTitle": "Общее напряжение {number} батарея",
   "@totalVoltageNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "powerNTileTitle": "Мощность потребления/зарядки {number} батарея",
+  "@powerNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "batteryPercentNTileTitle": "Уровень заряда батареи {number}",
+  "@batteryPercentNTileTitle": {
     "placeholders": {
       "number": {
         "type": "int"

@@ -19,19 +19,18 @@ class StatisticWidget extends StatelessWidget {
     final batteriesCount =
         context.read<GeneralDataCubit>().state.batteriesCount;
     final items = <Widget>[
-      for (int i = 0; i < batteriesCount; ++i)
-        BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus?>(
-          selector: (state) => state.batteryLevel.getAt(i),
-          builder: (context, state) {
-            return BatteryLevelStatisticItem(item: state);
-          },
-        ),
+      BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus>(
+        selector: (state) => state.mergedBatteryPercent,
+        builder: (context, state) {
+          return BatteryPercentStatisticItem(item: state);
+        },
+      ),
       BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus>(
         selector: (state) => state.odometer,
         builder: (context, state) => OdometerStatisticItem(item: state),
       ),
       BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus>(
-        selector: (state) => state.power,
+        selector: (state) => state.mergedPower,
         builder: (context, state) => PowerStatisticItem(item: state),
       ),
     ];
@@ -82,8 +81,8 @@ class StatisticWidget extends StatelessWidget {
   }
 }
 
-class BatteryLevelStatisticItem extends StatelessWidget {
-  const BatteryLevelStatisticItem({super.key, required this.item});
+class BatteryPercentStatisticItem extends StatelessWidget {
+  const BatteryPercentStatisticItem({super.key, required this.item});
 
   @protected
   final IntWithStatus? item;

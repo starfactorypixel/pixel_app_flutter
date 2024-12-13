@@ -46,7 +46,10 @@ class MainScope extends SingleChildStatelessWidget {
         ),
 
         BlocProvider(
-          create: (context) => OverlayBloc(storage: GetIt.I()),
+          create: (context) {
+            return OverlayBloc(storage: GetIt.I())
+              ..add(const OverlayEvent.load());
+          },
           lazy: false,
         ),
 
@@ -57,6 +60,7 @@ class MainScope extends SingleChildStatelessWidget {
         BlocProvider(
           create: (context) => LEDConfigsCubit(storage: context.read()),
         ),
+        BlocProvider(create: (context) => GetHardwareCountBloc()),
 
         if (GetIt.I.get<Environment>().isDev) ...[
           BlocProvider(
