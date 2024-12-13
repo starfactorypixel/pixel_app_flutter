@@ -84,9 +84,9 @@ class Int16WithStatusBytesConverter<T extends IntBytesConvertibleWithStatus>
   }
 }
 
-class UInt16WithStatusBytesConverter<T extends IntBytesConvertibleWithStatus>
+class Uint16WithStatusBytesConverter<T extends IntBytesConvertibleWithStatus>
     extends BytesConverter<T> {
-  const UInt16WithStatusBytesConverter(this.builder);
+  const Uint16WithStatusBytesConverter(this.builder);
 
   @protected
   final T Function(int functionId, int value) builder;

@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 import 'package:pixel_app_flutter/domain/app/app.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
-import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/uint16_with_status_body.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:re_seedwork/re_seedwork.dart';
 
@@ -23,40 +22,40 @@ final class MotorDataState with EquatableMixin {
   });
 
   MotorDataState.initial({required this.motorsCount})
-      : current = Sequence.fill(motorsCount, const UInt16WithStatusBody.zero()),
-        voltage = Sequence.fill(motorsCount, const UInt16WithStatusBody.zero()),
+      : current = Sequence.fill(motorsCount, const Uint16WithStatusBody.zero()),
+        voltage = Sequence.fill(motorsCount, const Uint16WithStatusBody.zero()),
         motorTemperature = Sequence.fill(
           motorsCount,
-          const UInt16WithStatusBody.zero(),
+          const Uint16WithStatusBody.zero(),
         ),
         controllerTemperature = Sequence.fill(
           motorsCount,
-          const UInt16WithStatusBody.zero(),
+          const Uint16WithStatusBody.zero(),
         ),
         gearAndRoll = Sequence.fill(motorsCount, MotorGearAndRoll.unknown()),
-        rpm = Sequence.fill(motorsCount, const UInt16WithStatusBody.zero()),
-        speed = Sequence.fill(motorsCount, const UInt16WithStatusBody.zero()),
-        power = Sequence.fill(motorsCount, const UInt16WithStatusBody.zero());
+        rpm = Sequence.fill(motorsCount, const Uint16WithStatusBody.zero()),
+        speed = Sequence.fill(motorsCount, const Uint16WithStatusBody.zero()),
+        power = Sequence.fill(motorsCount, const Uint16WithStatusBody.zero());
 
-  final Sequence<UInt16WithStatusBody> current;
-  final Sequence<UInt16WithStatusBody> voltage;
-  final Sequence<UInt16WithStatusBody> motorTemperature;
-  final Sequence<UInt16WithStatusBody> controllerTemperature;
+  final Sequence<Uint16WithStatusBody> current;
+  final Sequence<Uint16WithStatusBody> voltage;
+  final Sequence<Uint16WithStatusBody> motorTemperature;
+  final Sequence<Uint16WithStatusBody> controllerTemperature;
   final Sequence<MotorGearAndRoll> gearAndRoll;
-  final Sequence<UInt16WithStatusBody> rpm;
-  final Sequence<UInt16WithStatusBody> speed;
-  final Sequence<UInt16WithStatusBody> power;
+  final Sequence<Uint16WithStatusBody> rpm;
+  final Sequence<Uint16WithStatusBody> speed;
+  final Sequence<Uint16WithStatusBody> power;
   final int motorsCount;
 
   MotorDataState copyWith({
-    Sequence<UInt16WithStatusBody>? current,
-    Sequence<UInt16WithStatusBody>? voltage,
-    Sequence<UInt16WithStatusBody>? motorTemperature,
-    Sequence<UInt16WithStatusBody>? controllerTemperature,
+    Sequence<Uint16WithStatusBody>? current,
+    Sequence<Uint16WithStatusBody>? voltage,
+    Sequence<Uint16WithStatusBody>? motorTemperature,
+    Sequence<Uint16WithStatusBody>? controllerTemperature,
     Sequence<MotorGearAndRoll>? gearAndRoll,
-    Sequence<UInt16WithStatusBody>? rpm,
-    Sequence<UInt16WithStatusBody>? speed,
-    Sequence<UInt16WithStatusBody>? power,
+    Sequence<Uint16WithStatusBody>? rpm,
+    Sequence<Uint16WithStatusBody>? speed,
+    Sequence<Uint16WithStatusBody>? power,
     int? motorsCount,
   }) {
     return MotorDataState(
@@ -94,7 +93,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
   }) : super(MotorDataState.initial(motorsCount: motorsCount)) {
     subscribe<DataSourceIncomingPackage>(dataSource.packageStream, (value) {
       value
-        ..voidOnPackage<UInt16WithStatusBody,
+        ..voidOnPackage<Uint16WithStatusBody,
             MotorVoltageIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(
@@ -105,7 +104,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
             ),
           );
         })
-        ..voidOnPackage<UInt16WithStatusBody,
+        ..voidOnPackage<Uint16WithStatusBody,
             MotorCurrentIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(
@@ -116,7 +115,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
             ),
           );
         })
-        ..voidOnPackage<UInt16WithStatusBody,
+        ..voidOnPackage<Uint16WithStatusBody,
             MotorTemperatureIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(
@@ -125,7 +124,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
             ),
           );
         })
-        ..voidOnPackage<UInt16WithStatusBody,
+        ..voidOnPackage<Uint16WithStatusBody,
             ControllerTemperatureIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(
@@ -145,7 +144,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
             ),
           );
         })
-        ..voidOnPackage<UInt16WithStatusBody, RPMIncomingDataSourcePackage>(
+        ..voidOnPackage<Uint16WithStatusBody, RPMIncomingDataSourcePackage>(
             (package) {
           emit(
             state.copyWith(
@@ -156,7 +155,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
             ),
           );
         })
-        ..voidOnPackage<UInt16WithStatusBody,
+        ..voidOnPackage<Uint16WithStatusBody,
             MotorSpeedIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(
@@ -167,7 +166,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
             ),
           );
         })
-        ..voidOnPackage<UInt16WithStatusBody,
+        ..voidOnPackage<Uint16WithStatusBody,
             MotorPowerIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(

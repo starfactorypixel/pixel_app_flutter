@@ -12,7 +12,6 @@ class RPMIncomingDataSourcePackage
       parameterId.isRPM3 ||
       parameterId.isRPM4;
 
-
   @override
   int? get motorIndexImpl {
     if (parameterId.isRPM1) return 0;

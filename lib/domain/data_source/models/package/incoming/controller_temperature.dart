@@ -12,7 +12,6 @@ class ControllerTemperatureIncomingDataSourcePackage
       parameterId.isControllerTemperature3 ||
       parameterId.isControllerTemperature4;
 
-
   @override
   int? get motorIndexImpl {
     if (parameterId.isControllerTemperature1) return 0;

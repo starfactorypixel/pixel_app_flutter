@@ -23,7 +23,6 @@ class MotorGearAndRollIncomingDataSourcePackage
       parameterId.isGearAndRoll3 ||
       parameterId.isGearAndRoll4;
 
-
   @override
   int? get motorIndexImpl {
     if (parameterId.isGearAndRoll1) return 0;

@@ -8,7 +8,7 @@ mixin MotorIndexMixin<T extends BytesConvertible>
   int get motorIndex {
     final index = motorIndexImpl;
     if (index != null) return index;
-    throw Exception('Invalid battery index');
+    throw Exception('Invalid motor index');
   }
 
   @visibleForOverriding

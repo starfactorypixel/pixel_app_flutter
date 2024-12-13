@@ -25,7 +25,7 @@ class MotorScreenWrapper extends StatelessWidget implements AutoRouteWrapper {
                 .subscribeTo(MotorDataCubit.kDefaultSubscribeParameters);
             return MotorDataCubit(
               dataSource: context.read(),
-              motorsCount: 4,
+              motorsCount: context.read<HardwareCount>().motors,
             );
           },
         ),

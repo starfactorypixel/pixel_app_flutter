@@ -8,9 +8,7 @@ import 'package:pixel_app_flutter/data/services/data_source/mixins/package_strea
 import 'package:pixel_app_flutter/data/services/data_source/mixins/parse_bytes_package_mixin.dart';
 import 'package:pixel_app_flutter/data/services/data_source/mixins/send_packages_mixin.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
-import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/authorizartion.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/outgoing_data_source_packages.dart';
-import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/battery_percent.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:re_seedwork/re_seedwork.dart';
 
@@ -304,6 +302,10 @@ class DemoDataSource extends DataSource
             const DataSourceParameterId.motorVoltage2(),
             const DataSourceParameterId.motorVoltage3(),
             const DataSourceParameterId.motorVoltage4(),
+            const DataSourceParameterId.rpm1(),
+            const DataSourceParameterId.rpm2(),
+            const DataSourceParameterId.rpm3(),
+            const DataSourceParameterId.rpm4(),
           },
           respondCallback: (id, version, _, [__]) => _sendTwoUint16Callback(
             id,
@@ -320,11 +322,42 @@ class DemoDataSource extends DataSource
             const DataSourceParameterId.motorPower2(),
             const DataSourceParameterId.motorPower3(),
             const DataSourceParameterId.motorPower4(),
+            const DataSourceParameterId.motorTemperature1(),
+            const DataSourceParameterId.motorTemperature2(),
+            const DataSourceParameterId.motorTemperature3(),
+            const DataSourceParameterId.motorTemperature4(),
+            const DataSourceParameterId.controllerTemperature1(),
+            const DataSourceParameterId.controllerTemperature2(),
+            const DataSourceParameterId.controllerTemperature3(),
+            const DataSourceParameterId.controllerTemperature4(),
           },
           respondCallback: (id, version, _, [__]) => _sendTwoInt16Callback(
             id,
             version,
           ),
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {
+            const DataSourceParameterId.gearAndRoll1(),
+            const DataSourceParameterId.gearAndRoll2(),
+            const DataSourceParameterId.gearAndRoll3(),
+            const DataSourceParameterId.gearAndRoll4(),
+          },
+          respondCallback: (id, version, manager, [package]) {
+            final randomGear =
+                MotorGear.values[Random().nextInt(MotorGear.values.length)];
+            final randomRoll = MotorRollDirection
+                .values[Random().nextInt(MotorRollDirection.values.length)];
+            return manager.updateCallback(
+              id,
+              MotorGearAndRoll(
+                gear: randomGear,
+                rollDirection: randomRoll,
+                status: _getRandomStatus,
+              ),
+              version,
+            );
+          },
         ),
         MainEcuMockResponseWrapper(
           ids: {

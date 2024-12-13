@@ -5,7 +5,6 @@ import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/inc
 import 'package:pixel_app_flutter/domain/data_source/models/package/mixins/converter_mixins.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/mixins/function_id_validation_mixins.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/mixins/request_type_validation_mixins.dart';
-import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/uint16_with_status_body.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 
 abstract class DataSourceIncomingPackage<T extends BytesConvertible>
@@ -194,7 +193,7 @@ abstract class Int16WithStatusIncomingDataSourcePackage
 }
 
 abstract class UInt16WithStatusIncomingDataSourcePackage
-    extends DataSourceIncomingPackage<UInt16WithStatusBody>
+    extends DataSourceIncomingPackage<Uint16WithStatusBody>
     with
         IsEventOrBufferRequestOrSubscriptionAnswerRequestTypeMixin,
         IsPeriodicValueStatusFunctionIdMixin,

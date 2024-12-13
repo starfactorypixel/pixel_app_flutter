@@ -3,33 +3,33 @@ import 'package:pixel_app_flutter/domain/data_source/models/package_data/bytes_c
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/wrappers/bytes_convertible_with_status.dart';
 
 @immutable
-class UInt16WithStatusBody extends IntBytesConvertibleWithStatus {
-  const UInt16WithStatusBody({
+class Uint16WithStatusBody extends IntBytesConvertibleWithStatus {
+  const Uint16WithStatusBody({
     required super.status,
     required super.value,
   });
 
-  UInt16WithStatusBody.fromFunctionId({
+  Uint16WithStatusBody.fromFunctionId({
     required super.value,
     required super.id,
   }) : super.fromId();
 
-  const UInt16WithStatusBody.normal(
+  const Uint16WithStatusBody.normal(
     super.value,
   ) : super.normal();
 
-  const UInt16WithStatusBody.zero() : super.normal(0);
+  const Uint16WithStatusBody.zero() : super.normal(0);
 
-  factory UInt16WithStatusBody.builder(int functionId, int value) {
-    return UInt16WithStatusBody.fromFunctionId(
+  factory Uint16WithStatusBody.builder(int functionId, int value) {
+    return Uint16WithStatusBody.fromFunctionId(
       id: functionId,
       value: value,
     );
   }
 
-  static UInt16WithStatusBytesConverter<UInt16WithStatusBody> get converter =>
-      const UInt16WithStatusBytesConverter(UInt16WithStatusBody.builder);
+  static Uint16WithStatusBytesConverter<Uint16WithStatusBody> get converter =>
+      const Uint16WithStatusBytesConverter(Uint16WithStatusBody.builder);
 
   @override
-  BytesConverter<UInt16WithStatusBody> get bytesConverter => converter;
+  BytesConverter<Uint16WithStatusBody> get bytesConverter => converter;
 }

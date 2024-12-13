@@ -5,7 +5,6 @@ import 'package:pixel_app_flutter/domain/app/app.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/battery_percent.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
-import 'package:pixel_app_flutter/domain/data_source/models/package_data/implementations/battery_percent.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/wrappers/bytes_convertible_with_status.dart';
 import 'package:re_seedwork/re_seedwork.dart';
@@ -42,14 +41,6 @@ final class IntWithStatus {
 extension on IntBytesConvertibleWithStatus {
   IntWithStatus toIntWithStatus([int? customValue]) =>
       IntWithStatus(value: customValue ?? value, status: status);
-}
-
-extension on Sequence<IntWithStatus> {
-  Map<String, dynamic> toMap() {
-    return {
-      'value': this,
-    };
-  }
 }
 
 @sealed
@@ -203,7 +194,7 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
             ),
           ); // TODO(alexandr): show something from 4 motors.
         })
-        ..voidOnModel<UInt16WithStatusBody,
+        ..voidOnModel<Uint16WithStatusBody,
             MotorSpeedIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(
@@ -227,7 +218,10 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
     const DataSourceParameterId.motorSpeed3(),
     const DataSourceParameterId.motorSpeed4(),
     const DataSourceParameterId.odometer(),
-    const DataSourceParameterId.gearAndRoll(),
+    const DataSourceParameterId.gearAndRoll1(),
+    const DataSourceParameterId.gearAndRoll2(),
+    const DataSourceParameterId.gearAndRoll3(),
+    const DataSourceParameterId.gearAndRoll4(),
     const DataSourceParameterId.batteryPercent1(),
     const DataSourceParameterId.batteryPercent2(),
     const DataSourceParameterId.batteryPower1(),
