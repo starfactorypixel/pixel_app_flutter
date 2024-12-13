@@ -61,6 +61,10 @@ class _ChargingScreenState extends State<ChargingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final batteriesCount =
+        context.read<BatteryDataCubit>().state.batteriesCount;
+    final isOneBattery = batteriesCount == 1;
+
     return ResponsivePadding(
       child: TitleWrapper(
         title: context.l10n.batteryTabTitle,
@@ -72,23 +76,33 @@ class _ChargingScreenState extends State<ChargingScreen> {
             ),
             const GeneralInfoSection(),
             //
-            ChargingScreenSectionTitle(
-              title: context.l10n.chargingTemperatureTabTitle,
-            ),
-            const MOSAndBalancerTemperature(),
-            ChargingScreenSectionSubitle(
-              subtitle: context.l10n.sensorsSectionSubtitle,
-            ),
-            const TemperatureSensorsSection(),
-            //
-            ChargingScreenSectionTitle(
-              title: context.l10n.chargingVoltageTabTitle,
-            ),
-            const GeneralCellsVoltage(),
-            ChargingScreenSectionSubitle(
-              subtitle: context.l10n.cellsSectionSubtitle,
-            ),
-            const VoltageCellsSection(),
+            for (var i = 0; i < batteriesCount; i++) ...[
+              //
+              ChargingScreenSectionTitle(
+                title: isOneBattery
+                    ? context.l10n.chargingTemperatureTabTitle
+                    : context.l10n.chargingTemperatureNTabTitle(i + 1),
+              ),
+              MOSAndBalancerTemperature(batteryIndex: i),
+              ChargingScreenSectionSubitle(
+                subtitle: isOneBattery
+                    ? context.l10n.sensorsSectionSubtitle
+                    : context.l10n.sensorsSectionNSubtitle(i + 1),
+              ),
+              TemperatureSensorsSection(batteryIndex: i),
+              ChargingScreenSectionTitle(
+                title: isOneBattery
+                    ? context.l10n.chargingVoltageTabTitle
+                    : context.l10n.chargingVoltageNTabTitle(i + 1),
+              ),
+              GeneralCellsVoltage(batteryIndex: i),
+              ChargingScreenSectionSubitle(
+                subtitle: isOneBattery
+                    ? context.l10n.cellsSectionSubtitle
+                    : context.l10n.cellsSectionNSubtitle(i + 1),
+              ),
+              VoltageCellsSection(batteryIndex: i),
+            ],
             //
             const SliverToBoxAdapter(child: SizedBox(height: 20)),
           ],

@@ -60,6 +60,7 @@
   "errorDiscoveringDevicesMessage": "Ошибка при обнаружении устройств",
   "errorConnectingToDataSourceMessage": "Ошибка при подключении к источнику данных",
   "successfullyConnectedToDataSourceMessage": "Успешное подключение к источнику данных",
+  "errorGettingHardwareCountMessage": "Ошибка при получении количества устройств",
   "cancelButtonCaption": "Отменить",
   "saveButtonCaption": "Сохранить",
   "sendButtonCaption": "Отправить",
@@ -142,10 +143,66 @@
   },
   "chargingGeneralTabTitle": "Основное",
   "chargingTemperatureTabTitle": "Температура",
+  "chargingTemperatureNTabTitle": "Температура {number} батарея",
+  "@chargingTemperatureNTabTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "chargingVoltageTabTitle": "Напряжение",
+  "chargingVoltageNTabTitle": "Напряжение {number} батарея",
+  "@chargingVoltageNTabTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "totalVoltageTileTitle": "Общее напряжение",
+  "totalVoltageNTileTitle": "Общее напряжение {number} батарея",
+  "@totalVoltageNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "powerNTileTitle": "Мощность потребления/зарядки {number} батарея",
+  "@powerNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "batteryPercentNTileTitle": "Уровень заряда батареи {number}",
+  "@batteryPercentNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "totalCurrentTileTitle": "Общий ток разряда/заряда",
+  "totalCurrentNTileTitle": "Общий ток разряда/заряда {number} батарея",
+  "@totalCurrentNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "maximumRegisteredTemperatureTileTitle": "Максимальная температура",
+  "maximumRegisteredTemperatureNTileTitle": "Максимальная температура {number} батарея",
+  "@maximumRegisteredTemperatureNTileTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "voltageValue": "{value} В",
   "@voltageValue": {
     "placeholders": {
@@ -476,7 +533,23 @@
   "dontDisplaySwitcherButtonCaption": "Не отображать",
   "cabinLightButtonCaption": "Свет в салоне",
   "cellsSectionSubtitle": "Ячейки",
+  "cellsSectionNSubtitle": "Ячейки {number} батарея",
+  "@cellsSectionNSubtitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "sensorsSectionSubtitle": "Датчики",
+  "sensorsSectionNSubtitle": "Датчики {number} батарея",
+  "@sensorsSectionNSubtitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "waitingInterfaceStatus": "Ожидание",
   "closedShortStatusMessage": "Закр",
   "openedShortStatusMessage": "Откр",

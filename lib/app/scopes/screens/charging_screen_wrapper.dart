@@ -26,6 +26,7 @@ class ChargingScreenWrapper extends StatelessWidget
                 .subscribeTo(BatteryDataCubit.kDefaultSubscribeParameters);
             return BatteryDataCubit(
               dataSource: context.read(),
+              hardwareCount: context.read<HardwareCount>(),
             );
           },
         ),

@@ -53,6 +53,7 @@ class DataSourceAuthorizationCubit extends Cubit<DataSourceAuthorizationState> {
   DataSourceAuthorizationCubit({
     required this.dataSourceStorage,
     required this.serialNumberStorage,
+    required this.shouldWriteDataSourceCallback,
     this.initializationTimeout = kInitializationTimeout,
     this.authorizationTimeout = kAuthorizationTimeout,
   }) : super(const DataSourceAuthorizationState.initial());
@@ -71,6 +72,9 @@ class DataSourceAuthorizationCubit extends Cubit<DataSourceAuthorizationState> {
 
   @protected
   final Duration authorizationTimeout;
+
+  @protected
+  final Future<bool> Function() shouldWriteDataSourceCallback;
 
   @protected
   final SerialNumberStorage serialNumberStorage;
@@ -195,7 +199,7 @@ class DataSourceAuthorizationCubit extends Cubit<DataSourceAuthorizationState> {
 
     emit(newState);
 
-    if (newState is _Authorized) {
+    if (newState is _Authorized && await shouldWriteDataSourceCallback()) {
       await dataSourceStorage.write(dswa);
       final result = await serialNumberStorage.write(chain);
 

@@ -1,16 +1,16 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
-import 'package:meta/meta.dart';
 import 'package:pixel_app_flutter/data/services/data_source/mixins/default_data_source_observer_mixin.dart';
 import 'package:pixel_app_flutter/data/services/data_source/mixins/devices_periodic_stream_mixin.dart';
 import 'package:pixel_app_flutter/data/services/data_source/mixins/package_stream_controller_mixin.dart';
 import 'package:pixel_app_flutter/data/services/data_source/mixins/parse_bytes_package_mixin.dart';
 import 'package:pixel_app_flutter/data/services/data_source/mixins/send_packages_mixin.dart';
+import 'package:pixel_app_flutter/data/services/data_source/stubs/usb_data_source.dart'
+    as stub;
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:re_seedwork/re_seedwork.dart';
-
-typedef ListUsbPortsCallback = List<String> Function();
 
 class USBDataSource extends DataSource
     with
@@ -25,7 +25,7 @@ class USBDataSource extends DataSource
   }) : super(key: kKey);
 
   @protected
-  final ListUsbPortsCallback getAvailablePorts;
+  final stub.ListUsbPortsCallback getAvailablePorts;
 
   @protected
   final UsbPortParametersConfig portParametersConfig;

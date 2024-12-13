@@ -279,7 +279,7 @@ void main() {
             'when in the buffer remained more than or equal '
             'to minimum package length', () async {
           // arrange
-          const validPackage = [60, 0, 149, 87, 0, 3, 97, 124, 6, 69, 165, 62];
+          const validPackage = [60, 0, 149, 136, 1, 3, 97, 124, 6, 75, 214, 62];
           ds.buffer.addAll([
             1, 2, 3, 4, 5, 6, //
             ...validPackage,
