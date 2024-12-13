@@ -453,6 +453,19 @@ class DemoDataSource extends DataSource
             version,
           ),
         ),
+        MainEcuMockResponseWrapper(
+          ids: {const DataSourceParameterId.odometer()},
+          respondCallback: (id, version, manager, [package]) {
+            return manager.updateCallback(
+              id,
+              Uint32WithStatusBody(
+                status: _getRandomStatus,
+                value: Random().nextInt(0xFFFFFFFF),
+              ),
+              version,
+            );
+          },
+        ),
         MainEcuMockResponseUpdateCallbackWrapper(
           ids: {
             const DataSourceParameterId.maxTemperature1(),
@@ -671,14 +684,11 @@ class DemoDataSource extends DataSource
 
   double get randomDoubleUint16 => Random().nextDouble() * 0xFFFF;
 
-  double get randomDoubleUint32 => Random().nextDouble() * 0xFFFFFFFF;
-
   Result<SendPackageError, void> _updateValueCallback(
     DataSourceParameterId parameterId,
     BytesConvertible convertible,
-    DataSourceProtocolVersion version, [
-    DataSourceOutgoingPackage? package,
-  ]) {
+    DataSourceProtocolVersion version,
+  ) {
     final requestType = version.when(
       subscription: () => 0x95, //'10010101'
       periodicRequests: () => 0x81, //'10000001'
@@ -729,9 +739,8 @@ final class MainEcuMockManager {
   final Result<SendPackageError, void> Function(
     DataSourceParameterId parameterId,
     BytesConvertible convertible,
-    DataSourceProtocolVersion version, [
-    DataSourceOutgoingPackage? package,
-  ]) updateCallback;
+    DataSourceProtocolVersion version,
+  ) updateCallback;
 
   bool checkAvailableForSubscription(DataSourceParameterId id) {
     return mockedResponses.any(
@@ -850,6 +859,6 @@ final class MainEcuMockResponseUpdateCallbackWrapper
     MainEcuMockManager manager, [
     DataSourceOutgoingPackage? package,
   ]) {
-    return manager.updateCallback(id, convertible, version, package);
+    return manager.updateCallback(id, convertible, version);
   }
 }

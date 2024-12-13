@@ -730,7 +730,7 @@ class ControllerTemperature4ParameterId extends DataSourceParameterId {
 }
 
 class OdometerParameterId extends DataSourceParameterId {
-  const OdometerParameterId() : super(0x010D);
+  const OdometerParameterId() : super(0x014E);
 }
 
 class TrunkParameterId extends DataSourceParameterId {
