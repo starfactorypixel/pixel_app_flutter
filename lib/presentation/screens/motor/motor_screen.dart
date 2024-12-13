@@ -4,8 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:pixel_app_flutter/l10n/l10n.dart';
-import 'package:pixel_app_flutter/presentation/app/extensions.dart';
 import 'package:pixel_app_flutter/presentation/widgets/common/atoms/responsive_padding.dart';
+import 'package:pixel_app_flutter/presentation/widgets/common/atoms/sliver_section_subtitle.dart';
+import 'package:pixel_app_flutter/presentation/widgets/common/molecules/cell_sliver_grid_builder.dart';
+import 'package:pixel_app_flutter/presentation/widgets/common/organisms/title_wrapper.dart';
+import 'package:re_widgets/re_widgets.dart';
 
 @RoutePage()
 class MotorScreen extends StatelessWidget {
@@ -16,304 +19,235 @@ class MotorScreen extends StatelessWidget {
     final motorsCount = context.read<MotorDataCubit>().state.motorsCount;
 
     return ResponsivePadding(
-      child: ListView(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              for (int i = 0; i < motorsCount; ++i)
-                _ItemHorizontal(value: '#${i + 1}'),
-            ],
-          ),
-          Container(
-            height: 24,
-          ),
-          _ValuesTableRow.builder(
-            parameterName: context.l10n.speedTileTitle,
-            builder: () {
-              final state =
-                  context.select((MotorDataCubit cubit) => cubit.state.speed);
-
-              return (
-                state
-                    .map(
-                      (element) => _Value(
-                        '${element.value ~/ 10}',
-                        context.colorFromStatus(element.status),
+      child: TitleWrapper(
+        title: context.l10n.motorTabTitle,
+        body: FadeCustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverSectionSubtitle(subtitle: context.l10n.speedTileTitle),
+            //
+            CellSliverGridBuilder<MotorDataCubit, MotorDataState,
+                Uint16WithStatusBody?>(
+              itemCount: motorsCount,
+              selector: (state, index) => state.speed.getAt(index),
+              contentBuilder: (context, data) {
+                return (
+                  context.l10n.kmPerHourValue((data?.value ?? 0) ~/ 10),
+                  data?.status,
+                );
+              },
+            ),
+            //
+            SliverSectionSubtitle(subtitle: context.l10n.rpmTileTitle),
+            //
+            CellSliverGridBuilder<MotorDataCubit, MotorDataState,
+                Uint16WithStatusBody?>(
+              itemCount: motorsCount,
+              selector: (state, index) => state.rpm.getAt(index),
+              contentBuilder: (context, data) {
+                return (
+                  context.l10n.rpmValue(data?.value ?? 0),
+                  data?.status,
+                );
+              },
+            ),
+            //
+            SliverSectionSubtitle(subtitle: context.l10n.voltageTileTitle),
+            //
+            CellSliverGridBuilder<MotorDataCubit, MotorDataState,
+                Uint16WithStatusBody?>(
+              itemCount: motorsCount,
+              selector: (state, index) => state.voltage.getAt(index),
+              contentBuilder: (context, data) {
+                return (
+                  context.l10n.voltageValue(
+                    ((data?.value ?? 0) / 10).toStringAsFixed(1),
+                  ),
+                  data?.status,
+                );
+              },
+            ),
+            //
+            SliverSectionSubtitle(subtitle: context.l10n.currentTileTitle),
+            //
+            CellSliverGridBuilder<MotorDataCubit, MotorDataState,
+                Uint16WithStatusBody?>(
+              itemCount: motorsCount,
+              selector: (state, index) => state.current.getAt(index),
+              contentBuilder: (context, data) {
+                return (
+                  context.l10n.currentValue(
+                    ((data?.value ?? 0) / 10).toStringAsFixed(1),
+                  ),
+                  data?.status,
+                );
+              },
+            ),
+            //
+            SliverSectionSubtitle(subtitle: context.l10n.powerTileTitle),
+            //
+            CellSliverGridBuilder<MotorDataCubit, MotorDataState,
+                Uint16WithStatusBody?>(
+              itemCount: motorsCount,
+              selector: (state, index) => state.power.getAt(index),
+              contentBuilder: (context, data) {
+                return (
+                  context.l10n.wattValue(data?.value ?? 0),
+                  data?.status,
+                );
+              },
+            ),
+            //
+            SliverSectionSubtitle(
+              subtitle: context.l10n.motorsTemperatureTileTitle,
+            ),
+            //
+            CellSliverGridBuilder<MotorDataCubit, MotorDataState,
+                Uint16WithStatusBody?>(
+              itemCount: motorsCount,
+              selector: (state, index) => state.motorTemperature.getAt(index),
+              contentBuilder: (context, data) {
+                return (
+                  context.l10n.celsiusValue(data?.value ?? 0),
+                  data?.status,
+                );
+              },
+            ),
+            //
+            SliverSectionSubtitle(
+              subtitle: context.l10n.controllersTemperatureTileTitle,
+            ),
+            //
+            CellSliverGridBuilder<MotorDataCubit, MotorDataState,
+                Uint16WithStatusBody?>(
+              itemCount: motorsCount,
+              selector: (state, index) {
+                return state.controllerTemperature.getAt(index);
+              },
+              contentBuilder: (context, data) {
+                return (
+                  context.l10n.celsiusValue(data?.value ?? 0),
+                  data?.status,
+                );
+              },
+            ),
+            //
+            SliverSectionSubtitle(
+              subtitle: context.l10n.motorGearTileTitle,
+              onInfoPressed: () {
+                showDialog<void>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(context.l10n.motorGearTileTitle),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          for (final gear in MotorGear.values)
+                            ListTile(
+                              title: Text(context.gearToShortString(gear)),
+                              trailing: Text(context.gearToFullString(gear)),
+                            ),
+                        ],
                       ),
-                    )
-                    .toList(),
-              );
-            },
-            unitOfMeasurement: context.l10n.kmPerHourMeasurenentUnit,
-          ),
-          _ValuesTableRow.builder(
-            parameterName: context.l10n.rpmTileTitle,
-            builder: () {
-              final state =
-                  context.select((MotorDataCubit cubit) => cubit.state.rpm);
-              return (
-                state
-                    .map(
-                      (element) => _Value(
-                        '${element.value}',
-                        context.colorFromStatus(element.status),
+                    );
+                  },
+                );
+              },
+            ),
+            //
+            CellSliverGridBuilder<MotorDataCubit, MotorDataState, MotorGear?>(
+              itemCount: motorsCount,
+              selector: (state, index) => state.gearAndRoll.getAt(index)?.gear,
+              contentBuilder: (context, data) {
+                return (context.gearToShortString(data), null);
+              },
+            ),
+            //
+            SliverSectionSubtitle(
+              subtitle: context.l10n.motorRollDirectionTileTitle,
+              onInfoPressed: () {
+                showDialog<void>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(context.l10n.motorRollDirectionTileTitle),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          for (final direction in MotorRollDirection.values)
+                            ListTile(
+                              title: Text(context.rollToShortString(direction)),
+                              trailing:
+                                  Text(context.rollToFullString(direction)),
+                            ),
+                        ],
                       ),
-                    )
-                    .toList(),
-              );
-            },
-            unitOfMeasurement: context.l10n.rpmMeasurementUnit,
-          ),
-          _ValuesTableRow.builder(
-            parameterName: context.l10n.voltageTileTitle,
-            builder: () {
-              final state =
-                  context.select((MotorDataCubit cubit) => cubit.state.voltage);
-              return (
-                state
-                    .map(
-                      (element) => _Value(
-                        (element.value / 10).toStringAsFixed(1),
-                        context.colorFromStatus(element.status),
-                      ),
-                    )
-                    .toList(),
-              );
-            },
-            unitOfMeasurement: context.l10n.voltMeasurementUnit,
-          ),
-          _ValuesTableRow.builder(
-            parameterName: context.l10n.currentTileTitle,
-            builder: () {
-              final state =
-                  context.select((MotorDataCubit cubit) => cubit.state.current);
-              return (
-                state
-                    .map(
-                      (element) => _Value(
-                        (element.value / 10).toStringAsFixed(1),
-                        context.colorFromStatus(element.status),
-                      ),
-                    )
-                    .toList(),
-              );
-            },
-            unitOfMeasurement: context.l10n.amperMeasurementUnit,
-          ),
-          _ValuesTableRow.builder(
-            parameterName: context.l10n.powerTileTitle,
-            builder: () {
-              final state =
-                  context.select((MotorDataCubit cubit) => cubit.state.power);
-              return (
-                state
-                    .map(
-                      (element) => _Value(
-                        '${element.value}',
-                        context.colorFromStatus(element.status),
-                      ),
-                    )
-                    .toList(),
-              );
-            },
-            unitOfMeasurement: context.l10n.wattMeasurementUnit,
-          ),
-          _ValuesTableRow.builder(
-            parameterName: context.l10n.motorsTemperatureTileTitle,
-            builder: () {
-              final state = context.select(
-                (MotorDataCubit cubit) => cubit.state.motorTemperature,
-              );
-              return (
-                state
-                    .map(
-                      (element) => _Value(
-                        '${element.value}',
-                        context.colorFromStatus(element.status),
-                      ),
-                    )
-                    .toList(),
-              );
-            },
-            unitOfMeasurement: context.l10n.celsiusMeasurementUnit,
-          ),
-          _ValuesTableRow.builder(
-            parameterName: context.l10n.controllersTemperatureTileTitle,
-            builder: () {
-              final state = context.select(
-                (MotorDataCubit cubit) => cubit.state.controllerTemperature,
-              );
-              return (
-                state
-                    .map(
-                      (element) => _Value(
-                        '${element.value}',
-                        context.colorFromStatus(element.status),
-                      ),
-                    )
-                    .toList(),
-              );
-            },
-            unitOfMeasurement: context.l10n.celsiusMeasurementUnit,
-          ),
-          _ValuesTableRow.builder(
-            parameterName: context.l10n.motorGearTileTitle,
-            builder: () {
-              final state = context
-                  .select((MotorDataCubit cubit) => cubit.state.gearAndRoll);
-              return (
-                state
-                    .map(
-                      (element) => _Value(
-                        element.gear.toLocalizedString(context),
-                        context.colorFromStatus(element.status),
-                      ),
-                    )
-                    .toList(),
-              );
-            },
-            unitOfMeasurement: '',
-          ),
-          _ValuesTableRow.builder(
-            parameterName: context.l10n.motorRollDirectionTileTitle,
-            isLast: true,
-            builder: () {
-              final state = context
-                  .select((MotorDataCubit cubit) => cubit.state.gearAndRoll);
-              return (
-                state
-                    .map(
-                      (element) => _Value(
-                        element.rollDirection.toLocalizedString(context),
-                        context.colorFromStatus(element.status),
-                      ),
-                    )
-                    .toList(),
-              );
-            },
-            unitOfMeasurement: '',
-          ),
-        ],
+                    );
+                  },
+                );
+              },
+            ),
+            //
+            CellSliverGridBuilder<MotorDataCubit, MotorDataState,
+                MotorRollDirection?>(
+              itemCount: motorsCount,
+              selector: (state, index) =>
+                  state.gearAndRoll.getAt(index)?.rollDirection,
+              contentBuilder: (context, data) {
+                return (context.rollToShortString(data), null);
+              },
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 20)),
+          ],
+        ),
       ),
     );
   }
 }
 
-extension on MotorGear {
-  String toLocalizedString(BuildContext context) {
-    return when(
-      reverse: () => context.l10n.reverseGear,
-      neutral: () => context.l10n.neutralGear,
-      drive: () => context.l10n.driveGear,
-      low: () => context.l10n.lowGear,
-      boost: () => context.l10n.boostGear,
-      unknown: () => context.l10n.unknownGear,
-    );
-  }
-}
-
-extension on MotorRollDirection {
-  String toLocalizedString(BuildContext context) {
-    return when(
-      reverse: () => context.l10n.reverseMotorRollDirection,
-      unknown: () => context.l10n.unknownMotorRollDirection,
-      forward: () => context.l10n.forwardMotorRollDirection,
-      stop: () => context.l10n.stopMotorRollDirection,
-    );
-  }
-}
-
-class _ItemHorizontal extends Expanded {
-  _ItemHorizontal({required String value, Color? color})
-      : super(
-          child: Center(
-            child: Text(
-              value,
-              style: TextStyle(color: color),
-            ),
-          ),
-        );
-}
-
-class _Value {
-  _Value(this.message, this.color);
-
-  String message;
-  Color? color;
-}
-
-class _ValuesTableRow extends StatelessWidget {
-  const _ValuesTableRow({
-    required this.parameterName,
-    required this.values,
-    required this.unitOfMeasurement,
-    this.isLast,
-  });
-
-  factory _ValuesTableRow.builder({
-    required String parameterName,
-    required String unitOfMeasurement,
-    bool? isLast,
-    required (List<_Value>,) Function() builder,
-  }) {
-    final state = builder();
-
-    return _ValuesTableRow(
-      parameterName: parameterName,
-      values: state.$1,
-      unitOfMeasurement: unitOfMeasurement,
-      isLast: isLast,
+extension on BuildContext {
+  String gearToShortString(MotorGear? gear) {
+    if (gear == null) return l10n.unknownGearShort;
+    return gear.when(
+      reverse: () => l10n.reverseGearShort,
+      neutral: () => l10n.neutralGearShort,
+      drive: () => l10n.driveGearShort,
+      low: () => l10n.lowGearShort,
+      boost: () => l10n.boostGearShort,
+      unknown: () => l10n.unknownGearShort,
     );
   }
 
-  final String parameterName;
-  final List<_Value> values;
-  final String unitOfMeasurement;
-  final bool? isLast;
-
-  @override
-  Widget build(BuildContext context) {
-    final motorsCount = context.read<MotorDataCubit>().state.motorsCount;
-
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              parameterName,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Text(
-              unitOfMeasurement,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-        Container(
-          height: 12,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            for (int i = 0; i < motorsCount; ++i)
-              _ItemHorizontal(
-                value: getValue(i)?.message ?? '',
-                color: getValue(i)?.color,
-              ),
-          ],
-        ),
-        if (!(isLast ?? false))
-          const Divider(
-            height: 24,
-          ),
-      ],
+  String gearToFullString(MotorGear? gear) {
+    if (gear == null) return l10n.unknownGear;
+    return gear.when(
+      reverse: () => l10n.reverseGear,
+      neutral: () => l10n.neutralGear,
+      drive: () => l10n.driveGear,
+      low: () => l10n.lowGear,
+      boost: () => l10n.boostGear,
+      unknown: () => l10n.unknownGear,
     );
   }
 
-  _Value? getValue(int i) {
-    if (values.isEmpty || i > values.length - 1) return null;
-    return values[i];
+  String rollToShortString(MotorRollDirection? direction) {
+    if (direction == null) return l10n.unknownMotorRollDirectionShort;
+    return direction.when(
+      reverse: () => l10n.reverseMotorRollDirectionShort,
+      unknown: () => l10n.unknownMotorRollDirectionShort,
+      forward: () => l10n.forwardMotorRollDirectionShort,
+      stop: () => l10n.stopMotorRollDirectionShort,
+    );
+  }
+
+  String rollToFullString(MotorRollDirection? direction) {
+    if (direction == null) return l10n.unknownMotorRollDirection;
+    return direction.when(
+      reverse: () => l10n.reverseMotorRollDirection,
+      unknown: () => l10n.unknownMotorRollDirection,
+      forward: () => l10n.forwardMotorRollDirection,
+      stop: () => l10n.stopMotorRollDirection,
+    );
   }
 }

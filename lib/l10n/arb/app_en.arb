@@ -227,6 +227,30 @@
       }
     }
   },
+  "kmPerHourValue": "{value} km/h",
+  "@kmPerHourValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "rpmValue": "{value} RPM",
+  "@rpmValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "wattValue": "{value} W",
+  "@wattValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
   "balancerTileTitle": "Balancer",
   "mosTileTitle": "MOS",
   "cellNTileTitle": "Cell {number}",
@@ -317,7 +341,11 @@
   "driveGearShort": "D",
   "lowGearShort": "L",
   "boostGearShort": "B",
-  "unknownGearShort": "",
+  "unknownGearShort": "U",
+  "reverseMotorRollDirectionShort": "R",
+  "unknownMotorRollDirectionShort": "U",
+  "forwardMotorRollDirectionShort": "F",
+  "stopMotorRollDirectionShort": "S",
   "reverseMotorRollDirection": "Reverse",
   "unknownMotorRollDirection": "Unknown",
   "forwardMotorRollDirection": "Forward",
