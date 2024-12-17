@@ -546,59 +546,59 @@ abstract class SideBeamParameterId extends DataSourceParameterId {
 }
 
 class FrontSideBeamParameterId extends SideBeamParameterId {
-  const FrontSideBeamParameterId() : super(0x00C4);
+  const FrontSideBeamParameterId() : super(0x01C4);
 }
 
 class TailSideBeamParameterId extends SideBeamParameterId {
-  const TailSideBeamParameterId() : super(0x00E4);
+  const TailSideBeamParameterId() : super(0x01E4);
 }
 
 class LowBeamParameterId extends DataSourceParameterId {
-  const LowBeamParameterId() : super(0x00C5);
+  const LowBeamParameterId() : super(0x01C5);
 }
 
 class HighBeamParameterId extends DataSourceParameterId {
-  const HighBeamParameterId() : super(0x00C6);
+  const HighBeamParameterId() : super(0x01C6);
 }
 
 class FrontHazardBeamParameterId extends DataSourceParameterId {
-  const FrontHazardBeamParameterId() : super(0x00C9);
+  const FrontHazardBeamParameterId() : super(0x01C9);
 }
 
 class TailHazardBeamParameterId extends DataSourceParameterId {
-  const TailHazardBeamParameterId() : super(0x00E9);
+  const TailHazardBeamParameterId() : super(0x01E9);
 }
 
 class TailCustomBeamParameterId extends DataSourceParameterId {
-  const TailCustomBeamParameterId() : super(0x00EA);
+  const TailCustomBeamParameterId() : super(0x01EA);
 }
 
 class FrontLeftTurnSignalParameterId extends DataSourceParameterId {
-  const FrontLeftTurnSignalParameterId() : super(0x00C7);
+  const FrontLeftTurnSignalParameterId() : super(0x01C7);
 }
 
 class FrontRightTurnSignalParameterId extends DataSourceParameterId {
-  const FrontRightTurnSignalParameterId() : super(0x00C8);
+  const FrontRightTurnSignalParameterId() : super(0x01C8);
 }
 
 class TailLeftTurnSignalParameterId extends DataSourceParameterId {
-  const TailLeftTurnSignalParameterId() : super(0x00E7);
+  const TailLeftTurnSignalParameterId() : super(0x01E7);
 }
 
 class TailRightTurnSignalParameterId extends DataSourceParameterId {
-  const TailRightTurnSignalParameterId() : super(0x00E8);
+  const TailRightTurnSignalParameterId() : super(0x01E8);
 }
 
 class BrakeLightParameterId extends DataSourceParameterId {
-  const BrakeLightParameterId() : super(0x00E5);
+  const BrakeLightParameterId() : super(0x01E5);
 }
 
 class ReverseLightParameterId extends DataSourceParameterId {
-  const ReverseLightParameterId() : super(0x00E6);
+  const ReverseLightParameterId() : super(0x01E6);
 }
 
 class CustomImageParameterId extends DataSourceParameterId {
-  const CustomImageParameterId() : super(0x00EB);
+  const CustomImageParameterId() : super(0x01EB);
 }
 
 class RPM1ParameterId extends DataSourceParameterId {
