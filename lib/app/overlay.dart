@@ -120,7 +120,8 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: '${value.speed.value}',
+                                              text:
+                                                  '${value.mergedSpeed.value}',
                                               style: kSpeedTextStyle.copyWith(
                                                 color:
                                                     context.colors.textAccent,
@@ -144,7 +145,7 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
                                 Column(
                                   children: [
                                     Text(
-                                      value.gear.when(
+                                      value.mergedGear.when(
                                         reverse: () =>
                                             context.l10n.reverseGearShort,
                                         neutral: () =>

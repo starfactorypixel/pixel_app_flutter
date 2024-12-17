@@ -1,11 +1,14 @@
 import 'package:flutter/widgets.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:pixel_app_flutter/presentation/app/colors.dart';
+import 'package:pixel_app_flutter/presentation/app/extensions.dart';
 
-class ChargingScreenCellWidget extends StatelessWidget {
-  const ChargingScreenCellWidget({
+class NumberedCellWidget extends StatelessWidget {
+  const NumberedCellWidget({
     super.key,
     required this.number,
     required this.content,
+    required this.status,
   });
 
   @protected
@@ -13,6 +16,9 @@ class ChargingScreenCellWidget extends StatelessWidget {
 
   @protected
   final String content;
+
+  @protected
+  final PeriodicValueStatus? status;
 
   static const kRadius = Radius.circular(6);
 
@@ -34,11 +40,14 @@ class ChargingScreenCellWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color =
+        context.colorFromStatus(status ?? PeriodicValueStatus.normal) ??
+            context.colors.successPastel;
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(kRadius),
         border: Border.all(
-          color: context.colors.successPastel,
+          color: color,
         ),
       ),
       child: Column(
@@ -47,7 +56,7 @@ class ChargingScreenCellWidget extends StatelessWidget {
           DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.vertical(top: kRadius),
-              color: context.colors.successPastel,
+              color: color,
             ),
             child: Text(
               '#$number',

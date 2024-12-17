@@ -227,6 +227,30 @@
       }
     }
   },
+  "kmPerHourValue": "{value} км/ч",
+  "@kmPerHourValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "rpmValue": "{value} об/м",
+  "@rpmValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "wattValue": "{value} Вт",
+  "@wattValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
   "mosTileTitle": "МОП-транзистор(MOS)",
   "balancerTileTitle": "Балансировщик",
   "cellNTileTitle": "Ячейка {number}",
@@ -317,7 +341,11 @@
   "driveGearShort": "D",
   "lowGearShort": "L",
   "boostGearShort": "B",
-  "unknownGearShort": "",
+  "unknownGearShort": "U",
+  "reverseMotorRollDirectionShort": "R",
+  "unknownMotorRollDirectionShort": "U",
+  "forwardMotorRollDirectionShort": "F",
+  "stopMotorRollDirectionShort": "S",
   "reverseMotorRollDirection": "Назад",
   "unknownMotorRollDirection": "Неизвестно",
   "forwardMotorRollDirection": "Вперед",

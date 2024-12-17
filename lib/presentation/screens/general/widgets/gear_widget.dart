@@ -27,7 +27,7 @@ class GearWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<GeneralDataCubit, GeneralDataState, MotorGear>(
-      selector: (state) => state.gear,
+      selector: (state) => state.mergedGear,
       builder: (context, state) {
         final gear = state.when(
           reverse: () => context.l10n.reverseGearShort,

@@ -29,7 +29,7 @@ class SpeedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isHandset = Screen.of(context).type.isHandset;
     final model = context.select<GeneralDataCubit, IntWithStatus>(
-      (value) => value.state.speed,
+      (value) => value.state.mergedSpeed,
     );
 
     return Padding(

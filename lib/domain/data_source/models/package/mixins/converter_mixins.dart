@@ -43,6 +43,13 @@ mixin Int16WithStatusBodyBytesConverterMixin
       Int16WithStatusBody.converter;
 }
 
+mixin UInt16WithStatusBodyBytesConverterMixin
+    on DataSourceIncomingPackage<Uint16WithStatusBody> {
+  @override
+  BytesConverter<Uint16WithStatusBody> get bytesConverter =>
+      Uint16WithStatusBody.converter;
+}
+
 mixin TwoUint16WithStatusBodyBytesConverterMixin
     on DataSourceIncomingPackage<TwoUint16WithStatusBody> {
   @override
