@@ -270,14 +270,12 @@ extension on List<int> {
           big: () => insert(0, lastBytePlaceholder),
           little: () => add(lastBytePlaceholder),
         );
-        break;
       case > 4 && < 8:
         final bytes = List.generate(8 - length, (index) => lastBytePlaceholder);
         endian.when(
           big: () => insertAll(0, bytes),
           little: () => addAll(bytes),
         );
-        break;
     }
   }
 }

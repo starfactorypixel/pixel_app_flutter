@@ -103,7 +103,7 @@ class _EnterSerialNumberScreenState extends State<EnterSerialNumberScreen> {
                             SerialNumber? sn;
                             try {
                               sn = SerialNumber(value);
-                            } catch (e) {
+                            } on Exception catch (_) {
                               context.showSnackBar(
                                 context.l10n.errorFormatingSerialNumberMessage,
                               );

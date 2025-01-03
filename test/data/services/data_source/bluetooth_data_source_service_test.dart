@@ -619,7 +619,7 @@ void main() {
           expect(
             await ds.enable(),
             isA<Result<EnableError, void>>().having(
-              (p0) => p0.when(error: (e) => e, value: (_) => _),
+              (p0) => p0.when(error: (e) => e, value: (v) => v),
               'returns EnableError.isUnavailable',
               equals(EnableError.isUnavailable),
             ),
@@ -644,7 +644,7 @@ void main() {
           expect(
             await ds.enable(),
             isA<Result<EnableError, void>>().having(
-              (p0) => p0.when(error: (e) => e, value: (_) => _),
+              (p0) => p0.when(error: (e) => e, value: (v) => v),
               'returns EnableError.isAlreadyEnabled',
               equals(EnableError.isAlreadyEnabled),
             ),
@@ -676,7 +676,7 @@ void main() {
               expect(
                 await ds.enable(),
                 isA<Result<EnableError, void>>().having(
-                  (p0) => p0.when(error: (e) => e, value: (_) => _),
+                  (p0) => p0.when(error: (e) => e, value: (v) => v),
                   'returns EnableError.unsuccessfulEnableAttempt',
                   equals(EnableError.unsuccessfulEnableAttempt),
                 ),
@@ -703,7 +703,7 @@ void main() {
               expect(
                 await ds.enable(),
                 isA<Result<EnableError, void>>().having(
-                  (p0) => p0.when(error: (e) => e, value: (_) => _),
+                  (p0) => p0.when(error: (e) => e, value: (v) => v),
                   'returns EnableError.unsuccessfulEnableAttempt',
                   equals(EnableError.unsuccessfulEnableAttempt),
                 ),

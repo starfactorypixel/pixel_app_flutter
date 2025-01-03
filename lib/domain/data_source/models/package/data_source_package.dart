@@ -99,7 +99,7 @@ abstract class DataSourcePackage extends UnmodifiableListView<int> {
     final last5bits = secondConfigByte.substring(3);
     try {
       return DataSourceRequestType.fromInt(int.parse(last5bits, radix: 2));
-    } catch (e) {
+    } on Exception catch (_) {
       throw Exception('package $this');
     }
   }
