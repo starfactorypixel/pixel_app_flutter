@@ -45,7 +45,7 @@ abstract class DataSourceIncomingPackage<T extends BytesConvertible>
   static DataSourceIncomingPackage? instanceOrNUll(List<int> package) {
     try {
       return DataSourceIncomingPackage.parse(package);
-    } catch (e) {
+    } on Exception catch (_) {
       return null;
     }
   }

@@ -75,10 +75,10 @@ class SettingsButton extends StatelessWidget {
           ),
         ),
         color: state.when(
-          error: () => context.colors.errorAccent.withOpacity(.15),
+          error: () => context.colors.errorAccent.withValues(alpha: .15),
           enabled: () => buttonColor,
-          warning: () => context.colors.warning.withOpacity(.15),
-          selected: () => context.colors.primary.withOpacity(.15),
+          warning: () => context.colors.warning.withValues(alpha: .15),
+          selected: () => context.colors.primary.withValues(alpha: .15),
         ),
       ),
       child: InkWell(

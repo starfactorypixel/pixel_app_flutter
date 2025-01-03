@@ -53,7 +53,7 @@ part 'subroutes/user_defined_buttons_route.dart';
 @AutoRouterConfig(
   replaceInRouteName: 'ScreenWrapper|Screen|PageWrapper|Page|Scope,Route',
 )
-class MainRouter extends _$MainRouter {
+class MainRouter extends RootStackRouter {
   MainRouter({
     required this.selectedDataSourceGuard,
   });
@@ -63,7 +63,7 @@ class MainRouter extends _$MainRouter {
 
   @override
   List<AutoRoute> get routes => <AutoRoute>[
-        CustomRoute(
+        CustomRoute<void>(
           path: '/',
           page: SelectedDataSourceFlow.page,
           guards: [selectedDataSourceGuard],
@@ -85,7 +85,7 @@ class MainRouter extends _$MainRouter {
         //
         _developerToolsRoute(selectedDS: false),
         //
-        CustomRoute(
+        CustomRoute<void>(
           path: '/loading',
           page: LoadingRoute.page,
           fullscreenDialog: true,

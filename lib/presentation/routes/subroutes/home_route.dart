@@ -12,7 +12,7 @@ final _homeRoute = AutoRoute(
           path: '',
           page: GeneralRoute.page,
         ),
-        CustomRoute(
+        CustomRoute<void>(
           path: 'led-switcher-dialog',
           page: LEDSwitcherDialogRoute.page,
           customRouteBuilder: dialogRouteBuilder,
@@ -31,7 +31,7 @@ final _homeRoute = AutoRoute(
           path: '',
           page: NavigatorRoute.page,
         ),
-        CustomRoute(
+        CustomRoute<bool>(
           path: 'enable-fast-access',
           page: EnableFastAccessDialogRoute.page,
           customRouteBuilder: enableFastAccessDialofRouteBuilder,

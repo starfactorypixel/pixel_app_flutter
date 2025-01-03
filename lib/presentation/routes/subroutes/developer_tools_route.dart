@@ -41,34 +41,34 @@ AutoRoute _developerToolsRoute({bool selectedDS = true}) => AutoRoute(
               initial: true,
               page: RequestsExchangeLogsFilterRoute.page,
             ),
-            CustomRoute(
+            CustomRoute<List<int>>(
               page: FilterParameterIdDialogRoute.page,
               path: 'parameter-id',
               customRouteBuilder: dialogRouteBuilder,
             ),
-            CustomRoute(
+            CustomRoute<List<int>>(
               page: FilterRequestTypeDialogRoute.page,
               path: 'request-type',
               customRouteBuilder: dialogRouteBuilder,
             ),
-            CustomRoute(
+            CustomRoute<List<int>>(
               page: FilterDirectionDialogRoute.page,
               path: 'direction',
               customRouteBuilder: dialogRouteBuilder,
             ),
           ],
         ),
-        CustomRoute(
+        CustomRoute<List<int>>(
           page: ChangeParametersSubscriptionDialogRoute.page,
           path: 'change-parameters-subscription',
           customRouteBuilder: dialogRouteBuilder,
         ),
-        CustomRoute(
+        CustomRoute<int>(
           page: ChangeRequestPeriodDialogRoute.page,
           path: 'change-request-period',
           customRouteBuilder: dialogRouteBuilder,
         ),
-        CustomRoute(
+        CustomRoute<int>(
           page: ChangeHandshakeResponseTimeoutDialogRoute.page,
           path: 'change-handshake-response-timeout',
           customRouteBuilder: dialogRouteBuilder,
@@ -86,7 +86,7 @@ class RequestsExchangeLogsFilterScope extends AutoRouter {
   const RequestsExchangeLogsFilterScope({super.key});
 }
 
-@RoutePage<List<int>>(name: 'FilterParameterIdDialogRoute')
+@RoutePage(name: 'FilterParameterIdDialogRoute')
 class FilterParameterIdDialog extends IntegerListDialog {
   const FilterParameterIdDialog({
     super.key,
@@ -97,7 +97,7 @@ class FilterParameterIdDialog extends IntegerListDialog {
   });
 }
 
-@RoutePage<List<int>>(name: 'FilterRequestTypeDialogRoute')
+@RoutePage(name: 'FilterRequestTypeDialogRoute')
 class FilterRequestTypeDialog extends IntegerListDialog {
   const FilterRequestTypeDialog({
     super.key,
@@ -108,7 +108,7 @@ class FilterRequestTypeDialog extends IntegerListDialog {
   });
 }
 
-@RoutePage<List<int>>(name: 'FilterDirectionDialogRoute')
+@RoutePage(name: 'FilterDirectionDialogRoute')
 class FilterDirectionDialog extends IntegerListDialog {
   const FilterDirectionDialog({
     super.key,
@@ -119,7 +119,7 @@ class FilterDirectionDialog extends IntegerListDialog {
   });
 }
 
-@RoutePage<List<int>>(name: 'ChangeParametersSubscriptionDialogRoute')
+@RoutePage(name: 'ChangeParametersSubscriptionDialogRoute')
 class ChangeParametersSubscriptionDialog extends IntegerListDialog {
   const ChangeParametersSubscriptionDialog({
     super.key,
@@ -130,7 +130,7 @@ class ChangeParametersSubscriptionDialog extends IntegerListDialog {
   });
 }
 
-@RoutePage<int>(name: 'ChangeRequestPeriodDialogRoute')
+@RoutePage(name: 'ChangeRequestPeriodDialogRoute')
 class ChangeRequestPeriodDialog extends SliderDialog {
   const ChangeRequestPeriodDialog({
     super.key,
@@ -140,7 +140,7 @@ class ChangeRequestPeriodDialog extends SliderDialog {
   });
 }
 
-@RoutePage<int>(name: 'ChangeHandshakeResponseTimeoutDialogRoute')
+@RoutePage(name: 'ChangeHandshakeResponseTimeoutDialogRoute')
 class ChangeHandshakeResponseTimeoutDialog extends SliderDialog {
   const ChangeHandshakeResponseTimeoutDialog({
     super.key,

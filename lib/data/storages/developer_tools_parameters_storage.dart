@@ -34,7 +34,7 @@ class DeveloperToolsParametersStorageImpl
 
       put(devToolsParams);
       return Result.value(devToolsParams);
-    } catch (e) {
+    } on Exception catch (_) {
       return const Result.error(DeveloperToolsParametersReadError.noValue);
     }
   }

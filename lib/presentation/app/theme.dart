@@ -112,7 +112,7 @@ class MaterialTheme {
         ),
         elevation: 0,
         shape: ElevatedButtonBorder(colors: colors),
-        selectedColor: colors.primaryAccent.withOpacity(.15),
+        selectedColor: colors.primaryAccent.withValues(alpha: .15),
       ),
       badgeTheme: BadgeThemeData(
         backgroundColor: colors.primary,
@@ -134,9 +134,9 @@ class MaterialTheme {
         ).copyWith(
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
-              return colors.primaryAccent.withOpacity(.15);
+              return colors.primaryAccent.withValues(alpha: .15);
             }
-            return colors.borderAccent.withOpacity(.10);
+            return colors.borderAccent.withValues(alpha: .10);
           }),
           shape: ElevatedButtonBorder(colors: colors),
         ),

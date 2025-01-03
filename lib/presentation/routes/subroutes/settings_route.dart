@@ -16,12 +16,12 @@ final _settingsRoute = AutoRoute(
           initial: true,
           page: LEDPanelRoute.page,
         ),
-        CustomRoute(
+        CustomRoute<void>(
           page: AddConfigurationDialogRoute.page,
           path: 'add-configuration',
           customRouteBuilder: dialogRouteBuilder,
         ),
-        CustomRoute(
+        CustomRoute<void>(
           page: RemoveConfigurationDialogRoute.page,
           path: 'remove-configuration',
           customRouteBuilder: dialogRouteBuilder,
