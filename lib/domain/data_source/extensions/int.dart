@@ -1,7 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:collection/collection.dart';
-
 extension ToBytesExtension on int {
   Int8List get toBytesInt8 => intToBytesInt8(this);
 
@@ -27,15 +25,14 @@ extension ToBytesExtension on int {
   }
 }
 
-Uint8List intToBytesUint16(int value) {
+Uint8List intToBytesUint16(int value, {Endian endian = Endian.little}) {
   final data = ByteData(Uint16List.bytesPerElement)
-    ..setUint16(0, value, Endian.little);
+    ..setUint16(0, value, endian);
   return data.buffer.asUint8List();
 }
 
-Int8List intToBytesInt16(int value) {
-  final data = ByteData(Int16List.bytesPerElement)
-    ..setInt16(0, value, Endian.little);
+Int8List intToBytesInt16(int value, {Endian endian = Endian.little}) {
+  final data = ByteData(Int16List.bytesPerElement)..setInt16(0, value, endian);
   return data.buffer.asInt8List();
 }
 
@@ -44,18 +41,12 @@ Int8List intToBytesInt8(int value) {
   return data.buffer.asInt8List();
 }
 
-int uint32ToInt(List<int> bytes) {
-  return Uint8List.fromList(bytes)
-      .buffer
-      .asByteData()
-      .getUint32(0, Endian.little);
+int uint32ToInt(List<int> bytes, {Endian endian = Endian.little}) {
+  return Uint8List.fromList(bytes).buffer.asByteData().getUint32(0, endian);
 }
 
-int int32ToInt(List<int> bytes) {
-  return Int8List.fromList(bytes)
-      .buffer
-      .asByteData()
-      .getInt32(0, Endian.little);
+int int32ToInt(List<int> bytes, {Endian endian = Endian.little}) {
+  return Int8List.fromList(bytes).buffer.asByteData().getInt32(0, endian);
 }
 
 extension AsIntBytesExtension on List<int> {
@@ -96,7 +87,7 @@ extension ParseListOfIntsExtension on String {
         .replaceAll(',', ' ')
         .split(' ')
         .map((e) => int.tryParse(e.trim()))
-        .whereNotNull()
+        .nonNulls
         .toList();
   }
 

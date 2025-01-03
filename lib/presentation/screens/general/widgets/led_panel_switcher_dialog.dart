@@ -82,7 +82,7 @@ class LEDPanelSwitcherDialog extends StatelessWidget {
                               errorTurningOff: (_) => true,
                               orElse: () => false,
                             )
-                                ? context.colors.primary.withOpacity(.5)
+                                ? context.colors.primary.withValues(alpha: .5)
                                 : null,
                             title: Text(item.name),
                             trailing: current.whenOrNull(

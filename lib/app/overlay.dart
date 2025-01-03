@@ -91,7 +91,9 @@ class _OverlayGeneralStatisticsState extends State<OverlayGeneralStatistics> {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(24)),
-                  color: context.colors.background.withOpacity(.5),
+                  color: context.colors.background.withValues(
+                    alpha: .5,
+                  ),
                 ),
                 child: InkWell(
                   onTap: BgLauncher.bringAppToForeground,

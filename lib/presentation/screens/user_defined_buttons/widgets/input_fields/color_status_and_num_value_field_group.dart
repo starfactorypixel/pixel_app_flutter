@@ -153,7 +153,8 @@ class _ColorStatusAndNumValueFieldGroupWidgetState
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: FilledButton(
                   style: FilledButton.styleFrom(
-                    backgroundColor: context.colors.hintText.withOpacity(.2),
+                    backgroundColor:
+                        context.colors.hintText.withValues(alpha: .2),
                   ),
                   onPressed: () {
                     final defaultColors = generateDefaultStatusColors(context);

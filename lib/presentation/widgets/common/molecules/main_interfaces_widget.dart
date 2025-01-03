@@ -120,8 +120,8 @@ class MainInterfacesWidget extends StatelessWidget {
 
 extension on BuildContext {
   Color? getBeamColor({required bool isOn}) =>
-      isOn ? AppColors.of(this).primary.withOpacity(.3) : null;
+      isOn ? AppColors.of(this).primary.withValues(alpha: .3) : null;
 
   Color? getTurnLightColor({required bool isOn}) =>
-      isOn ? AppColors.of(this).warning.withOpacity(.2) : null;
+      isOn ? AppColors.of(this).warning.withValues(alpha: .2) : null;
 }

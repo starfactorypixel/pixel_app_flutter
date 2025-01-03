@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/widgets.dart';
-import 'package:pixel_app_flutter/domain/user_defined_buttons/user_defined_buttons.dart';
+import 'package:pixel_app_flutter/domain/data_source/extensions/int.dart';
+import 'package:pixel_app_flutter/domain/user_defined_buttons/user_defined_buttons.dart'
+    hide Endian;
 import 'package:re_seedwork/re_seedwork.dart';
 
 sealed class Matcher<T> {
@@ -46,7 +50,15 @@ final class ColorMatcher extends Matcher<Color> {
   static Color _parseColor(String serialized) => Color(int.parse(serialized));
 
   @override
-  String matcherResultToSting(Color result) => '${result.value}';
+  String matcherResultToSting(Color result) => '${uint32ToInt(
+        [
+          (result.a * 255).toInt(),
+          (result.r * 255).toInt(),
+          (result.g * 255).toInt(),
+          (result.b * 255).toInt(),
+        ],
+        endian: Endian.big,
+      )}';
 }
 
 class StringMatcher extends Matcher<String> {

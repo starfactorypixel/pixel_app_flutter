@@ -99,7 +99,7 @@ class _SelectDeviceDialogState extends State<SelectDeviceDialog> {
                                   tileColor: isSelected
                                       ? AppColors.of(context)
                                           .primary
-                                          .withOpacity(.15)
+                                          .withValues(alpha: .15)
                                       : null,
                                   subtitle: Text(e.address),
                                   onTap: () {

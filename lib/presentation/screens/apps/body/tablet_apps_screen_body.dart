@@ -250,7 +250,7 @@ class _AppCard extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        AppColors.of(context).border.withOpacity(.5),
+                        AppColors.of(context).border.withValues(alpha: .5),
                         AppColors.of(context).border,
                       ],
                     ),
