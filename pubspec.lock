@@ -452,12 +452,11 @@ packages:
   flutter_overlay_window:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "fix/inverted_drag"
-      resolved-ref: cb3e91b8fd554bd5191d9d54dcf88143e7c0a906
-      url: "https://github.com/radomir9720/flutter_overlay_window.git"
-    source: git
-    version: "0.4.3"
+      name: flutter_overlay_window
+      sha256: "87a8ed7c47104a9ac1352d081e85304934b3f06ae28507097e49dd5f892e208d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.5"
   flutter_secure_storage:
     dependency: "direct main"
     description:

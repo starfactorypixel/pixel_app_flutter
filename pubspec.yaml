@@ -66,12 +66,7 @@ dependencies:
   external_app_launcher: ^4.0.1
   flutter_libserialport: ^0.4.0
   flutter_secure_storage: ^9.0.0
-  # flutter_overlay_window: ^0.4.3
-  flutter_overlay_window:
-    git:
-      url: https://github.com/radomir9720/flutter_overlay_window.git
-      ref: "fix/inverted_drag"
-
+  flutter_overlay_window: ^0.4.5
   flutter_bluetooth_serial:
     git:
       url: https://github.com/radomir9720/flutter_bluetooth_serial.git
