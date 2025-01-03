@@ -15,19 +15,19 @@ AutoRoute _selectDataSourceRoute({bool root = true}) => AutoRoute(
             //
             _settingsRoute,
             //
-            CustomRoute(
+            CustomRoute<void>(
               page: SelectDeviceDialogRoute.page,
               path: 'select-device',
               customRouteBuilder: dialogRouteBuilder,
             ),
-            CustomRoute(
+            CustomRoute<bool>(
               page: DataSourceDisconnectDialogRoute.page,
               path: 'disconnect',
               customRouteBuilder: dialogRouteBuilder,
             ),
           ],
         ),
-        CustomRoute(
+        CustomRoute<void>(
           path: 'loading',
           page: NonPopableLoadingRoute.page,
           fullscreenDialog: true,
@@ -46,7 +46,7 @@ class SelectDataSourceGeneralScope extends AutoRouter {
   const SelectDataSourceGeneralScope({super.key});
 }
 
-@RoutePage<bool>(name: 'DataSourceDisconnectDialogRoute')
+@RoutePage(name: 'DataSourceDisconnectDialogRoute')
 class DataSourceDisconnectDialog extends BoolDialog {
   const DataSourceDisconnectDialog({
     super.key,
