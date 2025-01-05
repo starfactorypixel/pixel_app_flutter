@@ -45,7 +45,7 @@ class DeveloperToolsParameters {
       ),
       requestsPeriodInMillis: map['requestsPeriodInMillis'] as int,
       subscriptionParameterIds:
-          (map['subscriptionParameterIds'] as Set).cast<int>(),
+          (map['subscriptionParameterIds'] as List).cast<int>().toSet(),
       enableRandomErrorGenerationForDemoDataSource:
           map['enableRandomErrorGenerationForDemoDataSource'] as bool,
       enableHandshakeResponse: map['enableHandshakeResponse'] as bool,
@@ -60,11 +60,7 @@ class DeveloperToolsParameters {
         requestsPeriodInMillis = 800,
         enableHandshakeResponse = true,
         handshakeResponseTimeoutInMillis = 0,
-        subscriptionParameterIds = const {
-          // 125, //speed
-          // 174, // voltage
-          // 239, // current
-        };
+        subscriptionParameterIds = const {};
 
   final DataSourceProtocolVersion protocolVersion;
 
