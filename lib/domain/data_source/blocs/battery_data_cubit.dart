@@ -1,12 +1,9 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:pixel_app_flutter/domain/app/app.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
-import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/outgoing_data_source_packages.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:re_seedwork/re_seedwork.dart';
 
@@ -112,10 +109,6 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
   BatteryDataCubit({
     required this.dataSource,
     required HardwareCount hardwareCount,
-    this.temperatureUpdateDuration = kDefaultTemperatureUpdateDuration,
-    this.voltageUpdateDuration = kDefaultVoltageUpdateDuration,
-    this.temperatureParametersId = kDefaultTemperatureParameterIds,
-    this.voltageParametersId = kDefaultVoltageParameterIds,
   }) : super(
           BatteryDataState.initial(
             batteriesCount: hardwareCount.batteries,
@@ -211,6 +204,9 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
     });
   }
 
+  @protected
+  final DataSource dataSource;
+
   static Set<DataSourceParameterId> kDefaultSubscribeParameters = {
     const DataSourceParameterId.highCurrent1(),
     const DataSourceParameterId.highCurrent2(),
@@ -220,80 +216,21 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
     const DataSourceParameterId.maxTemperature2(),
   };
 
-  static const kDefaultTemperatureUpdateDuration = Duration(seconds: 3);
-  static const kDefaultVoltageUpdateDuration = Duration(seconds: 3);
+  static Set<DataSourceParameterId> kDefaultVoltageParameterIds = {
+    const DataSourceParameterId.lowVoltageMinMaxDelta1(),
+    const DataSourceParameterId.lowVoltageMinMaxDelta2(),
+    const DataSourceParameterId.lowVoltage1(),
+    const DataSourceParameterId.lowVoltage2(),
+  };
 
-  @protected
-  final DataSource dataSource;
+  static Set<DataSourceParameterId> kDefaultTemperatureParameterIds = {
+    const DataSourceParameterId.temperature1(),
+    const DataSourceParameterId.temperature2(),
+  };
 
-  @protected
-  final Duration temperatureUpdateDuration;
-
-  @protected
-  final Duration voltageUpdateDuration;
-
-  @protected
-  final List<DataSourceParameterId> temperatureParametersId;
-
-  @protected
-  final List<DataSourceParameterId> voltageParametersId;
-
-  @visibleForTesting
-  static const kDefaultVoltageParameterIds = [
-    DataSourceParameterId.lowVoltageMinMaxDelta1(),
-    DataSourceParameterId.lowVoltageMinMaxDelta2(),
-    DataSourceParameterId.lowVoltage1(),
-    DataSourceParameterId.lowVoltage2(),
-  ];
-
-  @visibleForTesting
-  static const kDefaultTemperatureParameterIds = [
-    DataSourceParameterId.temperature1(),
-    DataSourceParameterId.temperature2(),
-  ];
-
-  @visibleForTesting
-  Timer? temperatureTimer;
-
-  @visibleForTesting
-  Timer? voltageTimer;
-
-  void startUpdatingTemperature() {
-    cancelUpdatingTemperature();
-    _sendValueRequestPackages(temperatureParametersId);
-    temperatureTimer = Timer.periodic(temperatureUpdateDuration, (timer) {
-      _sendValueRequestPackages(temperatureParametersId);
-    });
-  }
-
-  void startUpdatingVoltage() {
-    cancelUpdatingVoltage();
-    _sendValueRequestPackages(voltageParametersId);
-    voltageTimer = Timer.periodic(voltageUpdateDuration, (timer) {
-      _sendValueRequestPackages(voltageParametersId);
-    });
-  }
-
-  void cancelUpdatingTemperature() {
-    temperatureTimer?.cancel();
-    temperatureTimer = null;
-  }
-
-  void cancelUpdatingVoltage() {
-    voltageTimer?.cancel();
-    voltageTimer = null;
-  }
-
-  void _sendValueRequestPackages(List<DataSourceParameterId> ids) {
-    for (final id in ids) {
-      final package = OutgoingValueRequestPackage(parameterId: id);
-      dataSource.sendPackage(package);
-    }
-  }
-
-  @override
-  Future<void> close() {
-    cancelUpdatingTemperature();
-    return super.close();
-  }
+  static Set<DataSourceParameterId> kAllParameterIds = {
+    ...kDefaultSubscribeParameters,
+    ...kDefaultTemperatureParameterIds,
+    ...kDefaultVoltageParameterIds,
+  };
 }

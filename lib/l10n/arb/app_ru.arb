@@ -143,66 +143,12 @@
   },
   "chargingGeneralTabTitle": "Основное",
   "chargingTemperatureTabTitle": "Температура",
-  "chargingTemperatureNTabTitle": "Температура {number} батарея",
-  "@chargingTemperatureNTabTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "chargingVoltageTabTitle": "Напряжение",
-  "chargingVoltageNTabTitle": "Напряжение {number} батарея",
-  "@chargingVoltageNTabTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "totalVoltageTileTitle": "Общее напряжение",
-  "totalVoltageNTileTitle": "Общее напряжение {number} батарея",
-  "@totalVoltageNTileTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  "powerNTileTitle": "Мощность потребления/зарядки {number} батарея",
-  "@powerNTileTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  "batteryPercentNTileTitle": "Уровень заряда батареи {number}",
-  "@batteryPercentNTileTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
+  "powerTileTitle": "Мощность потребления/зарядки",
+  "batteryPercentTileTitle": "Уровень заряда батареи",
   "totalCurrentTileTitle": "Общий ток разряда/заряда",
-  "totalCurrentNTileTitle": "Общий ток разряда/заряда {number} батарея",
-  "@totalCurrentNTileTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "maximumRegisteredTemperatureTileTitle": "Максимальная температура",
-  "maximumRegisteredTemperatureNTileTitle": "Максимальная температура {number} батарея",
-  "@maximumRegisteredTemperatureNTileTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "voltageValue": "{value} В",
   "@voltageValue": {
     "placeholders": {
@@ -308,7 +254,7 @@
   "voltMeasurementUnit": "В",
   "currentTileTitle": "Ток",
   "amperMeasurementUnit": "А",
-  "powerTileTitle": "Мощность(потребляемая/отдаваемая)",
+  "powerGeneralTileTitle": "Мощность(потребляемая/отдаваемая)",
   "motorsTemperatureTileTitle": "Температура моторов",
   "celsiusMeasurementUnit": "°C",
   "controllersTemperatureTileTitle": "Температура контроллеров",

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/l10n/l10n.dart';
-import 'package:pixel_app_flutter/presentation/routes/main_router.dart';
 import 'package:pixel_app_flutter/presentation/screens/charging/widgets/atoms/charging_screen_section_title.dart';
 import 'package:pixel_app_flutter/presentation/screens/charging/widgets/molecules/general_cells_voltage.dart';
 import 'package:pixel_app_flutter/presentation/screens/charging/widgets/molecules/general_info_section.dart';
@@ -16,48 +15,8 @@ import 'package:pixel_app_flutter/presentation/widgets/common/organisms/title_wr
 import 'package:re_widgets/re_widgets.dart';
 
 @RoutePage()
-class ChargingScreen extends StatefulWidget {
+class ChargingScreen extends StatelessWidget {
   const ChargingScreen({super.key});
-
-  @override
-  State<ChargingScreen> createState() => _ChargingScreenState();
-}
-
-class _ChargingScreenState extends State<ChargingScreen> {
-  @override
-  void initState() {
-    super.initState();
-    startUpdating();
-    context.router.root.addListener(onRootChange);
-  }
-
-  void onRootChange() {
-    final route = context.router.topRoute;
-    if (route.name == ChargingRoute.name) {
-      startUpdating();
-      return;
-    }
-    cancelUpdating();
-  }
-
-  void startUpdating() {
-    context.read<BatteryDataCubit>()
-      ..startUpdatingTemperature()
-      ..startUpdatingVoltage();
-  }
-
-  void cancelUpdating() {
-    context.read<BatteryDataCubit>()
-      ..cancelUpdatingTemperature()
-      ..cancelUpdatingVoltage();
-  }
-
-  @override
-  void dispose() {
-    cancelUpdating();
-    context.router.root.removeListener(onRootChange);
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,26 +35,28 @@ class _ChargingScreenState extends State<ChargingScreen> {
             ),
             const GeneralInfoSection(),
             //
+            ChargingScreenSectionTitle(
+              title: context.l10n.chargingTemperatureTabTitle,
+            ),
+            //
+            const MOSAndBalancerTemperature(),
+            //
             for (var i = 0; i < batteriesCount; i++) ...[
-              //
-              ChargingScreenSectionTitle(
-                title: isOneBattery
-                    ? context.l10n.chargingTemperatureTabTitle
-                    : context.l10n.chargingTemperatureNTabTitle(i + 1),
-              ),
-              MOSAndBalancerTemperature(batteryIndex: i),
               SliverSectionSubtitle(
                 subtitle: isOneBattery
                     ? context.l10n.sensorsSectionSubtitle
                     : context.l10n.sensorsSectionNSubtitle(i + 1),
               ),
               TemperatureSensorsSection(batteryIndex: i),
-              ChargingScreenSectionTitle(
-                title: isOneBattery
-                    ? context.l10n.chargingVoltageTabTitle
-                    : context.l10n.chargingVoltageNTabTitle(i + 1),
-              ),
-              GeneralCellsVoltage(batteryIndex: i),
+            ],
+            //
+            ChargingScreenSectionTitle(
+              title: context.l10n.chargingVoltageTabTitle,
+            ),
+            //
+            const GeneralCellsVoltage(),
+            //
+            for (var i = 0; i < batteriesCount; i++) ...[
               SliverSectionSubtitle(
                 subtitle: isOneBattery
                     ? context.l10n.cellsSectionSubtitle

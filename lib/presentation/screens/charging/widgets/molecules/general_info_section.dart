@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pixel_app_flutter/domain/app/app.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:pixel_app_flutter/l10n/l10n.dart';
@@ -10,88 +11,81 @@ class GeneralInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final batteriesCount =
-        context.read<BatteryDataCubit>().state.batteriesCount;
-    final isOneBattery = batteriesCount == 1;
-
     return SliverList.list(
       children: [
-        if (!isOneBattery)
-          for (int i = 0; i < batteriesCount; i++)
-            BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus?>(
-              selector: (state) => state.batteryPercent.getAt(i),
-              builder: (context, batteryPercent) {
-                if (batteryPercent == null) return const SizedBox.shrink();
-                return ChargingScreenListTile(
-                  title: context.l10n.batteryPercentNTileTitle(i + 1),
-                  trailing: '${batteryPercent.value}%',
-                  status: batteryPercent.status,
+        BlocSelector<GeneralDataCubit, GeneralDataState,
+            Sequence<IntWithStatus>>(
+          selector: (state) => state.batteryPercent,
+          builder: (context, batteriesPercent) {
+            // if (batteryPercent == null) return const SizedBox.shrink();
+            return ChargingScreenListTile<IntWithStatus>(
+              title: context.l10n.batteryPercentTileTitle,
+              valueMapper: (v) => ('${v.value}%', v.status),
+              values: batteriesPercent,
+            );
+          },
+        ),
+        //
+        BlocSelector<GeneralDataCubit, GeneralDataState,
+            Sequence<IntWithStatus>>(
+          selector: (state) => state.power,
+          builder: (context, powers) {
+            return ChargingScreenListTile<IntWithStatus>(
+              title: context.l10n.powerGeneralTileTitle,
+              values: powers,
+              valueMapper: (value) => (
+                '${value.value} ${context.l10n.wattMeasurementUnit}',
+                value.status,
+              ),
+            );
+          },
+        ),
+        //
+        BlocSelector<BatteryDataCubit, BatteryDataState, Sequence<HighVoltage>>(
+          selector: (state) => state.highVoltage,
+          builder: (context, highVoltages) {
+            return ChargingScreenListTile<HighVoltage>(
+              title: context.l10n.totalVoltageTileTitle,
+              valueMapper: (value) {
+                return (
+                  context.l10n
+                      .voltageValue((value.value / 10).toStringAsFixed(2)),
+                  value.status,
                 );
               },
-            ),
-        if (!isOneBattery)
-          for (int i = 0; i < batteriesCount; i++)
-            BlocSelector<GeneralDataCubit, GeneralDataState, IntWithStatus?>(
-              selector: (state) => state.power.getAt(i),
-              builder: (context, power) {
-                if (power == null) return const SizedBox.shrink();
-                return ChargingScreenListTile(
-                  title: context.l10n.powerNTileTitle(i + 1),
-                  trailing:
-                      '${power.value} ${context.l10n.wattMeasurementUnit}',
-                  status: power.status,
-                );
-              },
-            ),
-        for (int i = 0; i < batteriesCount; i++)
-          BlocSelector<BatteryDataCubit, BatteryDataState, HighVoltage?>(
-            selector: (state) => state.highVoltage.getAt(i),
-            builder: (context, highVoltage) {
-              if (highVoltage == null) return const SizedBox.shrink();
-              return ChargingScreenListTile(
-                title: isOneBattery
-                    ? context.l10n.totalVoltageTileTitle
-                    : context.l10n.totalVoltageNTileTitle(i + 1),
-                trailing: context.l10n.voltageValue(
-                  (highVoltage.value / 10).toStringAsFixed(2),
-                ),
-                status: highVoltage.status,
-              );
-            },
-          ),
+              values: highVoltages,
+            );
+          },
+        ),
         //
-        for (int i = 0; i < batteriesCount; i++)
-          BlocSelector<BatteryDataCubit, BatteryDataState, HighCurrent?>(
-            selector: (state) => state.highCurrent.getAt(i),
-            builder: (context, highCurrent) {
-              if (highCurrent == null) return const SizedBox.shrink();
-              return ChargingScreenListTile(
-                title: isOneBattery
-                    ? context.l10n.totalCurrentTileTitle
-                    : context.l10n.totalCurrentNTileTitle(i + 1),
-                trailing: context.l10n.currentValue(
-                  (highCurrent.value / 10).toStringAsFixed(2),
-                ),
-                status: highCurrent.status,
-              );
-            },
-          ),
+        BlocSelector<BatteryDataCubit, BatteryDataState, Sequence<HighCurrent>>(
+          selector: (state) => state.highCurrent,
+          builder: (context, highCurrents) {
+            return ChargingScreenListTile<HighCurrent>(
+              title: context.l10n.totalCurrentTileTitle,
+              valueMapper: (value) => (
+                (value.value / 10).toStringAsFixed(2),
+                value.status,
+              ),
+              values: highCurrents,
+            );
+          },
+        ),
         //
-        for (int i = 0; i < batteriesCount; i++)
-          BlocSelector<BatteryDataCubit, BatteryDataState, MaxTemperature?>(
-            selector: (state) => state.maxTemperature.getAt(i),
-            builder: (context, maxTemperature) {
-              if (maxTemperature == null) return const SizedBox.shrink();
-              return ChargingScreenListTile(
-                title: isOneBattery
-                    ? context.l10n.maximumRegisteredTemperatureTileTitle
-                    : context.l10n
-                        .maximumRegisteredTemperatureNTileTitle(i + 1),
-                trailing: context.l10n.celsiusValue(maxTemperature.value),
-                status: maxTemperature.status,
-              );
-            },
-          ),
+        BlocSelector<BatteryDataCubit, BatteryDataState,
+            Sequence<MaxTemperature>>(
+          selector: (state) => state.maxTemperature,
+          builder: (context, maxTemperatures) {
+            return ChargingScreenListTile<MaxTemperature>(
+              title: context.l10n.maximumRegisteredTemperatureTileTitle,
+              valueMapper: (value) => (
+                context.l10n.celsiusValue(value.value),
+                value.status,
+              ),
+              values: maxTemperatures,
+            );
+          },
+        ),
       ],
     );
   }

@@ -25,6 +25,7 @@ class CellSliverGridBuilder<B extends BlocBase<S>, S, T>
         maxCrossAxisExtent: 70,
         mainAxisSpacing: 6,
         crossAxisSpacing: 6,
+        childAspectRatio: 1.4,
       ),
       itemBuilder: (context, index) {
         return BlocSelector<B, S, T>(
