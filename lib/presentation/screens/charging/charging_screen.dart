@@ -35,26 +35,28 @@ class ChargingScreen extends StatelessWidget {
             ),
             const GeneralInfoSection(),
             //
+            ChargingScreenSectionTitle(
+              title: context.l10n.chargingTemperatureTabTitle,
+            ),
+            //
+            const MOSAndBalancerTemperature(),
+            //
             for (var i = 0; i < batteriesCount; i++) ...[
-              //
-              ChargingScreenSectionTitle(
-                title: isOneBattery
-                    ? context.l10n.chargingTemperatureTabTitle
-                    : context.l10n.chargingTemperatureNTabTitle(i + 1),
-              ),
-              MOSAndBalancerTemperature(batteryIndex: i),
               SliverSectionSubtitle(
                 subtitle: isOneBattery
                     ? context.l10n.sensorsSectionSubtitle
                     : context.l10n.sensorsSectionNSubtitle(i + 1),
               ),
               TemperatureSensorsSection(batteryIndex: i),
-              ChargingScreenSectionTitle(
-                title: isOneBattery
-                    ? context.l10n.chargingVoltageTabTitle
-                    : context.l10n.chargingVoltageNTabTitle(i + 1),
-              ),
-              GeneralCellsVoltage(batteryIndex: i),
+            ],
+            //
+            ChargingScreenSectionTitle(
+              title: context.l10n.chargingVoltageTabTitle,
+            ),
+            //
+            const GeneralCellsVoltage(),
+            //
+            for (var i = 0; i < batteriesCount; i++) ...[
               SliverSectionSubtitle(
                 subtitle: isOneBattery
                     ? context.l10n.cellsSectionSubtitle

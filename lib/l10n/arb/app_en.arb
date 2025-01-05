@@ -143,66 +143,12 @@
   },
   "chargingGeneralTabTitle": "General",
   "chargingTemperatureTabTitle": "Temperature",
-  "chargingTemperatureNTabTitle": "Temperature {number} battery",
-  "@chargingTemperatureNTabTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "chargingVoltageTabTitle": "Voltage",
-  "chargingVoltageNTabTitle": "Voltage {number} battery",
-  "@chargingVoltageNTabTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "totalVoltageTileTitle": "Total voltage",
-  "totalVoltageNTileTitle": "Total voltage {number} battery",
-  "@totalVoltageNTileTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  "powerNTileTitle": "Consumption/charging power {number} battery",
-  "@powerNTileTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  "batteryPercentNTileTitle": "Battery level {number}",
-  "@batteryPercentNTileTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
+  "powerGeneralTileTitle": "Consumption/charging power",
+  "batteryPercentTileTitle": "Battery level",
   "totalCurrentTileTitle": "Total discharge/charge current",
-  "totalCurrentNTileTitle": "Total discharge/charge current {number} battery",
-  "@totalCurrentNTileTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "maximumRegisteredTemperatureTileTitle": "Maximum temperature",
-  "maximumRegisteredTemperatureNTileTitle": "Maximum temperature {number} battery",
-  "@maximumRegisteredTemperatureNTileTitle": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "voltageValue": "{value} V",
   "@voltageValue": {
     "placeholders": {

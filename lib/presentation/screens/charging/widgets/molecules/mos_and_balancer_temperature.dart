@@ -6,31 +6,45 @@ import 'package:pixel_app_flutter/l10n/l10n.dart';
 import 'package:pixel_app_flutter/presentation/screens/charging/widgets/atoms/charging_screen_list_tile.dart';
 
 class MOSAndBalancerTemperature extends StatelessWidget {
-  const MOSAndBalancerTemperature({super.key, required this.batteryIndex});
-
-  final int batteryIndex;
+  const MOSAndBalancerTemperature({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final batteriesCount =
+        context.read<BatteryDataCubit>().state.batteriesCount;
     return SliverList.list(
       children: [
-        BlocSelector<BatteryDataCubit, BatteryDataState, BatteryTemperature?>(
-          selector: (state) => state.temperature.getAt(batteryIndex)?.getAt(0),
+        BlocSelector<BatteryDataCubit, BatteryDataState,
+            List<BatteryTemperature?>>(
+          selector: (state) => [
+            for (var i = 0; i < batteriesCount; i++)
+              state.temperature.getAt(i)?.getAt(0),
+          ],
           builder: (context, state) {
-            return ChargingScreenListTile(
+            return ChargingScreenListTile<BatteryTemperature?>(
               title: context.l10n.mosTileTitle,
-              trailing: context.l10n.celsiusValue(state?.value ?? 0),
-              status: PeriodicValueStatus.normal,
+              values: state,
+              valueMapper: (value) => (
+                context.l10n.celsiusValue(value?.value ?? 0),
+                null,
+              ),
             );
           },
         ),
-        BlocSelector<BatteryDataCubit, BatteryDataState, BatteryTemperature?>(
-          selector: (state) => state.temperature.getAt(batteryIndex)?.getAt(1),
+        BlocSelector<BatteryDataCubit, BatteryDataState,
+            List<BatteryTemperature?>>(
+          selector: (state) => [
+            for (var i = 0; i < batteriesCount; i++)
+              state.temperature.getAt(i)?.getAt(1),
+          ],
           builder: (context, state) {
-            return ChargingScreenListTile(
+            return ChargingScreenListTile<BatteryTemperature?>(
               title: context.l10n.balancerTileTitle,
-              trailing: context.l10n.celsiusValue(state?.value ?? 0),
-              status: PeriodicValueStatus.normal,
+              values: state,
+              valueMapper: (value) => (
+                context.l10n.celsiusValue(value?.value ?? 0),
+                null,
+              ),
             );
           },
         ),
