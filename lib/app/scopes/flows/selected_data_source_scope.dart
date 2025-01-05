@@ -144,7 +144,14 @@ class SelectedDataSourceScope extends AutoRouter {
                 create: (context) => OutgoingPackagesCubit(
                   dataSource: context.read(),
                   developerToolsParametersStorage: context.read(),
-                ),
+                )..subscribeTo(
+                    context
+                        .read<DeveloperToolsParametersStorage>()
+                        .data
+                        .subscriptionParameterIds
+                        .map(DataSourceParameterId.fromInt)
+                        .toSet(),
+                  ),
               ),
 
               BlocProvider(

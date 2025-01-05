@@ -12,10 +12,7 @@ class OutgoingPackagesCubit extends Cubit<DeveloperToolsParameters>
   OutgoingPackagesCubit({
     required this.dataSource,
     required this.developerToolsParametersStorage,
-  })  : subscribeToParameterIdList = developerToolsParametersStorage
-            .data.subscriptionParameterIds
-            .map(DataSourceParameterId.fromInt)
-            .toSet(),
+  })  : subscribeToParameterIdList = {},
         super(
           developerToolsParametersStorage.read().when(
                 error: (e) => developerToolsParametersStorage.defaultValue,
