@@ -290,13 +290,12 @@ class DemoDataSource extends DataSource
             const DataSourceParameterId.motorSpeed3(),
             const DataSourceParameterId.motorSpeed4(),
           },
-          convertible: TwoUint16WithStatusBody(
+          convertible: Uint16WithStatusBody(
             status: _getRandomStatus,
-            first: Random().nextInt(1001),
-            second: Random().nextInt(1001),
+            value: Random().nextInt(1001),
           ),
         ),
-        MainEcuMockResponseWrapper(
+        MainEcuMockResponseUpdateCallbackWrapper(
           ids: {
             const DataSourceParameterId.motorVoltage1(),
             const DataSourceParameterId.motorVoltage2(),
@@ -307,13 +306,14 @@ class DemoDataSource extends DataSource
             const DataSourceParameterId.rpm3(),
             const DataSourceParameterId.rpm4(),
           },
-          respondCallback: (id, version, _, [__]) => _sendTwoUint16Callback(
-            id,
-            version,
+          convertible: Uint16WithStatusBody(
+            status: _getRandomStatus,
+            value: randomUint16,
           ),
         ),
-        MainEcuMockResponseWrapper(
+        MainEcuMockResponseUpdateCallbackWrapper(
           ids: {
+            // Motor
             const DataSourceParameterId.motorCurrent1(),
             const DataSourceParameterId.motorCurrent2(),
             const DataSourceParameterId.motorCurrent3(),
@@ -330,10 +330,13 @@ class DemoDataSource extends DataSource
             const DataSourceParameterId.controllerTemperature2(),
             const DataSourceParameterId.controllerTemperature3(),
             const DataSourceParameterId.controllerTemperature4(),
+            // Battery
+            const DataSourceParameterId.batteryPower1(),
+            const DataSourceParameterId.batteryPower2(),
           },
-          respondCallback: (id, version, _, [__]) => _sendTwoInt16Callback(
-            id,
-            version,
+          convertible: Int16WithStatusBody(
+            status: _getRandomStatus,
+            value: randomInt16,
           ),
         ),
         MainEcuMockResponseWrapper(
@@ -444,16 +447,6 @@ class DemoDataSource extends DataSource
           ),
         ),
         MainEcuMockResponseWrapper(
-          ids: {
-            const DataSourceParameterId.batteryPower1(),
-            const DataSourceParameterId.batteryPower2(),
-          },
-          respondCallback: (id, version, manager, [_]) => _sendInt16Callback(
-            id,
-            version,
-          ),
-        ),
-        MainEcuMockResponseWrapper(
           ids: {const DataSourceParameterId.odometer()},
           respondCallback: (id, version, manager, [package]) {
             return manager.updateCallback(
@@ -548,50 +541,6 @@ class DemoDataSource extends DataSource
           },
         ),
       ];
-
-  Result<SendPackageError, void> _sendInt16Callback(
-    DataSourceParameterId id,
-    DataSourceProtocolVersion version,
-  ) {
-    return _updateValueCallback(
-      id,
-      Int16WithStatusBody(
-        status: _getRandomStatus,
-        value: randomInt16,
-      ),
-      version,
-    );
-  }
-
-  Result<SendPackageError, void> _sendTwoInt16Callback(
-    DataSourceParameterId id,
-    DataSourceProtocolVersion version,
-  ) {
-    return _updateValueCallback(
-      id,
-      TwoInt16WithStatusBody(
-        status: _getRandomStatus,
-        first: randomInt16,
-        second: randomInt16,
-      ),
-      version,
-    );
-  }
-
-  Result<SendPackageError, void> _sendTwoUint16Callback(
-    DataSourceParameterId id,
-    DataSourceProtocolVersion version,
-  ) {
-    return _updateValueCallback(
-      id,
-      TwoUint16WithStatusBody(
-        status: _getRandomStatus,
-        first: randomUint16,
-        second: randomUint16,
-      ),
-      version,
-    );
-  }
 
   Future<void> _sendSetBoolUint8ResultCallback(
     DataSourceParameterId parameterId,

@@ -24,6 +24,7 @@ export 'models/data_source_request_type.dart';
 export 'models/data_source_with_address.dart';
 export 'models/developer_tools_parameters.dart';
 export 'models/hardware_count.dart';
+export 'models/int_with_status.dart';
 export 'models/package/data_source_package.dart';
 export 'models/package_data/bytes_converter.dart';
 export 'models/serial_number.dart';

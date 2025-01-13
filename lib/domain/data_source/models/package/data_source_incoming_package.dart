@@ -192,13 +192,13 @@ abstract class Int16WithStatusIncomingDataSourcePackage
   Int16WithStatusIncomingDataSourcePackage(super.source);
 }
 
-abstract class UInt16WithStatusIncomingDataSourcePackage
+abstract class Uint16WithStatusIncomingDataSourcePackage
     extends DataSourceIncomingPackage<Uint16WithStatusBody>
     with
         IsEventOrBufferRequestOrSubscriptionAnswerRequestTypeMixin,
         IsPeriodicValueStatusFunctionIdMixin,
         UInt16WithStatusBodyBytesConverterMixin {
-  UInt16WithStatusIncomingDataSourcePackage(super.source);
+  Uint16WithStatusIncomingDataSourcePackage(super.source);
 }
 
 abstract class TwoUint16WithStatusIncomingDataSourcePackage
