@@ -6,9 +6,9 @@ enum MotorGear {
   reverse(0x02),
   neutral(0x00),
   drive(0x01),
-  low(0x03),
-  boost(0x04),
-  unknown(0x0F);
+  low(0x04),
+  boost(0x08),
+  unknown(0xFF);
 
   const MotorGear(this.id);
   final int id;
@@ -43,7 +43,7 @@ enum MotorRollDirection {
   stop(0x00),
   forward(0x01),
   reverse(0x02),
-  unknown(0x0F);
+  unknown(0xFF);
 
   const MotorRollDirection(this.id);
   final int id;
