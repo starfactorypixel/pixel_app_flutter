@@ -256,14 +256,16 @@ class DemoDataSource extends DataSource
 
         timer ??= Timer.periodic(
           Duration(milliseconds: updatePeriodMillis()),
-          (timer) {
+          (timer) async {
             for (final element in subscriptionParameters) {
               try {
-                mockManager.handleSubscriptionParameterId(element);
+                unawaited(mockManager.handleSubscriptionParameterId(element));
               } catch (e, s) {
-                Future<void>.error(
-                  'Got error trying to send a package:\n$e',
-                  s,
+                unawaited(
+                  Future<void>.error(
+                    'Got error trying to send a package:\n$e',
+                    s,
+                  ),
                 );
               }
             }
@@ -367,11 +369,11 @@ class DemoDataSource extends DataSource
             const DataSourceParameterId.temperature1(),
             const DataSourceParameterId.temperature2(),
           },
-          respondCallback: (id, version, manager, [_]) {
+          respondCallback: (id, version, manager, [_]) async {
             for (var i = 1;
                 i <= manager.hardwareCount.temperatureSensors;
                 i++) {
-              manager.updateCallback(
+              await manager.updateCallback(
                 id,
                 BatteryTemperature(
                   no: i,
@@ -389,9 +391,9 @@ class DemoDataSource extends DataSource
             const DataSourceParameterId.lowVoltage1(),
             const DataSourceParameterId.lowVoltage2(),
           },
-          respondCallback: (id, version, manager, [_]) {
+          respondCallback: (id, version, manager, [_]) async {
             for (var i = 1; i <= manager.hardwareCount.batteryCells; i++) {
-              manager.updateCallback(
+              await manager.updateCallback(
                 id,
                 BatteryLowVoltage(
                   no: i,
@@ -489,8 +491,8 @@ class DemoDataSource extends DataSource
           },
           // All of the ids above are unavailable for subscription
           unavailableForSubscriptionIds: {},
-          respondCallback: (id, version, manager, [package]) {
-            _sendSetBoolUint8ResultCallback(
+          respondCallback: (id, version, manager, [package]) async {
+            await _sendSetBoolUint8ResultCallback(
               id,
               DataSourceProtocolVersion.subscription,
               package?.requestType.maybeWhen(
@@ -505,8 +507,8 @@ class DemoDataSource extends DataSource
         ),
         MainEcuMockResponseWrapper(
           ids: {const CustomImageParameterId()},
-          respondCallback: (id, version, manager, [package]) {
-            _sendSetUint8ResultCallback(id, version, package?.data[1]);
+          respondCallback: (id, version, manager, [package]) async {
+            await _sendSetUint8ResultCallback(id, version, package?.data[1]);
 
             return const Result.value(null);
           },
@@ -529,13 +531,13 @@ class DemoDataSource extends DataSource
             const CustomParameterId(ButtonFunctionId.rightDoorId),
           },
           unavailableForSubscriptionIds: {},
-          respondCallback: (id, version, manager, [_]) {
+          respondCallback: (id, version, manager, [_]) async {
             final functionId = switch (id) {
               const LeftDoorParameterId() => ButtonFunctionId.leftDoor,
               const RightDoorParameterId() => ButtonFunctionId.rightDoor,
               _ => ButtonFunctionId.fromValue(id.value),
             };
-            _sendDoorToggleResultCallback(functionId);
+            await _sendDoorToggleResultCallback(functionId);
 
             return const Result.value(null);
           },
@@ -550,7 +552,7 @@ class DemoDataSource extends DataSource
     await Future<void>.delayed(const Duration(milliseconds: 100));
     final _requiredResult = requiredResult ?? randomBool;
 
-    _updateValueCallback(
+    await _updateValueCallback(
       parameterId,
       SuccessEventUint8Body(
         (!generateRandomErrors() || ninetyPercentSuccessBool
@@ -589,7 +591,7 @@ class DemoDataSource extends DataSource
     await Future<void>.delayed(const Duration(milliseconds: 100));
     final _requiredResult = requiredResult ?? randomUint8;
 
-    _updateValueCallback(
+    await _updateValueCallback(
       parameterId,
       SuccessEventUint8Body(
         generateRandomErrors()
@@ -633,11 +635,11 @@ class DemoDataSource extends DataSource
 
   double get randomDoubleUint16 => Random().nextDouble() * 0xFFFF;
 
-  Result<SendPackageError, void> _updateValueCallback(
+  Future<Result<SendPackageError, void>> _updateValueCallback(
     DataSourceParameterId parameterId,
     BytesConvertible convertible,
     DataSourceProtocolVersion version,
-  ) {
+  ) async {
     final requestType = version.when(
       subscription: () => 0x95, //'10010101'
       periodicRequests: () => 0x81, //'10000001'
@@ -685,7 +687,7 @@ final class MainEcuMockManager {
   final List<MainEcuMockResponse> mockedResponses;
   final HardwareCount hardwareCount;
   final void Function(DataSourceIncomingPackage package) sendPackage;
-  final Result<SendPackageError, void> Function(
+  final Future<Result<SendPackageError, void>> Function(
     DataSourceParameterId parameterId,
     BytesConvertible convertible,
     DataSourceProtocolVersion version,
@@ -697,11 +699,11 @@ final class MainEcuMockManager {
     );
   }
 
-  Result<SendPackageError, void> handle(
+  Future<Result<SendPackageError, void>> handle(
     DataSourceParameterId id,
     DataSourceProtocolVersion version, [
     DataSourceOutgoingPackage? package,
-  ]) {
+  ]) async {
     for (final response in mockedResponses) {
       if (response.ids.contains(id)) {
         return response.respond(
@@ -716,7 +718,7 @@ final class MainEcuMockManager {
     return const Result.error(SendPackageError.unknown);
   }
 
-  Result<SendPackageError, void> handlePeriodicPackage(
+  Future<Result<SendPackageError, void>> handlePeriodicPackage(
     DataSourceOutgoingPackage package,
   ) {
     return handle(
@@ -726,7 +728,7 @@ final class MainEcuMockManager {
     );
   }
 
-  Result<SendPackageError, void> handleSubscriptionParameterId(
+  Future<Result<SendPackageError, void>> handleSubscriptionParameterId(
     DataSourceParameterId id,
   ) {
     return handle(
@@ -759,7 +761,7 @@ abstract class MainEcuMockResponse {
     return !unavailableIds.contains(id);
   }
 
-  Result<SendPackageError, void> respond(
+  Future<Result<SendPackageError, void>> respond(
     DataSourceParameterId id,
     DataSourceProtocolVersion version,
     MainEcuMockManager manager, [
@@ -774,7 +776,7 @@ final class MainEcuMockResponseWrapper extends MainEcuMockResponse {
     super.unavailableForSubscriptionIds,
   });
 
-  final Result<SendPackageError, void> Function(
+  final Future<Result<SendPackageError, void>> Function(
     DataSourceParameterId id,
     DataSourceProtocolVersion version,
     MainEcuMockManager manager, [
@@ -782,7 +784,7 @@ final class MainEcuMockResponseWrapper extends MainEcuMockResponse {
   ]) respondCallback;
 
   @override
-  Result<SendPackageError, void> respond(
+  Future<Result<SendPackageError, void>> respond(
     DataSourceParameterId id,
     DataSourceProtocolVersion version,
     MainEcuMockManager manager, [
@@ -802,7 +804,7 @@ final class MainEcuMockResponseUpdateCallbackWrapper
   final BytesConvertible convertible;
 
   @override
-  Result<SendPackageError, void> respond(
+  Future<Result<SendPackageError, void>> respond(
     DataSourceParameterId id,
     DataSourceProtocolVersion version,
     MainEcuMockManager manager, [
