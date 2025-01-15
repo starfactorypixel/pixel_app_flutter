@@ -22,40 +22,40 @@ final class MotorDataState with EquatableMixin {
   });
 
   MotorDataState.initial({required this.motorsCount})
-      : current = Sequence.fill(motorsCount, const Uint16WithStatusBody.zero()),
+      : current = Sequence.fill(motorsCount, const Int16WithStatusBody.zero()),
         voltage = Sequence.fill(motorsCount, const Uint16WithStatusBody.zero()),
         motorTemperature = Sequence.fill(
           motorsCount,
-          const Uint16WithStatusBody.zero(),
+          const Int16WithStatusBody.zero(),
         ),
         controllerTemperature = Sequence.fill(
           motorsCount,
-          const Uint16WithStatusBody.zero(),
+          const Int16WithStatusBody.zero(),
         ),
         gearAndRoll = Sequence.fill(motorsCount, MotorGearAndRoll.unknown()),
         rpm = Sequence.fill(motorsCount, const Uint16WithStatusBody.zero()),
         speed = Sequence.fill(motorsCount, const Uint16WithStatusBody.zero()),
-        power = Sequence.fill(motorsCount, const Uint16WithStatusBody.zero());
+        power = Sequence.fill(motorsCount, const Int16WithStatusBody.zero());
 
-  final Sequence<Uint16WithStatusBody> current;
+  final Sequence<Int16WithStatusBody> current;
   final Sequence<Uint16WithStatusBody> voltage;
-  final Sequence<Uint16WithStatusBody> motorTemperature;
-  final Sequence<Uint16WithStatusBody> controllerTemperature;
+  final Sequence<Int16WithStatusBody> motorTemperature;
+  final Sequence<Int16WithStatusBody> controllerTemperature;
   final Sequence<MotorGearAndRoll> gearAndRoll;
   final Sequence<Uint16WithStatusBody> rpm;
   final Sequence<Uint16WithStatusBody> speed;
-  final Sequence<Uint16WithStatusBody> power;
+  final Sequence<Int16WithStatusBody> power;
   final int motorsCount;
 
   MotorDataState copyWith({
-    Sequence<Uint16WithStatusBody>? current,
+    Sequence<Int16WithStatusBody>? current,
     Sequence<Uint16WithStatusBody>? voltage,
-    Sequence<Uint16WithStatusBody>? motorTemperature,
-    Sequence<Uint16WithStatusBody>? controllerTemperature,
+    Sequence<Int16WithStatusBody>? motorTemperature,
+    Sequence<Int16WithStatusBody>? controllerTemperature,
     Sequence<MotorGearAndRoll>? gearAndRoll,
     Sequence<Uint16WithStatusBody>? rpm,
     Sequence<Uint16WithStatusBody>? speed,
-    Sequence<Uint16WithStatusBody>? power,
+    Sequence<Int16WithStatusBody>? power,
     int? motorsCount,
   }) {
     return MotorDataState(
@@ -104,7 +104,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
             ),
           );
         })
-        ..voidOnPackage<Uint16WithStatusBody,
+        ..voidOnPackage<Int16WithStatusBody,
             MotorCurrentIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(
@@ -115,7 +115,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
             ),
           );
         })
-        ..voidOnPackage<Uint16WithStatusBody,
+        ..voidOnPackage<Int16WithStatusBody,
             MotorTemperatureIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(
@@ -124,7 +124,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
             ),
           );
         })
-        ..voidOnPackage<Uint16WithStatusBody,
+        ..voidOnPackage<Int16WithStatusBody,
             ControllerTemperatureIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(
@@ -166,7 +166,7 @@ class MotorDataCubit extends Cubit<MotorDataState> with ConsumerBlocMixin {
             ),
           );
         })
-        ..voidOnPackage<Uint16WithStatusBody,
+        ..voidOnPackage<Int16WithStatusBody,
             MotorPowerIncomingDataSourcePackage>((package) {
           emit(
             state.copyWith(

@@ -2,7 +2,7 @@ import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/mixins/motor_index_mixin.dart';
 
 class MotorTemperatureIncomingDataSourcePackage
-    extends UInt16WithStatusIncomingDataSourcePackage with MotorIndexMixin {
+    extends Int16WithStatusIncomingDataSourcePackage with MotorIndexMixin {
   MotorTemperatureIncomingDataSourcePackage(super.source);
 
   @override

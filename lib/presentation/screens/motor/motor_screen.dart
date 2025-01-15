@@ -71,7 +71,7 @@ class MotorScreen extends StatelessWidget {
             SliverSectionSubtitle(subtitle: context.l10n.currentTileTitle),
             //
             CellSliverGridBuilder<MotorDataCubit, MotorDataState,
-                Uint16WithStatusBody?>(
+                Int16WithStatusBody?>(
               itemCount: motorsCount,
               selector: (state, index) => state.current.getAt(index),
               contentBuilder: (context, data) {
@@ -87,7 +87,7 @@ class MotorScreen extends StatelessWidget {
             SliverSectionSubtitle(subtitle: context.l10n.powerTileTitle),
             //
             CellSliverGridBuilder<MotorDataCubit, MotorDataState,
-                Uint16WithStatusBody?>(
+                Int16WithStatusBody?>(
               itemCount: motorsCount,
               selector: (state, index) => state.power.getAt(index),
               contentBuilder: (context, data) {
@@ -103,7 +103,7 @@ class MotorScreen extends StatelessWidget {
             ),
             //
             CellSliverGridBuilder<MotorDataCubit, MotorDataState,
-                Uint16WithStatusBody?>(
+                Int16WithStatusBody?>(
               itemCount: motorsCount,
               selector: (state, index) => state.motorTemperature.getAt(index),
               contentBuilder: (context, data) {
@@ -119,7 +119,7 @@ class MotorScreen extends StatelessWidget {
             ),
             //
             CellSliverGridBuilder<MotorDataCubit, MotorDataState,
-                Uint16WithStatusBody?>(
+                Int16WithStatusBody?>(
               itemCount: motorsCount,
               selector: (state, index) {
                 return state.controllerTemperature.getAt(index);

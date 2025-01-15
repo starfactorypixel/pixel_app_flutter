@@ -2,7 +2,7 @@ import 'package:pixel_app_flutter/domain/data_source/models/package/data_source_
 import 'package:pixel_app_flutter/domain/data_source/models/package/mixins/motor_index_mixin.dart';
 
 class MotorVoltageIncomingDataSourcePackage
-    extends UInt16WithStatusIncomingDataSourcePackage with MotorIndexMixin {
+    extends Uint16WithStatusIncomingDataSourcePackage with MotorIndexMixin {
   MotorVoltageIncomingDataSourcePackage(super.source);
 
   @override

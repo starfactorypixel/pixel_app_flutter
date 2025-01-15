@@ -6,47 +6,7 @@ import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/battery_percent.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
-import 'package:pixel_app_flutter/domain/data_source/models/package_data/wrappers/bytes_convertible_with_status.dart';
 import 'package:re_seedwork/re_seedwork.dart';
-
-@immutable
-final class IntWithStatus {
-  const IntWithStatus({
-    required this.value,
-    required this.status,
-  });
-
-  const IntWithStatus.initial()
-      : value = 0,
-        status = PeriodicValueStatus.normal;
-
-  factory IntWithStatus.fromMap(Map<String, dynamic> map) {
-    return IntWithStatus(
-      value: map.parse('value'),
-      status: PeriodicValueStatus.fromId(map.parse('status')),
-    );
-  }
-
-  final int value;
-  final PeriodicValueStatus status;
-
-  IntWithStatus copyWith({
-    int? value,
-    PeriodicValueStatus? status,
-  }) {
-    return IntWithStatus(
-      value: value ?? this.value,
-      status: status ?? this.status,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'value': value,
-      'status': status.id,
-    };
-  }
-}
 
 typedef _IntValueModifier = (
   int Function(int a, int b),
@@ -78,11 +38,6 @@ extension _SequenceExt on Sequence<IntWithStatus> {
       status: status,
     );
   }
-}
-
-extension on IntBytesConvertibleWithStatus {
-  IntWithStatus toIntWithStatus([int? customValue]) =>
-      IntWithStatus(value: customValue ?? value, status: status);
 }
 
 @sealed
@@ -211,7 +166,7 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
             state.copyWith(
               batteryPercent: state.batteryPercent.updateAt(
                 package.batteryIndex,
-                package.dataModel.toIntWithStatus(),
+                IntWithStatus.fromBytesConvertible(package.dataModel),
               ),
             ),
           ),
@@ -222,7 +177,7 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
             state.copyWith(
               power: state.power.updateAt(
                 package.batteryIndex,
-                package.dataModel.toIntWithStatus(),
+                IntWithStatus.fromBytesConvertible(package.dataModel),
               ),
             ),
           );
@@ -244,7 +199,7 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
             state.copyWith(
               speed: state.speed.updateAt(
                 package.motorIndex,
-                package.dataModel.toIntWithStatus(),
+                IntWithStatus.fromBytesConvertible(package.dataModel),
               ),
             ),
           );
@@ -252,7 +207,11 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
         ..voidOnModel<Uint32WithStatusBody, OdometerIncomingDataSourcePackage>(
             (model) {
           final km = model.value ~/ 10;
-          emit(state.copyWith(odometer: model.toIntWithStatus(km)));
+          emit(
+            state.copyWith(
+              odometer: IntWithStatus.fromBytesConvertible(model, km),
+            ),
+          );
         });
     });
   }
