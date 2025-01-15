@@ -254,23 +254,38 @@ class DemoDataSource extends DataSource
           mockManager.handlePeriodicPackage(package);
         }
 
-        timer ??= Timer.periodic(
-          Duration(milliseconds: updatePeriodMillis()),
-          (timer) async {
-            for (final element in subscriptionParameters) {
-              try {
-                unawaited(mockManager.handleSubscriptionParameterId(element));
-              } catch (e, s) {
-                unawaited(
-                  Future<void>.error(
-                    'Got error trying to send a package:\n$e',
-                    s,
-                  ),
+        if (timer == null) {
+          final updatePeriod = updatePeriodMillis();
+          timer = Timer.periodic(
+            Duration(milliseconds: updatePeriod),
+            (timer) async {
+              final innerTimerPeriod =
+                  (updatePeriod / subscriptionParameters.length).floor();
+              for (var i = 0; i < subscriptionParameters.length; i++) {
+                if (i >= subscriptionParameters.length) {
+                  break;
+                }
+                try {
+                  unawaited(
+                    mockManager.handleSubscriptionParameterId(
+                      subscriptionParameters.elementAt(i),
+                    ),
+                  );
+                } catch (e, s) {
+                  unawaited(
+                    Future<void>.error(
+                      'Got error trying to send a package:\n$e',
+                      s,
+                    ),
+                  );
+                }
+                await Future<void>.delayed(
+                  Duration(milliseconds: innerTimerPeriod),
                 );
               }
-            }
-          },
-        );
+            },
+          );
+        }
 
         return const Result.value(null);
       },
