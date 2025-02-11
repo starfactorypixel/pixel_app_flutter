@@ -98,9 +98,9 @@ final class GeneralDataState with EquatableMixin {
   final Sequence<MotorGear> gear;
   final Sequence<IntWithStatus> batteryPercent;
 
-  IntWithStatus get mergedBatteryPercent => batteryPercent.merged();
+  IntWithStatus get mergedBatteryPercent => batteryPercent.first;
 
-  IntWithStatus get mergedPower => power.merged();
+  IntWithStatus get mergedPower => power.first;
 
   IntWithStatus get mergedSpeed => speed.merged(
         (
