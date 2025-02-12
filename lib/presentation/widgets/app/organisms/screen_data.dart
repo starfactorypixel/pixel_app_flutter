@@ -69,9 +69,9 @@ class Screen extends StatelessWidget {
 
   static ScreenData of(BuildContext context, {bool watch = true}) {
     final getInheritedElement = context.getElementForInheritedWidgetOfExactType;
-    final inheritedAdapriveWidget = getInheritedElement<InheritedScreenData>();
+    final inheritedAdaptiveWidget = getInheritedElement<InheritedScreenData>();
 
-    if (inheritedAdapriveWidget == null) {
+    if (inheritedAdaptiveWidget == null) {
       throw FlutterError(
         'Screen.of(context) called with a context that does not '
         'contain a ScreenData',
@@ -79,10 +79,10 @@ class Screen extends StatelessWidget {
     }
 
     if (watch) {
-      context.dependOnInheritedElement(inheritedAdapriveWidget);
+      context.dependOnInheritedElement(inheritedAdaptiveWidget);
     }
 
-    return (inheritedAdapriveWidget.widget as InheritedScreenData).data;
+    return (inheritedAdaptiveWidget.widget as InheritedScreenData).data;
   }
 
   @override

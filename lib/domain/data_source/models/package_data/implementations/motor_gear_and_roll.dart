@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:pixel_app_flutter/domain/data_source/extensions/int.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/wrappers/bytes_convertible_with_status.dart';
@@ -37,6 +39,8 @@ enum MotorGear {
       MotorGear.unknown => unknown(),
     };
   }
+
+  static MotorGear get random => values[Random().nextInt(values.length)];
 }
 
 enum MotorRollDirection {
@@ -68,6 +72,9 @@ enum MotorRollDirection {
       MotorRollDirection.unknown => unknown(),
     };
   }
+
+  static MotorRollDirection get random =>
+      values[Random().nextInt(values.length)];
 }
 
 class MotorGearAndRoll extends IntBytesConvertibleWithStatus {

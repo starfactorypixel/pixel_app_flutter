@@ -1,5 +1,6 @@
 // blocs
 export 'blocs/battery_data_cubit.dart';
+export 'blocs/change_gear_bloc.dart';
 export 'blocs/data_source_authorization_cubit.dart';
 export 'blocs/data_source_connect_bloc.dart';
 export 'blocs/data_source_connection_status_cubit.dart';

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:pixel_app_flutter/l10n/l10n.dart';
+import 'package:pixel_app_flutter/presentation/app/extensions.dart';
 import 'package:pixel_app_flutter/presentation/widgets/common/atoms/responsive_padding.dart';
 import 'package:pixel_app_flutter/presentation/widgets/common/atoms/sliver_section_subtitle.dart';
 import 'package:pixel_app_flutter/presentation/widgets/common/molecules/cell_sliver_grid_builder.dart';
@@ -207,18 +208,6 @@ class MotorScreen extends StatelessWidget {
 }
 
 extension on BuildContext {
-  String gearToShortString(MotorGear? gear) {
-    if (gear == null) return l10n.unknownGearShort;
-    return gear.when(
-      reverse: () => l10n.reverseGearShort,
-      neutral: () => l10n.neutralGearShort,
-      drive: () => l10n.driveGearShort,
-      low: () => l10n.lowGearShort,
-      boost: () => l10n.boostGearShort,
-      unknown: () => l10n.unknownGearShort,
-    );
-  }
-
   String gearToFullString(MotorGear? gear) {
     if (gear == null) return l10n.unknownGear;
     return gear.when(

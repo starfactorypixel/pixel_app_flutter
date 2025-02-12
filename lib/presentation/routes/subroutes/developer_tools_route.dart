@@ -44,34 +44,34 @@ AutoRoute _developerToolsRoute({bool selectedDS = true}) => AutoRoute(
             CustomRoute<List<int>>(
               page: FilterParameterIdDialogRoute.page,
               path: 'parameter-id',
-              customRouteBuilder: dialogRouteBuilder,
+              customRouteBuilder: noBarrierDialogRouteBuilder,
             ),
             CustomRoute<List<int>>(
               page: FilterRequestTypeDialogRoute.page,
               path: 'request-type',
-              customRouteBuilder: dialogRouteBuilder,
+              customRouteBuilder: noBarrierDialogRouteBuilder,
             ),
             CustomRoute<List<int>>(
               page: FilterDirectionDialogRoute.page,
               path: 'direction',
-              customRouteBuilder: dialogRouteBuilder,
+              customRouteBuilder: noBarrierDialogRouteBuilder,
             ),
           ],
         ),
         CustomRoute<List<int>>(
           page: ChangeParametersSubscriptionDialogRoute.page,
           path: 'change-parameters-subscription',
-          customRouteBuilder: dialogRouteBuilder,
+          customRouteBuilder: noBarrierDialogRouteBuilder,
         ),
         CustomRoute<int>(
           page: ChangeRequestPeriodDialogRoute.page,
           path: 'change-request-period',
-          customRouteBuilder: dialogRouteBuilder,
+          customRouteBuilder: noBarrierDialogRouteBuilder,
         ),
         CustomRoute<int>(
           page: ChangeHandshakeResponseTimeoutDialogRoute.page,
           path: 'change-handshake-response-timeout',
-          customRouteBuilder: dialogRouteBuilder,
+          customRouteBuilder: noBarrierDialogRouteBuilder,
         ),
       ],
     );
