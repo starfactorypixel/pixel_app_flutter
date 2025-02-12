@@ -98,8 +98,12 @@ final class GeneralDataState with EquatableMixin {
   final Sequence<MotorGear> gear;
   final Sequence<IntWithStatus> batteryPercent;
 
+  // TODO(Radomir): hardcoded temporarily because there is only one battery
+  // at the moment, and the merged value(mean) is irrelevant
   IntWithStatus get mergedBatteryPercent => batteryPercent.first;
 
+  // TODO(Radomir): hardcoded temporarily because there is only one battery
+  // at the moment, and the merged value(mean) is irrelevant
   IntWithStatus get mergedPower => power.first;
 
   IntWithStatus get mergedSpeed => speed.merged(
