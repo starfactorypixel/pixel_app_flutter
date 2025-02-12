@@ -18,12 +18,12 @@ AutoRoute _selectDataSourceRoute({bool root = true}) => AutoRoute(
             CustomRoute<void>(
               page: SelectDeviceDialogRoute.page,
               path: 'select-device',
-              customRouteBuilder: dialogRouteBuilder,
+              customRouteBuilder: noBarrierDialogRouteBuilder,
             ),
             CustomRoute<bool>(
               page: DataSourceDisconnectDialogRoute.page,
               path: 'disconnect',
-              customRouteBuilder: dialogRouteBuilder,
+              customRouteBuilder: noBarrierDialogRouteBuilder,
             ),
           ],
         ),

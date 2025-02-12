@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
+import 'package:pixel_app_flutter/l10n/l10n.dart';
 import 'package:pixel_app_flutter/presentation/app/colors.dart';
 
 extension PeriodicStatusExtension on BuildContext {
@@ -40,5 +41,19 @@ extension FlexSizeExtension on num {
     final value =
         (minValue + ((maxValue - minValue) * factor)).clamp(minValue, maxValue);
     return value;
+  }
+}
+
+extension GearToTextExtension on BuildContext {
+  String gearToShortString(MotorGear? gear) {
+    if (gear == null) return l10n.unknownGearShort;
+    return gear.when(
+      reverse: () => l10n.reverseGearShort,
+      neutral: () => l10n.neutralGearShort,
+      drive: () => l10n.driveGearShort,
+      low: () => l10n.lowGearShort,
+      boost: () => l10n.boostGearShort,
+      unknown: () => l10n.unknownGearShort,
+    );
   }
 }

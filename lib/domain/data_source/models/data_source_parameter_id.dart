@@ -24,60 +24,49 @@ abstract class DataSourceParameterId {
 
   const factory DataSourceParameterId.lowVoltageMinMaxDelta1() =
       LowVoltageMinMaxDelta1ParameterId;
-
   const factory DataSourceParameterId.lowVoltageMinMaxDelta2() =
       LowVoltageMinMaxDelta2ParameterId;
 
   const factory DataSourceParameterId.highVoltage1() = HighVoltage1ParameterId;
-
   const factory DataSourceParameterId.highVoltage2() = HighVoltage2ParameterId;
 
   const factory DataSourceParameterId.highCurrent1() = HighCurrent1ParameterId;
-
   const factory DataSourceParameterId.highCurrent2() = HighCurrent2ParameterId;
 
   const factory DataSourceParameterId.maxTemperature1() =
       MaxTemperature1ParameterId;
-
   const factory DataSourceParameterId.maxTemperature2() =
       MaxTemperature2ParameterId;
 
   const factory DataSourceParameterId.batteryPercent1() =
       BatteryPercent1ParameterId;
-
   const factory DataSourceParameterId.batteryPercent2() =
       BatteryPercent2ParameterId;
 
   const factory DataSourceParameterId.custom(int id) = CustomParameterId;
 
   const factory DataSourceParameterId.temperature1() = Temperature1ParameterId;
-
   const factory DataSourceParameterId.temperature2() = Temperature2ParameterId;
 
   //
   const factory DataSourceParameterId.lowVoltage1() = LowVoltage1ParameterId;
-
   const factory DataSourceParameterId.lowVoltage2() = LowVoltage2ParameterId;
 
   const factory DataSourceParameterId.batteryPower1() =
       BatteryPower1ParameterId;
-
   const factory DataSourceParameterId.batteryPower2() =
       BatteryPower2ParameterId;
 
   //
   const factory DataSourceParameterId.frontSideBeam() =
       FrontSideBeamParameterId;
-
   const factory DataSourceParameterId.tailSideBeam() = TailSideBeamParameterId;
 
   const factory DataSourceParameterId.lowBeam() = LowBeamParameterId;
-
   const factory DataSourceParameterId.highBeam() = HighBeamParameterId;
 
   const factory DataSourceParameterId.frontHazardBeam() =
       FrontHazardBeamParameterId;
-
   const factory DataSourceParameterId.tailHazardBeam() =
       TailHazardBeamParameterId;
 
@@ -86,13 +75,10 @@ abstract class DataSourceParameterId {
 
   const factory DataSourceParameterId.frontLeftTurnSignal() =
       FrontLeftTurnSignalParameterId;
-
   const factory DataSourceParameterId.frontRightTurnSignal() =
       FrontRightTurnSignalParameterId;
-
   const factory DataSourceParameterId.tailLeftTurnSignal() =
       TailLeftTurnSignalParameterId;
-
   const factory DataSourceParameterId.tailRightTurnSignal() =
       TailRightTurnSignalParameterId;
 
@@ -104,42 +90,30 @@ abstract class DataSourceParameterId {
 
   //
   const factory DataSourceParameterId.rpm1() = RPM1ParameterId;
-
   const factory DataSourceParameterId.rpm2() = RPM2ParameterId;
-
   const factory DataSourceParameterId.rpm3() = RPM3ParameterId;
-
   const factory DataSourceParameterId.rpm4() = RPM4ParameterId;
 
   const factory DataSourceParameterId.motorSpeed1() = MotorSpeed1ParameterId;
-
   const factory DataSourceParameterId.motorSpeed2() = MotorSpeed2ParameterId;
-
   const factory DataSourceParameterId.motorSpeed3() = MotorSpeed3ParameterId;
-
   const factory DataSourceParameterId.motorSpeed4() = MotorSpeed4ParameterId;
 
   const factory DataSourceParameterId.motorVoltage1() =
       MotorVoltage1ParameterId;
-
   const factory DataSourceParameterId.motorVoltage2() =
       MotorVoltage2ParameterId;
-
   const factory DataSourceParameterId.motorVoltage3() =
       MotorVoltage3ParameterId;
-
   const factory DataSourceParameterId.motorVoltage4() =
       MotorVoltage4ParameterId;
 
   const factory DataSourceParameterId.motorCurrent1() =
       MotorCurrent1ParameterId;
-
   const factory DataSourceParameterId.motorCurrent2() =
       MotorCurrent2ParameterId;
-
   const factory DataSourceParameterId.motorCurrent3() =
       MotorCurrent3ParameterId;
-
   const factory DataSourceParameterId.motorCurrent4() =
       MotorCurrent4ParameterId;
 
@@ -149,34 +123,34 @@ abstract class DataSourceParameterId {
   const factory DataSourceParameterId.motorPower4() = MotorPower4ParameterId;
 
   const factory DataSourceParameterId.gearAndRoll1() = GearAndRoll1ParameterId;
-
   const factory DataSourceParameterId.gearAndRoll2() = GearAndRoll2ParameterId;
-
   const factory DataSourceParameterId.gearAndRoll3() = GearAndRoll3ParameterId;
-
   const factory DataSourceParameterId.gearAndRoll4() = GearAndRoll4ParameterId;
+
+  const factory DataSourceParameterId.transmission1() =
+      Transmission1ParameterId;
+  const factory DataSourceParameterId.transmission2() =
+      Transmission2ParameterId;
+  const factory DataSourceParameterId.transmission3() =
+      Transmission3ParameterId;
+  const factory DataSourceParameterId.transmission4() =
+      Transmission4ParameterId;
 
   const factory DataSourceParameterId.motorTemperature1() =
       MotorTemperature1ParameterId;
-
   const factory DataSourceParameterId.motorTemperature2() =
       MotorTemperature2ParameterId;
-
   const factory DataSourceParameterId.motorTemperature3() =
       MotorTemperature3ParameterId;
-
   const factory DataSourceParameterId.motorTemperature4() =
       MotorTemperature4ParameterId;
 
   const factory DataSourceParameterId.controllerTemperature1() =
       ControllerTemperature1ParameterId;
-
   const factory DataSourceParameterId.controllerTemperature2() =
       ControllerTemperature2ParameterId;
-
   const factory DataSourceParameterId.controllerTemperature3() =
       ControllerTemperature3ParameterId;
-
   const factory DataSourceParameterId.controllerTemperature4() =
       ControllerTemperature4ParameterId;
 
@@ -187,7 +161,6 @@ abstract class DataSourceParameterId {
   const factory DataSourceParameterId.hood() = HoodParameterId;
 
   const factory DataSourceParameterId.leftDoor() = LeftDoorParameterId;
-
   const factory DataSourceParameterId.rightDoor() = RightDoorParameterId;
 
   const factory DataSourceParameterId.cabinLight() = CabinLightParameterId;
@@ -207,60 +180,46 @@ abstract class DataSourceParameterId {
 
   bool get isLowVoltageMinMaxDelta1 =>
       this is LowVoltageMinMaxDelta1ParameterId;
-
   bool get isLowVoltageMinMaxDelta2 =>
       this is LowVoltageMinMaxDelta2ParameterId;
 
   bool get isHighVoltage1 => this is HighVoltage1ParameterId;
-
   bool get isHighVoltage2 => this is HighVoltage2ParameterId;
 
   bool get isHighCurrent1 => this is HighCurrent1ParameterId;
-
   bool get isHighCurrent2 => this is HighCurrent2ParameterId;
 
   bool get isMaxTemperature1 => this is MaxTemperature1ParameterId;
-
   bool get isMaxTemperature2 => this is MaxTemperature2ParameterId;
 
   bool get isBatteryPercent1 => this is BatteryPercent1ParameterId;
-
   bool get isBatteryPercent2 => this is BatteryPercent2ParameterId;
 
   bool get isTemperature1 => this is Temperature1ParameterId;
-
   bool get isTemperature2 => this is Temperature2ParameterId;
 
   //
 
   bool get isLowVoltage1 => this is LowVoltage1ParameterId;
-
   bool get isLowVoltage2 => this is LowVoltage2ParameterId;
 
   bool get isBatteryPower1 => this is BatteryPower1ParameterId;
-
   bool get isBatteryPower2 => this is BatteryPower2ParameterId;
 
   bool get isFrontSideBeam => this is FrontSideBeamParameterId;
-
   bool get isTailSideBeam => this is TailSideBeamParameterId;
 
   bool get isLowBeam => this is LowBeamParameterId;
-
   bool get isHighBeam => this is HighBeamParameterId;
 
   bool get isFrontHazardBeam => this is FrontHazardBeamParameterId;
-
   bool get isTailHazardBeam => this is TailHazardBeamParameterId;
 
   bool get isTailCustomBeam => this is TailCustomBeamParameterId;
 
   bool get isFrontLeftTurnSignal => this is FrontLeftTurnSignalParameterId;
-
   bool get isFrontRightTurnSignal => this is FrontRightTurnSignalParameterId;
-
   bool get isTailLeftTurnSignal => this is TailLeftTurnSignalParameterId;
-
   bool get isTailRightTurnSignal => this is TailRightTurnSignalParameterId;
 
   bool get isBrakeLight => this is BrakeLightParameterId;
@@ -271,35 +230,23 @@ abstract class DataSourceParameterId {
 
   //
   bool get isRPM1 => this is RPM1ParameterId;
-
   bool get isRPM2 => this is RPM2ParameterId;
-
   bool get isRPM3 => this is RPM3ParameterId;
-
   bool get isRPM4 => this is RPM4ParameterId;
 
   bool get isMotorSpeed1 => this is MotorSpeed1ParameterId;
-
   bool get isMotorSpeed2 => this is MotorSpeed2ParameterId;
-
   bool get isMotorSpeed3 => this is MotorSpeed3ParameterId;
-
   bool get isMotorSpeed4 => this is MotorSpeed4ParameterId;
 
   bool get isMotorVoltage1 => this is MotorVoltage1ParameterId;
-
   bool get isMotorVoltage2 => this is MotorVoltage2ParameterId;
-
   bool get isMotorVoltage3 => this is MotorVoltage3ParameterId;
-
   bool get isMotorVoltage4 => this is MotorVoltage4ParameterId;
 
   bool get isMotorCurrent1 => this is MotorCurrent1ParameterId;
-
   bool get isMotorCurrent2 => this is MotorCurrent2ParameterId;
-
   bool get isMotorCurrent3 => this is MotorCurrent3ParameterId;
-
   bool get isMotorCurrent4 => this is MotorCurrent4ParameterId;
 
   bool get isMotorPower1 => this is MotorPower1ParameterId;
@@ -308,30 +255,26 @@ abstract class DataSourceParameterId {
   bool get isMotorPower4 => this is MotorPower4ParameterId;
 
   bool get isGearAndRoll1 => this is GearAndRoll1ParameterId;
-
   bool get isGearAndRoll2 => this is GearAndRoll2ParameterId;
-
   bool get isGearAndRoll3 => this is GearAndRoll3ParameterId;
-
   bool get isGearAndRoll4 => this is GearAndRoll4ParameterId;
 
+  bool get isTransmission1 => this is Transmission1ParameterId;
+  bool get isTransmission2 => this is Transmission2ParameterId;
+  bool get isTransmission3 => this is Transmission3ParameterId;
+  bool get isTransmission4 => this is Transmission4ParameterId;
+
   bool get isMotorTemperature1 => this is MotorTemperature1ParameterId;
-
   bool get isMotorTemperature2 => this is MotorTemperature2ParameterId;
-
   bool get isMotorTemperature3 => this is MotorTemperature3ParameterId;
-
   bool get isMotorTemperature4 => this is MotorTemperature4ParameterId;
 
   bool get isControllerTemperature1 =>
       this is ControllerTemperature1ParameterId;
-
   bool get isControllerTemperature2 =>
       this is ControllerTemperature2ParameterId;
-
   bool get isControllerTemperature3 =>
       this is ControllerTemperature3ParameterId;
-
   bool get isControllerTemperature4 =>
       this is ControllerTemperature4ParameterId;
 
@@ -417,6 +360,10 @@ abstract class DataSourceParameterId {
       DataSourceParameterId.gearAndRoll2(),
       DataSourceParameterId.gearAndRoll3(),
       DataSourceParameterId.gearAndRoll4(),
+      DataSourceParameterId.transmission1(),
+      DataSourceParameterId.transmission2(),
+      DataSourceParameterId.transmission3(),
+      DataSourceParameterId.transmission4(),
       DataSourceParameterId.motorTemperature1(),
       DataSourceParameterId.motorTemperature2(),
       DataSourceParameterId.motorTemperature3(),
@@ -695,6 +642,22 @@ class GearAndRoll3ParameterId extends DataSourceParameterId {
 
 class GearAndRoll4ParameterId extends DataSourceParameterId {
   const GearAndRoll4ParameterId() : super(0x0149);
+}
+
+class Transmission1ParameterId extends DataSourceParameterId {
+  const Transmission1ParameterId() : super(0x0106);
+}
+
+class Transmission2ParameterId extends DataSourceParameterId {
+  const Transmission2ParameterId() : super(0x0107);
+}
+
+class Transmission3ParameterId extends DataSourceParameterId {
+  const Transmission3ParameterId() : super(0x0136);
+}
+
+class Transmission4ParameterId extends DataSourceParameterId {
+  const Transmission4ParameterId() : super(0x0137);
 }
 
 class MotorTemperature1ParameterId extends DataSourceParameterId {

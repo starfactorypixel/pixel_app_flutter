@@ -288,6 +288,8 @@
   "lowGearShort": "L",
   "boostGearShort": "B",
   "unknownGearShort": "U",
+  "errorSwitchingGearMessage": "Ошибка переключения передачи",
+  "stopBeforeSwitchingGearMessage": "Для переключения передачи нужно сначала остановиться",
   "reverseMotorRollDirectionShort": "R",
   "unknownMotorRollDirectionShort": "U",
   "forwardMotorRollDirectionShort": "F",

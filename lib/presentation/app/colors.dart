@@ -56,6 +56,8 @@ abstract class AppColorsData with EquatableMixin {
 
   Color get borderAccent;
 
+  Color get dialogBarrier;
+
   @override
   List<Object?> get props => [brightness];
 }
@@ -132,6 +134,9 @@ class _AppColorsDataDark extends AppColorsData {
 
   @override
   Color get borderAccent => const Color(0xFF546E7A);
+
+  @override
+  Color get dialogBarrier => const Color(0x66000000);
 }
 
 class AppColors extends StatelessWidget {

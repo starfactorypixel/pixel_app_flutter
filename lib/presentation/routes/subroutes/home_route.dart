@@ -15,7 +15,7 @@ final _homeRoute = AutoRoute(
         CustomRoute<void>(
           path: 'led-switcher-dialog',
           page: LEDSwitcherDialogRoute.page,
-          customRouteBuilder: dialogRouteBuilder,
+          customRouteBuilder: noBarrierDialogRouteBuilder,
         ),
       ],
     ),
@@ -34,7 +34,7 @@ final _homeRoute = AutoRoute(
         CustomRoute<bool>(
           path: 'enable-fast-access',
           page: EnableFastAccessDialogRoute.page,
-          customRouteBuilder: enableFastAccessDialofRouteBuilder,
+          customRouteBuilder: noBarrierDialogRouteBuilder,
         ),
       ],
     ),
@@ -58,19 +58,6 @@ final _homeRoute = AutoRoute(
     ),
   ],
 );
-
-Route<T> enableFastAccessDialofRouteBuilder<T>(
-  BuildContext context,
-  Widget child,
-  AutoRoutePage<T> page,
-) {
-  return dialogRouteBuilder<T>(
-    context,
-    child,
-    page,
-    barrierColor: Colors.transparent,
-  );
-}
 
 @RoutePage(name: 'NavigatorFlow')
 class NavigatorScope extends AutoRouter {

@@ -119,7 +119,6 @@ class HandsetGeneralScreenBody extends StatelessWidget {
         IntrinsicHeight(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SpeedWidget(),
               if (landscape)

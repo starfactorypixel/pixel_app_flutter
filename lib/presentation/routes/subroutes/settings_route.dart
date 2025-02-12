@@ -19,12 +19,12 @@ final _settingsRoute = AutoRoute(
         CustomRoute<void>(
           page: AddConfigurationDialogRoute.page,
           path: 'add-configuration',
-          customRouteBuilder: dialogRouteBuilder,
+          customRouteBuilder: noBarrierDialogRouteBuilder,
         ),
         CustomRoute<void>(
           page: RemoveConfigurationDialogRoute.page,
           path: 'remove-configuration',
-          customRouteBuilder: dialogRouteBuilder,
+          customRouteBuilder: noBarrierDialogRouteBuilder,
         ),
       ],
     ),

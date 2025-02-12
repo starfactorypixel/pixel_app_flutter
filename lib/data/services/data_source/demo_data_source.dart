@@ -364,15 +364,43 @@ class DemoDataSource extends DataSource
             const DataSourceParameterId.gearAndRoll4(),
           },
           respondCallback: (id, version, manager, [package]) {
-            final randomGear =
-                MotorGear.values[Random().nextInt(MotorGear.values.length)];
-            final randomRoll = MotorRollDirection
-                .values[Random().nextInt(MotorRollDirection.values.length)];
             return manager.updateCallback(
               id,
               MotorGearAndRoll(
-                gear: randomGear,
-                rollDirection: randomRoll,
+                // gear: MotorGear.random,
+                gear: MotorGear.drive,
+                rollDirection: MotorRollDirection.random,
+                status: _getRandomStatus,
+              ),
+              version,
+            );
+          },
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {
+            const DataSourceParameterId.transmission1(),
+            const DataSourceParameterId.transmission2(),
+            const DataSourceParameterId.transmission3(),
+            const DataSourceParameterId.transmission4(),
+          },
+          unavailableForSubscriptionIds: {},
+          respondCallback: (id, version, manager, [package]) {
+            final expectedGearId = package.checkNotNull('Packet').data.last;
+            manager.updateCallback(
+              id,
+              Uint8WithStatusBody(
+                value: expectedGearId,
+                status: PeriodicValueStatus.normal,
+              ),
+              version,
+            );
+            final gap = const DataSourceParameterId.transmission1().value -
+                const DataSourceParameterId.gearAndRoll1().value;
+            return manager.updateCallback(
+              DataSourceParameterId.fromInt(id.value - gap),
+              MotorGearAndRoll(
+                gear: MotorGear.fromId(expectedGearId),
+                rollDirection: MotorRollDirection.random,
                 status: _getRandomStatus,
               ),
               version,
@@ -520,14 +548,14 @@ class DemoDataSource extends DataSource
             return const Result.value(null);
           },
         ),
-        MainEcuMockResponseWrapper(
-          ids: {const CustomImageParameterId()},
-          respondCallback: (id, version, manager, [package]) async {
-            await _sendSetUint8ResultCallback(id, version, package?.data[1]);
+        // MainEcuMockResponseWrapper(
+        //   ids: {const CustomImageParameterId()},
+        //   respondCallback: (id, version, manager, [package]) async {
+        //     await _sendSetUint8ResultCallback(id, version, package?.data[1]);
 
-            return const Result.value(null);
-          },
-        ),
+        //     return const Result.value(null);
+        //   },
+        // ),
         MainEcuMockResponseUpdateCallbackWrapper(
           ids: {const CustomParameterId(0x00E0)},
           convertible: PlainBytesConvertible(
@@ -598,26 +626,26 @@ class DemoDataSource extends DataSource
     );
   }
 
-  Future<void> _sendSetUint8ResultCallback(
-    DataSourceParameterId parameterId,
-    DataSourceProtocolVersion version, [
-    int? requiredResult,
-  ]) async {
-    await Future<void>.delayed(const Duration(milliseconds: 100));
-    final _requiredResult = requiredResult ?? randomUint8;
+  // Future<void> _sendSetUint8ResultCallback(
+  //   DataSourceParameterId parameterId,
+  //   DataSourceProtocolVersion version, [
+  //   int? requiredResult,
+  // ]) async {
+  //   await Future<void>.delayed(const Duration(milliseconds: 100));
+  //   final _requiredResult = requiredResult ?? randomUint8;
 
-    await _updateValueCallback(
-      parameterId,
-      SuccessEventUint8Body(
-        generateRandomErrors()
-            ? randomBool
-                ? randomUint8
-                : _requiredResult
-            : _requiredResult,
-      ),
-      version,
-    );
-  }
+  //   await _updateValueCallback(
+  //     parameterId,
+  //     SuccessEventUint8Body(
+  //       generateRandomErrors()
+  //           ? randomBool
+  //               ? randomUint8
+  //               : _requiredResult
+  //           : _requiredResult,
+  //     ),
+  //     version,
+  //   );
+  // }
 
   void _sendPackage(DataSourceIncomingPackage package) {
     if (controller.isClosed) return;
