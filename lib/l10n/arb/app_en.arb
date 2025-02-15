@@ -290,6 +290,7 @@
   "boostGearShort": "B",
   "unknownGearShort": "U",
   "errorSwitchingGearMessage": "Error switching the gear",
+  "errorChangeWheelSteeringMessage": "Error switching wheels steering mode",
   "stopBeforeSwitchingGearMessage": "To switch the gear, you must first stop",
   "reverseMotorRollDirectionShort": "R",
   "unknownMotorRollDirectionShort": "U",

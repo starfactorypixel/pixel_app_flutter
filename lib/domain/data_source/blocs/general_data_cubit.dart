@@ -5,6 +5,7 @@ import 'package:pixel_app_flutter/domain/app/app.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/battery_percent.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/wheelSteering.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
 import 'package:re_seedwork/re_seedwork.dart';
 
@@ -15,6 +16,7 @@ typedef _IntValueModifier = (
 
 extension _SequenceExt on Sequence<IntWithStatus> {
   static int avgFold(int a, int b) => a + b;
+
   static int maxFold(int a, int b) => a > b ? a : b;
 
   static _IntValueModifier avg =
@@ -50,6 +52,7 @@ final class GeneralDataState with EquatableMixin {
     required this.odometer,
     required this.speed,
     required this.gear,
+    required this.wheelSteering,
   });
 
   GeneralDataState.initial({
@@ -70,7 +73,8 @@ final class GeneralDataState with EquatableMixin {
         gear = Sequence.fill(
           hardwareCount.motors,
           MotorGear.unknown,
-        );
+        ),
+        wheelSteering = WheelSteering.free;
 
   factory GeneralDataState.fromMap(Map<String, dynamic> map) {
     return GeneralDataState(
@@ -88,6 +92,7 @@ final class GeneralDataState with EquatableMixin {
       gear: Sequence.fromIterable(
         map.tryParseAndMapList('gear', MotorGear.fromId),
       ),
+      wheelSteering: map.parseAndMap('wheelSteering', WheelSteering.fromId),
     );
   }
 
@@ -97,6 +102,7 @@ final class GeneralDataState with EquatableMixin {
   final Sequence<IntWithStatus> speed;
   final Sequence<MotorGear> gear;
   final Sequence<IntWithStatus> batteryPercent;
+  final WheelSteering wheelSteering;
 
   // TODO(Radomir): hardcoded temporarily because there is only one battery
   // at the moment, and the merged value(mean) is irrelevant
@@ -120,13 +126,8 @@ final class GeneralDataState with EquatableMixin {
   }
 
   @override
-  List<Object?> get props => [
-        power,
-        batteryPercent,
-        odometer,
-        speed,
-        gear,
-      ];
+  List<Object?> get props =>
+      [power, batteryPercent, odometer, speed, gear, wheelSteering];
 
   GeneralDataState copyWith({
     Sequence<IntWithStatus>? power,
@@ -134,6 +135,7 @@ final class GeneralDataState with EquatableMixin {
     IntWithStatus? odometer,
     Sequence<IntWithStatus>? speed,
     Sequence<MotorGear>? gear,
+    WheelSteering? wheelSteering,
   }) {
     return GeneralDataState(
       hardwareCount: hardwareCount,
@@ -142,6 +144,7 @@ final class GeneralDataState with EquatableMixin {
       odometer: odometer ?? this.odometer,
       speed: speed ?? this.speed,
       gear: gear ?? this.gear,
+      wheelSteering: wheelSteering ?? this.wheelSteering,
     );
   }
 
@@ -153,6 +156,7 @@ final class GeneralDataState with EquatableMixin {
       'odometer': odometer.toMap(),
       'speed': [for (final e in speed) e.toMap()],
       'gear': [for (final e in gear) e.id],
+      'wheelSteering': wheelSteering.id,
     };
   }
 }
@@ -216,6 +220,14 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
               odometer: IntWithStatus.fromBytesConvertible(model, km),
             ),
           );
+        })
+        ..voidOnModel<Uint8WithStatusBody,
+            WheelSteeringIncomingDataSourcePackage>((model) {
+          emit(
+            state.copyWith(
+              wheelSteering: WheelSteering.fromId(model.value) ,
+            ),
+          );
         });
     });
   }
@@ -234,6 +246,7 @@ class GeneralDataCubit extends Cubit<GeneralDataState> with ConsumerBlocMixin {
     const DataSourceParameterId.batteryPercent2(),
     const DataSourceParameterId.batteryPower1(),
     const DataSourceParameterId.batteryPower2(),
+    const DataSourceParameterId.wheelSteering(),
   };
 
   @protected

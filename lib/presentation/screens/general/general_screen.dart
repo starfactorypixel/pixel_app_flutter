@@ -10,6 +10,7 @@ import 'package:pixel_app_flutter/presentation/screens/general/widgets/light_sta
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/overlay_data_sender.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/suspension_control_button.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/user_defined_buttons_end_drawer.dart';
+import 'package:pixel_app_flutter/presentation/screens/general/widgets/wheel_steering_widget.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/wipers_switcher_button.dart';
 import 'package:pixel_app_flutter/presentation/widgets/app/organisms/screen_data.dart';
 import 'package:pixel_app_flutter/presentation/widgets/common/atoms/responsive_padding.dart';
@@ -92,7 +93,12 @@ class TabletGeneralScreenBody extends StatelessWidget {
               screenFlexRange: (600, 700),
               valueClampRange: (420, 460),
             ),
-            child: GearWidget(screenSize: size),
+            child: Row(
+              children: [
+                GearWidget(screenSize: size),
+                WheelSteeringWidget(screenSize: size),
+              ],
+            ),
           ),
           const Positioned(
             right: 0,
@@ -125,7 +131,12 @@ class HandsetGeneralScreenBody extends StatelessWidget {
               if (landscape)
                 const StatisticWidget()
               else
-                GearWidget(screenSize: size),
+                Column(
+                  children: [
+                    GearWidget(screenSize: size),
+                    WheelSteeringWidget(screenSize: size),
+                  ],
+                ),
             ],
           ),
         ),
@@ -139,7 +150,13 @@ class HandsetGeneralScreenBody extends StatelessWidget {
           const SizedBox(height: 16),
           const SuspensionControlButton(),
         ] else ...[
-          GearWidget(screenSize: size),
+          Row(
+            children: [
+              GearWidget(screenSize: size),
+              const SizedBox(width: 16),
+              WheelSteeringWidget(screenSize: size),
+            ],
+          ),
           const SizedBox(height: 16),
           const Row(
             children: [

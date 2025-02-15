@@ -199,6 +199,12 @@ class SelectedDataSourceScope extends AutoRouter {
                 ),
               ),
               BlocProvider(
+                create: (context) => ChangeWheelSteeringBloc(
+                  dataSource: context.read(),
+                  generalDataCubit: context.read(),
+                ),
+              ),
+              BlocProvider(
                 create: (context) =>
                     LaunchAppCubit(appsService: context.read()),
               ),
