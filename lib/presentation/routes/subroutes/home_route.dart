@@ -17,6 +17,11 @@ final _homeRoute = AutoRoute(
           page: LEDSwitcherDialogRoute.page,
           customRouteBuilder: noBarrierDialogRouteBuilder,
         ),
+        CustomRoute<void>(
+          path: 'suspension-control-dialog',
+          page: SuspensionControlDialogRoute.page,
+          customRouteBuilder: noBarrierDialogRouteBuilder,
+        ),
       ],
     ),
     AutoRoute(

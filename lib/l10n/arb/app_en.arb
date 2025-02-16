@@ -65,6 +65,7 @@
   "saveButtonCaption": "Save",
   "sendButtonCaption": "Send",
   "enableButtonCaption": "Enable",
+  "retryButtonCaption": "Retry",
   "unknownErrorSelectingDataSourceMessage": "Unknown error while selecting data source",
   "unavailableDataSourceErrorMessage": "Data source is unavailable",
   "errorEnablingDataSourceMessage": "Error while enabling data source",
@@ -298,6 +299,23 @@
   "unknownMotorRollDirection": "Unknown",
   "forwardMotorRollDirection": "Forward",
   "stopMotorRollDirection": "Stop",
+  "suspensionModeDialogTitle": "Suspension mode",
+  "errorGettingSuspensionModeMessage": "Error getting suspension mode",
+  "errorSwitchingSuspensionModeMessage": "Error switching suspension mode",
+  "errorGettingManualValueMessage": "Error getting manual mode value",
+  "errorSettingManualValueMessage": "Error setting manual mode value",
+  "lowSuspensionMode": "Low",
+  "highwaySuspensionMode": "Highway",
+  "offRoadSuspensionMode": "Off road",
+  "manualSuspensionMode": "Manual",
+  "manualValueSuspensionMode": "Manual({value})",
+  "@manualValueSuspensionMode": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
   "ledPanelSwitcherDialogTitle": "Run LED panel configurations",
   "noLEDConfigurationsMessage": "There are no configurations yet",
   "shutdownConfigByTimerMessage": "By timer: {shutdownTimeMillis} ms",

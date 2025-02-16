@@ -8,6 +8,7 @@ import 'package:pixel_app_flutter/presentation/screens/general/widgets/general_i
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/led_switcher_button.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/light_state_error_listener.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/overlay_data_sender.dart';
+import 'package:pixel_app_flutter/presentation/screens/general/widgets/suspension_control_button.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/user_defined_buttons_end_drawer.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/wipers_switcher_button.dart';
 import 'package:pixel_app_flutter/presentation/widgets/app/organisms/screen_data.dart';
@@ -135,12 +136,20 @@ class HandsetGeneralScreenBody extends StatelessWidget {
           const LEDSwitcherButton(),
           const SizedBox(height: 16),
           const WipersSwitcherButton(),
+          const SizedBox(height: 16),
+          const SuspensionControlButton(),
         ] else ...[
           GearWidget(screenSize: size),
           const SizedBox(height: 16),
-          const LEDSwitcherButton(),
-          const SizedBox(height: 16),
-          const WipersSwitcherButton(),
+          const Row(
+            children: [
+              LEDSwitcherButton(),
+              SizedBox(width: 16),
+              WipersSwitcherButton(),
+              SizedBox(width: 16),
+              SuspensionControlButton(),
+            ],
+          ),
         ],
       ],
     );

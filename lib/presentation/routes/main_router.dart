@@ -32,6 +32,7 @@ import 'package:pixel_app_flutter/presentation/screens/developer_tools/widgets/s
 import 'package:pixel_app_flutter/presentation/screens/general/general_screen.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/change_gear_dialog.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/led_panel_switcher_dialog.dart';
+import 'package:pixel_app_flutter/presentation/screens/general/widgets/suspension_control_dialog.dart';
 import 'package:pixel_app_flutter/presentation/screens/home/home_screen.dart';
 import 'package:pixel_app_flutter/presentation/screens/navigator/navigator_screen.dart';
 import 'package:pixel_app_flutter/presentation/screens/navigator/widgets/enable_fast_access_dialog.dart';

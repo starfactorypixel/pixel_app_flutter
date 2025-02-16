@@ -55,7 +55,7 @@ abstract class SetValueResultConverter<T extends SetValueResult>
   @override
   T fromBytes(List<int> bytes) {
     return fromBytesResult(
-      success: bytes[0] == FunctionId.successSetValueWithParamId,
+      success: bytes[0] == FunctionId.okEventId,
       body: bytes.sublist(1),
     );
   }
@@ -65,10 +65,7 @@ abstract class SetValueResultConverter<T extends SetValueResult>
   @override
   List<int> toBytes(T model) {
     return [
-      if (model.success)
-        FunctionId.successSetValueWithParamId
-      else
-        FunctionId.errorSettingValueWithParamId,
+      if (model.success) FunctionId.okEventId else FunctionId.errorEventId,
       ...toBytesBody(model),
     ];
   }
