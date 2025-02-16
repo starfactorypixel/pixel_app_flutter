@@ -168,6 +168,11 @@ abstract class DataSourceParameterId {
   const factory DataSourceParameterId.windscreenWipers() =
       WindscreenWipersParameterId;
 
+  const factory DataSourceParameterId.suspensionMode() =
+      SuspensionModeParameterId;
+  const factory DataSourceParameterId.suspensionValue() =
+      SuspensionValueParameterId;
+
   bool get isAuthorization => this is AuthorizationParameterId;
 
   bool get isSpeed => this is SpeedParameterId;
@@ -292,6 +297,9 @@ abstract class DataSourceParameterId {
 
   bool get isWindscreenWipers => this is WindscreenWipersParameterId;
 
+  bool get isSuspensionMode => this is SuspensionModeParameterId;
+  bool get isSuspensionValue => this is SuspensionValueParameterId;
+
   void voidOn<T extends DataSourceParameterId>(void Function() function) {
     if (this is T) function();
   }
@@ -383,6 +391,9 @@ abstract class DataSourceParameterId {
       DataSourceParameterId.cabinLight(),
       //
       DataSourceParameterId.windscreenWipers(),
+      //
+      DataSourceParameterId.suspensionMode(),
+      DataSourceParameterId.suspensionValue(),
     ];
   }
 
@@ -718,4 +729,12 @@ class CabinLightParameterId extends DataSourceParameterId {
 
 class WindscreenWipersParameterId extends DataSourceParameterId {
   const WindscreenWipersParameterId() : super(0x00CA);
+}
+
+class SuspensionModeParameterId extends DataSourceParameterId {
+  const SuspensionModeParameterId() : super(0x0244);
+}
+
+class SuspensionValueParameterId extends DataSourceParameterId {
+  const SuspensionValueParameterId() : super(0x0245);
 }

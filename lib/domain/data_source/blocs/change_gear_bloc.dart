@@ -8,17 +8,17 @@ import 'package:re_seedwork/re_seedwork.dart';
 part 'change_gear_bloc.freezed.dart';
 
 @freezed
-class ChangeGearEvent extends EffectEvent with _$ChangeGearEvent {
+class ChangeGearEvent with _$ChangeGearEvent {
   const factory ChangeGearEvent.change(MotorGear newGear) = _Change;
 }
 
 typedef ChangeGearState = AsyncData<MotorGear, Object>;
 
-class ChangeGearBloc extends Bloc<ChangeGearEvent, ChangeGearState>
-    with BlocEventHandlerMixin {
+class ChangeGearBloc extends Bloc<ChangeGearEvent, ChangeGearState> {
   ChangeGearBloc({
     required this.dataSource,
     required this.generalDataCubit,
+    this.responseTimeout = const Duration(seconds: 2),
   }) : super(const ChangeGearState.initial(MotorGear.unknown)) {
     on<_Change>(_onChange);
   }
@@ -37,6 +37,9 @@ class ChangeGearBloc extends Bloc<ChangeGearEvent, ChangeGearState>
   @protected
   final GeneralDataCubit generalDataCubit;
 
+  @visibleForTesting
+  final Duration responseTimeout;
+
   Future<void> _onChange(
     _Change event,
     Emitter<AsyncData<MotorGear, Object>> emit,
@@ -46,7 +49,7 @@ class ChangeGearBloc extends Bloc<ChangeGearEvent, ChangeGearState>
     try {
       final future = generalDataCubit.stream
           .firstWhere((element) => element.mergedGear == event.newGear)
-          .timeout(const Duration(seconds: 2));
+          .timeout(responseTimeout);
       for (final parameterId in kParameterIds) {
         final res = await dataSource.sendPackage(
           OutgoingSetValuePackage(

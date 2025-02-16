@@ -50,6 +50,14 @@ class SetUint8ResultBody extends SetValueResult {
 
   final int value;
 
+  T when<T>({
+    required T Function(int value) success,
+    required T Function() error,
+  }) {
+    if (this.success) return success(value);
+    return error();
+  }
+
   static SetValueResultConverter<SetUint8ResultBody> get converter =>
       const SetUint8ResultBodyConverter();
 

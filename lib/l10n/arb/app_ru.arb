@@ -65,6 +65,7 @@
   "saveButtonCaption": "Сохранить",
   "sendButtonCaption": "Отправить",
   "enableButtonCaption": "Включить",
+  "retryButtonCaption": "Еще раз",
   "unknownErrorSelectingDataSourceMessage": "Неизвестная ошибка при выборе источника данных",
   "unavailableDataSourceErrorMessage": "Источник данных недоступен",
   "errorEnablingDataSourceMessage": "Ошибка при включении источника данных",
@@ -298,6 +299,23 @@
   "unknownMotorRollDirection": "Неизвестно",
   "forwardMotorRollDirection": "Вперед",
   "stopMotorRollDirection": "Стоп",
+  "suspensionModeDialogTitle": "Режим подвески",
+  "errorGettingSuspensionModeMessage": "Ошибка при получении режима подвески",
+  "errorSwitchingSuspensionModeMessage": "Ошибка при переключении режима подвески",
+  "errorGettingManualValueMessage": "Ошибка при получении значения ручного режима",
+  "errorSettingManualValueMessage": "Ошибка при установке значения ручного режима",
+  "lowSuspensionMode": "Заниженный",
+  "highwaySuspensionMode": "Шоссе",
+  "offRoadSuspensionMode": "Оффроуд",
+  "manualSuspensionMode": "Ручной",
+  "manualValueSuspensionMode": "Ручной({value})",
+  "@manualValueSuspensionMode": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
   "ledPanelSwitcherDialogTitle": "Запуск конфигураций светодиодной панели",
   "noLEDConfigurationsMessage": "Пока конфигураций нет",
   "shutdownConfigByTimerMessage": "По таймеру: {shutdownTimeMillis} мс",

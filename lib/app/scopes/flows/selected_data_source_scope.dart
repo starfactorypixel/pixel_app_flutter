@@ -177,6 +177,11 @@ class SelectedDataSourceScope extends AutoRouter {
                   ..subscribeToWindscreenWipers(),
               ),
               BlocProvider(
+                create: (context) => SuspensionControlBloc(
+                  dataSource: context.read(),
+                )..add(const SuspensionControlEvent.getMode()),
+              ),
+              BlocProvider(
                 create: (context) {
                   context.read<OutgoingPackagesCubit>().subscribeTo(
                         GeneralDataCubit.kDefaultSubscribeParameters,

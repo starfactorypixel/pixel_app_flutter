@@ -259,6 +259,7 @@ class DemoDataSource extends DataSource
           timer = Timer.periodic(
             Duration(milliseconds: updatePeriod),
             (timer) async {
+              if (subscriptionParameters.isEmpty) return;
               final innerTimerPeriod =
                   (updatePeriod / subscriptionParameters.length).floor();
               for (var i = 0; i < subscriptionParameters.length; i++) {
@@ -581,6 +582,68 @@ class DemoDataSource extends DataSource
               _ => ButtonFunctionId.fromValue(id.value),
             };
             await _sendDoorToggleResultCallback(functionId);
+
+            return const Result.value(null);
+          },
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {
+            const DataSourceParameterId.suspensionMode(),
+          },
+          unavailableForSubscriptionIds: {},
+          respondCallback: (id, version, manager, [package]) async {
+            final data = (package?.data).checkNotNull('Package data');
+            final requestType = data.first;
+            assert(
+              [
+                FunctionId.requestValue.value,
+                FunctionId.setValueWithParam.value,
+              ].contains(requestType),
+              'Supported only "set" and "get" request types',
+            );
+
+            await manager.updateCallback(
+              id,
+              SetUint8ResultBody(
+                success: !generateRandomErrors() || randomBool,
+                value: (generateRandomErrors() ||
+                        requestType == FunctionId.requestValue.value)
+                    ? SuspensionMode.random.id
+                    : package?.data.last ?? 0,
+              ),
+              version,
+            );
+
+            return const Result.value(null);
+          },
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {
+            const DataSourceParameterId.suspensionValue(),
+          },
+          unavailableForSubscriptionIds: {},
+          respondCallback: (id, version, manager, [package]) async {
+            final data = (package?.data).checkNotNull('Package data');
+            final requestType = data.first;
+            assert(
+              [
+                FunctionId.requestValue.value,
+                FunctionId.setValueWithParam.value,
+              ].contains(requestType),
+              'Supported only "set" and "get" request types',
+            );
+
+            await manager.updateCallback(
+              id,
+              SetUint8ResultBody(
+                success: !generateRandomErrors() || randomBool,
+                value: (generateRandomErrors() ||
+                        requestType == FunctionId.requestValue.value)
+                    ? Random().nextInt(SuspensionMode.kMaxManualValue)
+                    : package?.data.last ?? 0,
+              ),
+              version,
+            );
 
             return const Result.value(null);
           },

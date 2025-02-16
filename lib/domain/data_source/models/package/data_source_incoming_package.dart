@@ -122,6 +122,9 @@ abstract class DataSourceIncomingPackage<T extends BytesConvertible>
       //
       WindscreenWipersIncomingDataSourcePackage.new,
       //
+      SuspensionModeIncomingDataSourcePackage.new,
+      SuspensionManualValueIncomingDataSourcePackage.new,
+      //
       ErrorWithCodeAndSectionIncomingDataSourcePackage.new,
       //
       CustomIncomingDataSourcePackage.new,
@@ -150,8 +153,8 @@ extension VoidOnModelExtension on DataSourceIncomingPackage {
 abstract class SetUint8ResultIncomingDataSourcePackage
     extends DataSourceIncomingPackage<SetUint8ResultBody>
     with
-        IsEventOrSubscriptionAnswerRequestTypeMixin,
-        IsSuccessEventFunctionIdMixin,
+        IsEventOrBufferRequestOrSubscriptionAnswerRequestTypeMixin,
+        IsSuccessEventOrErrorEventFunctionIdMixin,
         SetUint8ResultBodyBytesConverterMixin {
   SetUint8ResultIncomingDataSourcePackage(super.source);
 }
