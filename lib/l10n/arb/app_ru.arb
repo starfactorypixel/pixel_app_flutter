@@ -290,7 +290,6 @@
   "boostGearShort": "B",
   "unknownGearShort": "U",
   "errorSwitchingGearMessage": "Ошибка переключения передачи",
-  "errorChangeWheelSteeringMessage": "Ошибка переключения режима поворота",
   "stopBeforeSwitchingGearMessage": "Для переключения передачи нужно сначала остановиться",
   "reverseMotorRollDirectionShort": "R",
   "unknownMotorRollDirectionShort": "U",
