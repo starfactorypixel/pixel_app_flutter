@@ -316,6 +316,14 @@
       }
     }
   },
+  "steeringRackModeDialogTitle": "Режим рулевой рейки",
+  "errorGettingSteeringRackModeMessage": "Ошибка при получении режима рулевой рейки",
+  "errorSettingSteeringRackModeMessage": "Ошибка при установке режима рулевой рейки",
+  "freeSteeringRack": "Свободный",
+  "alignmentSteeringRack": "Выравнивание",
+  "crabWalkSteeringRack": "Крабовый ход",
+  "tankTurnSteeringRack": "Танковый поворот",
+  "blockedSteeringRack": "Заблокированный",
   "ledPanelSwitcherDialogTitle": "Запуск конфигураций светодиодной панели",
   "noLEDConfigurationsMessage": "Пока конфигураций нет",
   "shutdownConfigByTimerMessage": "По таймеру: {shutdownTimeMillis} мс",

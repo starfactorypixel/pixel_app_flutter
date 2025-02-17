@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
+import 'package:pixel_app_flutter/domain/data_source/extensions/stream.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/outgoing_data_source_packages.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
@@ -50,7 +51,7 @@ class SuspensionControlBloc
 
     try {
       await dataSource.packageStream
-          .waitFor<SuspensionModeIncomingDataSourcePackage>(
+          .waitForType<SuspensionModeIncomingDataSourcePackage>(
         action: () async {
           final result = await dataSource.sendPackage(
             OutgoingValueRequestPackage(
@@ -94,7 +95,7 @@ class SuspensionControlBloc
 
     try {
       await dataSource.packageStream
-          .waitFor<SuspensionManualValueIncomingDataSourcePackage>(
+          .waitForType<SuspensionManualValueIncomingDataSourcePackage>(
         action: () async {
           final result = await dataSource.sendPackage(
             OutgoingValueRequestPackage(
@@ -135,7 +136,7 @@ class SuspensionControlBloc
 
     try {
       await dataSource.packageStream
-          .waitFor<SuspensionModeIncomingDataSourcePackage>(
+          .waitForType<SuspensionModeIncomingDataSourcePackage>(
         action: () async {
           final result = await dataSource.sendPackage(
             OutgoingSetValuePackage(
@@ -190,7 +191,7 @@ class SuspensionControlBloc
 
     try {
       await dataSource.packageStream
-          .waitFor<SuspensionManualValueIncomingDataSourcePackage>(
+          .waitForType<SuspensionManualValueIncomingDataSourcePackage>(
         action: () async {
           final result = await dataSource.sendPackage(
             OutgoingSetValuePackage(
@@ -240,21 +241,5 @@ class SuspensionControlBloc
 
       rethrow;
     }
-  }
-}
-
-extension on Stream<dynamic> {
-  Future<void> waitFor<T>({
-    required Future<bool> Function() action,
-    required Future<void> Function(T value) onDone,
-    required Duration timeout,
-  }) async {
-    final future = firstWhere((package) => package is T).timeout(timeout);
-
-    final stop = await action();
-
-    if (stop) return;
-
-    await onDone((await future) as T);
   }
 }

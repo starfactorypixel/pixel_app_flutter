@@ -8,6 +8,7 @@ import 'package:pixel_app_flutter/presentation/screens/general/widgets/general_i
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/led_switcher_button.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/light_state_error_listener.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/overlay_data_sender.dart';
+import 'package:pixel_app_flutter/presentation/screens/general/widgets/steering_rack_control_button.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/suspension_control_button.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/user_defined_buttons_end_drawer.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/wipers_switcher_button.dart';
@@ -17,6 +18,7 @@ import 'package:pixel_app_flutter/presentation/widgets/common/molecules/speed_wi
 import 'package:pixel_app_flutter/presentation/widgets/common/molecules/statistic_widget.dart';
 import 'package:pixel_app_flutter/presentation/widgets/tablet/molecules/blinker_button.dart';
 import 'package:pixel_app_flutter/presentation/widgets/tablet/organisms/tablet_upper_info_panel.dart';
+import 'package:re_widgets/re_widgets.dart';
 
 @RoutePage()
 class GeneralScreen extends StatelessWidget {
@@ -133,22 +135,30 @@ class HandsetGeneralScreenBody extends StatelessWidget {
           const SizedBox(height: 32),
           const StatisticWidget(useWrap: true),
           const SizedBox(height: 32),
-          const LEDSwitcherButton(),
-          const SizedBox(height: 16),
-          const WipersSwitcherButton(),
-          const SizedBox(height: 16),
-          const SuspensionControlButton(),
+          const Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: [
+              WipersSwitcherButton(),
+              SuspensionControlButton(),
+              SteeringRackControlButton(),
+              LEDSwitcherButton(),
+            ],
+          ),
         ] else ...[
           GearWidget(screenSize: size),
           const SizedBox(height: 16),
-          const Row(
-            children: [
-              LEDSwitcherButton(),
-              SizedBox(width: 16),
-              WipersSwitcherButton(),
-              SizedBox(width: 16),
-              SuspensionControlButton(),
-            ],
+          FadeSingleChildScrollView(
+            axis: Axis.horizontal,
+            child: const Row(
+              spacing: 16,
+              children: [
+                WipersSwitcherButton(),
+                SuspensionControlButton(),
+                SteeringRackControlButton(),
+                LEDSwitcherButton(),
+              ],
+            ),
           ),
         ],
       ],

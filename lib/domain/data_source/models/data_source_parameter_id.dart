@@ -136,6 +136,8 @@ abstract class DataSourceParameterId {
   const factory DataSourceParameterId.transmission4() =
       Transmission4ParameterId;
 
+  const factory DataSourceParameterId.steeringRack() = SteeringRackParameterId;
+
   const factory DataSourceParameterId.motorTemperature1() =
       MotorTemperature1ParameterId;
   const factory DataSourceParameterId.motorTemperature2() =
@@ -269,6 +271,8 @@ abstract class DataSourceParameterId {
   bool get isTransmission3 => this is Transmission3ParameterId;
   bool get isTransmission4 => this is Transmission4ParameterId;
 
+  bool get isSteeringRack => this is SteeringRackParameterId;
+
   bool get isMotorTemperature1 => this is MotorTemperature1ParameterId;
   bool get isMotorTemperature2 => this is MotorTemperature2ParameterId;
   bool get isMotorTemperature3 => this is MotorTemperature3ParameterId;
@@ -372,6 +376,7 @@ abstract class DataSourceParameterId {
       DataSourceParameterId.transmission2(),
       DataSourceParameterId.transmission3(),
       DataSourceParameterId.transmission4(),
+      DataSourceParameterId.steeringRack(),
       DataSourceParameterId.motorTemperature1(),
       DataSourceParameterId.motorTemperature2(),
       DataSourceParameterId.motorTemperature3(),
@@ -669,6 +674,10 @@ class Transmission3ParameterId extends DataSourceParameterId {
 
 class Transmission4ParameterId extends DataSourceParameterId {
   const Transmission4ParameterId() : super(0x0137);
+}
+
+class SteeringRackParameterId extends DataSourceParameterId {
+  const SteeringRackParameterId() : super(0x01A4);
 }
 
 class MotorTemperature1ParameterId extends DataSourceParameterId {

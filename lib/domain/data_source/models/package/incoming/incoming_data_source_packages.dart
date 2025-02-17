@@ -29,6 +29,7 @@ export 'reverse_light.dart';
 export 'rpm.dart';
 export 'side_beam.dart';
 export 'speed.dart';
+export 'steering_rack.dart';
 export 'suspension_manual_value.dart';
 export 'suspension_mode.dart';
 export 'turn_signal.dart';

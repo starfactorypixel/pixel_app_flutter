@@ -14,6 +14,7 @@ export 'blocs/lights_cubit.dart';
 export 'blocs/motor_data_cubit.dart';
 export 'blocs/outgoing_packages_cubit.dart';
 export 'blocs/select_data_source_bloc.dart';
+export 'blocs/steering_rack_control_bloc.dart';
 export 'blocs/suspension_control_bloc.dart';
 export 'blocs/toggle_state_error.dart';
 
@@ -27,9 +28,12 @@ export 'models/data_source_with_address.dart';
 export 'models/developer_tools_parameters.dart';
 export 'models/hardware_count.dart';
 export 'models/int_with_status.dart';
+export 'models/motor_gear.dart';
+export 'models/motor_roll_direction.dart';
 export 'models/package/data_source_package.dart';
 export 'models/package_data/bytes_converter.dart';
 export 'models/serial_number.dart';
+export 'models/steering_rack.dart';
 export 'models/suspension_mode.dart';
 export 'models/usb_port_parameters.dart';
 

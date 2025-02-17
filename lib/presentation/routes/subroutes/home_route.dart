@@ -22,6 +22,11 @@ final _homeRoute = AutoRoute(
           page: SuspensionControlDialogRoute.page,
           customRouteBuilder: noBarrierDialogRouteBuilder,
         ),
+        CustomRoute<void>(
+          path: 'steering-rack-control-dialog',
+          page: SteeringRackControlDialogRoute.page,
+          customRouteBuilder: noBarrierDialogRouteBuilder,
+        ),
       ],
     ),
     AutoRoute(

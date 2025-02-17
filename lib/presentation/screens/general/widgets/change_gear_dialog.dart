@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:pixel_app_flutter/domain/data_source/models/package_data/package_data.dart';
+import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/presentation/app/colors.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/gear_symbol_widget.dart';
 import 'package:pixel_app_flutter/presentation/widgets/app/organisms/screen_data.dart';
