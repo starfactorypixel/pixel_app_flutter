@@ -7,6 +7,7 @@ import 'package:pixel_app_flutter/l10n/l10n.dart';
 import 'package:pixel_app_flutter/presentation/app/extensions.dart';
 import 'package:pixel_app_flutter/presentation/app/icons.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/led_switcher_button.dart';
+import 'package:pixel_app_flutter/presentation/screens/general/widgets/steering_rack_control_button.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/suspension_control_button.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/wipers_switcher_button.dart';
 import 'package:pixel_app_flutter/presentation/widgets/common/atoms/icon_button.dart';
@@ -201,6 +202,12 @@ class _CarWidgetState extends State<CarWidget> {
               top: 0,
               left: -140,
               child: WipersSwitcherButton(),
+            ),
+            //
+            const Positioned(
+              top: 50,
+              left: -140,
+              child: SteeringRackControlButton(),
             ),
           ],
         ],

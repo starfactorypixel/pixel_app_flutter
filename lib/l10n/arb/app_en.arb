@@ -317,6 +317,14 @@
       }
     }
   },
+  "steeringRackModeDialogTitle": "Steering rack mode",
+  "errorGettingSteeringRackModeMessage": "Error getting steering rack mode",
+  "errorSettingSteeringRackModeMessage": "Error setting steering rack mode",
+  "freeSteeringRack": "Free",
+  "alignmentSteeringRack": "Alignment",
+  "crabWalkSteeringRack": "Crab walk",
+  "tankTurnSteeringRack": "Tank turn",
+  "blockedSteeringRack": "Blocked",
   "ledPanelSwitcherDialogTitle": "Run LED panel configurations",
   "noLEDConfigurationsMessage": "There are no configurations yet",
   "shutdownConfigByTimerMessage": "By timer: {shutdownTimeMillis} ms",

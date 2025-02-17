@@ -125,6 +125,8 @@ abstract class DataSourceIncomingPackage<T extends BytesConvertible>
       SuspensionModeIncomingDataSourcePackage.new,
       SuspensionManualValueIncomingDataSourcePackage.new,
       //
+      SteeringRackIncomingDataSourcePackage.new,
+      //
       ErrorWithCodeAndSectionIncomingDataSourcePackage.new,
       //
       CustomIncomingDataSourcePackage.new,

@@ -199,10 +199,9 @@ class SelectedDataSourceScope extends AutoRouter {
                 ),
               ),
               BlocProvider(
-                create: (context) => ChangeWheelSteeringBloc(
+                create: (context) => SteeringRackControlBloc(
                   dataSource: context.read(),
-                  generalDataCubit: context.read(),
-                ),
+                )..add(const SteeringRackControlEvent.get()),
               ),
               BlocProvider(
                 create: (context) =>

@@ -592,24 +592,39 @@ class DemoDataSource extends DataSource
           },
           unavailableForSubscriptionIds: {},
           respondCallback: (id, version, manager, [package]) async {
-            final data = (package?.data).checkNotNull('Package data');
-            final requestType = data.first;
-            assert(
-              [
-                FunctionId.requestValue.value,
-                FunctionId.setValueWithParam.value,
-              ].contains(requestType),
-              'Supported only "set" and "get" request types',
-            );
+            final functionId = package.functionId
+              ..assertIsRequestValueOrSetValue();
 
             await manager.updateCallback(
               id,
               SetUint8ResultBody(
                 success: !generateRandomErrors() || randomBool,
-                value: (generateRandomErrors() ||
-                        requestType == FunctionId.requestValue.value)
+                value: (generateRandomErrors() || functionId.isRequestValue)
                     ? SuspensionMode.random.id
-                    : package?.data.last ?? 0,
+                    : package.dataNotNull.last,
+              ),
+              version,
+            );
+
+            return const Result.value(null);
+          },
+        ),
+        MainEcuMockResponseWrapper(
+          ids: {
+            const DataSourceParameterId.steeringRack(),
+          },
+          unavailableForSubscriptionIds: {},
+          respondCallback: (id, version, manager, [package]) async {
+            final functionId = package.functionId
+              ..assertIsRequestValueOrSetValue();
+
+            await manager.updateCallback(
+              id,
+              SetUint8ResultBody(
+                success: !generateRandomErrors() || randomBool,
+                value: (generateRandomErrors() || functionId.isRequestValue)
+                    ? SteeringRack.random.id
+                    : package.dataNotNull.last,
               ),
               version,
             );
@@ -623,24 +638,16 @@ class DemoDataSource extends DataSource
           },
           unavailableForSubscriptionIds: {},
           respondCallback: (id, version, manager, [package]) async {
-            final data = (package?.data).checkNotNull('Package data');
-            final requestType = data.first;
-            assert(
-              [
-                FunctionId.requestValue.value,
-                FunctionId.setValueWithParam.value,
-              ].contains(requestType),
-              'Supported only "set" and "get" request types',
-            );
+            final functionId = package.functionId
+              ..assertIsRequestValueOrSetValue();
 
             await manager.updateCallback(
               id,
               SetUint8ResultBody(
                 success: !generateRandomErrors() || randomBool,
-                value: (generateRandomErrors() ||
-                        requestType == FunctionId.requestValue.value)
+                value: (generateRandomErrors() || functionId.isRequestValue)
                     ? Random().nextInt(SuspensionMode.kMaxManualValue)
-                    : package?.data.last ?? 0,
+                    : package.dataNotNull.last,
               ),
               version,
             );
@@ -779,6 +786,24 @@ extension on bool {
 
 extension on int {
   bool get toBool => this == 255;
+}
+
+extension on DataSourceOutgoingPackage? {
+  List<int> get dataNotNull => checkNotNull('Package').data;
+
+  FunctionId get functionId => FunctionId.fromValue(dataNotNull.first);
+}
+
+extension on FunctionId {
+  void assertIsRequestValueOrSetValue() {
+    assert(
+      [
+        FunctionId.requestValue,
+        FunctionId.setValueWithParam,
+      ].contains(this),
+      'Supported only "set" and "get" request types',
+    );
+  }
 }
 
 @visibleForTesting

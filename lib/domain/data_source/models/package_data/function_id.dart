@@ -56,6 +56,9 @@ enum FunctionId {
   //
   static const errorEventId = 0xE6;
   static const okEventId = 0x65;
+
+  bool get isRequestValue => this == FunctionId.requestValue;
+  bool get isSetValueWithParam => this == FunctionId.setValueWithParam;
 }
 
 enum AuthorizationFunctionId {
