@@ -304,6 +304,7 @@
   "errorSwitchingSuspensionModeMessage": "Ошибка при переключении режима подвески",
   "errorGettingManualValueMessage": "Ошибка при получении значения ручного режима",
   "errorSettingManualValueMessage": "Ошибка при установке значения ручного режима",
+  "offSuspensionMode": "Выключен",
   "lowSuspensionMode": "Заниженный",
   "highwaySuspensionMode": "Шоссе",
   "offRoadSuspensionMode": "Оффроуд",

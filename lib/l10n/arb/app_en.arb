@@ -304,6 +304,7 @@
   "errorSwitchingSuspensionModeMessage": "Error switching suspension mode",
   "errorGettingManualValueMessage": "Error getting manual mode value",
   "errorSettingManualValueMessage": "Error setting manual mode value",
+  "offSuspensionMode": "Off",
   "lowSuspensionMode": "Low",
   "highwaySuspensionMode": "Highway",
   "offRoadSuspensionMode": "Off road",

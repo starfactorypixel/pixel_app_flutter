@@ -24,6 +24,7 @@ class SuspensionControlButton extends StatelessWidget {
             label: Center(
               child: Text(
                 state.payload.when(
+                  off: () => context.l10n.offSuspensionMode,
                   low: () => context.l10n.lowSuspensionMode,
                   highway: () => context.l10n.highwaySuspensionMode,
                   offRoad: () => context.l10n.offRoadSuspensionMode,
