@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 sealed class SuspensionMode with EquatableMixin {
   const SuspensionMode({required this.id});
 
+  const factory SuspensionMode.off() = _OffSuspensionMode;
   const factory SuspensionMode.low() = _LowSuspensionMode;
   const factory SuspensionMode.highway() = _HighwaySuspensionMode;
   const factory SuspensionMode.offRoad() = _OffRoadSuspensionMode;
@@ -19,6 +20,7 @@ sealed class SuspensionMode with EquatableMixin {
   }
 
   static const List<SuspensionMode> values = [
+    SuspensionMode.off(),
     SuspensionMode.low(),
     SuspensionMode.highway(),
     SuspensionMode.offRoad(),
@@ -34,12 +36,14 @@ sealed class SuspensionMode with EquatableMixin {
   static SuspensionMode get random => values[Random().nextInt(values.length)];
 
   T when<T>({
+    required T Function() off,
     required T Function() low,
     required T Function() highway,
     required T Function() offRoad,
     required T Function(int value) manual,
   }) {
     return switch (this) {
+      _OffSuspensionMode() => off(),
       _LowSuspensionMode() => low(),
       _HighwaySuspensionMode() => highway(),
       _OffRoadSuspensionMode() => offRoad(),
@@ -49,12 +53,14 @@ sealed class SuspensionMode with EquatableMixin {
 
   T maybeWhen<T>({
     required T Function() orElse,
+    T Function()? off,
     T Function()? low,
     T Function()? highway,
     T Function()? offRoad,
     T Function(int value)? manual,
   }) {
     return switch (this) {
+      _OffSuspensionMode() => off?.call() ?? orElse(),
       _LowSuspensionMode() => low?.call() ?? orElse(),
       _HighwaySuspensionMode() => highway?.call() ?? orElse(),
       _OffRoadSuspensionMode() => offRoad?.call() ?? orElse(),
@@ -65,6 +71,10 @@ sealed class SuspensionMode with EquatableMixin {
 
   @override
   List<Object?> get props => [id];
+}
+
+final class _OffSuspensionMode extends SuspensionMode {
+  const _OffSuspensionMode() : super(id: 0);
 }
 
 final class _LowSuspensionMode extends SuspensionMode {

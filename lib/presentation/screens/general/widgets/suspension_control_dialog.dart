@@ -78,6 +78,7 @@ class _SuspensionControlDialogState extends State<SuspensionControlDialog> {
                           },
                           title: Text(
                             mode.when(
+                              off: () => context.l10n.offSuspensionMode,
                               low: () => context.l10n.lowSuspensionMode,
                               highway: () => context.l10n.highwaySuspensionMode,
                               offRoad: () => context.l10n.offRoadSuspensionMode,
