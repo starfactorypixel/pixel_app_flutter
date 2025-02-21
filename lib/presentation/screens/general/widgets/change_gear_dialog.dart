@@ -73,6 +73,7 @@ class _ChangeGearDialogState extends State<ChangeGearDialog> {
                   children: <Widget>[
                     for (final gear in [
                       MotorGear.drive,
+                      MotorGear.low,
                       MotorGear.neutral,
                       MotorGear.reverse,
                     ])
