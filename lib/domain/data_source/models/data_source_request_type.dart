@@ -32,10 +32,6 @@ sealed class DataSourceRequestType {
     );
   }
 
-  static bool isValid(int value) {
-    return values.any((element) => element.value == value);
-  }
-
   R maybeWhen<R>({
     required R Function() orElse,
     R Function()? mirror,

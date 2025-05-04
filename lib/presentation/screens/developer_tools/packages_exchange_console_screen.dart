@@ -163,8 +163,7 @@ class _PackagesExchangeConsoleScreenState
                                     .split(' ')
                                     .map((e) => int.tryParse(e.trim())),
                             ];
-                            if (requestType == null ||
-                                !DataSourceRequestType.isValid(requestType)) {
+                            if (requestType == null) {
                               context.showSnackBar(
                                 context.l10n.invalidRequestTypeMessage,
                               );
