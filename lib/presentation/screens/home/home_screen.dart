@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
@@ -207,7 +205,8 @@ extension on BuildContext {
 
   static const _routes = [
     //pages
-    //warning! виджеты этих страниц создаются один раз и не пересоздаются при смене экранов
+    //warning! виджеты этих страниц создаются один раз и не пересоздаются
+    // при смене экранов
     GeneralFlow(),
     CarInfoRoute(),
     NavigatorFlow(),
