@@ -1,8 +1,15 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel_app_flutter/domain/apps/apps.dart';
+import 'package:pixel_app_flutter/domain/data_source/blocs/battery_data_cubit.dart';
+import 'package:pixel_app_flutter/domain/data_source/blocs/general_data_cubit.dart';
+import 'package:pixel_app_flutter/domain/data_source/blocs/motor_data_cubit.dart';
+import 'package:pixel_app_flutter/domain/data_source/blocs/outgoing_packages_cubit.dart';
+import 'package:pixel_app_flutter/domain/data_source/models/data_source_parameter_id.dart';
 import 'package:pixel_app_flutter/l10n/l10n.dart';
 import 'package:pixel_app_flutter/presentation/app/icons.dart';
 import 'package:pixel_app_flutter/presentation/routes/main_router.dart';
@@ -21,14 +28,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
-      routes: const [
-        GeneralFlow(),
-        CarInfoRoute(),
-        NavigatorFlow(),
-        AppsFlow(),
-        ChargingRoute(),
-        MotorRoute(),
-      ],
+      routes: context.routes,
       transitionBuilder: (context, child, animation) {
         return FadeTransition(
           opacity: animation,
@@ -203,8 +203,59 @@ class _SideNavBar extends StatelessWidget {
 }
 
 extension on BuildContext {
+  static const _navigatorIndex = 2;
+
+  static const _routes = [
+    //pages
+    //warning! виджеты этих страниц создаются один раз и не пересоздаются при смене экранов
+    GeneralFlow(),
+    CarInfoRoute(),
+    NavigatorFlow(),
+    AppsFlow(),
+    ChargingRoute(),
+    MotorRoute(),
+  ];
+
+  Set<DataSourceParameterId> _getPageIdList(int index) {
+    switch (index) {
+      case 0:
+      case 1:
+        return GeneralDataCubit.kDefaultSubscribeParameters;
+      case 4:
+        return BatteryDataCubit.kAllParameterIds;
+      case 5:
+        return MotorDataCubit.kDefaultSubscribeParameters;
+      default:
+        return {};
+    }
+  }
+
+  List<PageRouteInfo<void>> get routes => _routes;
+
+  void _updateDataSubscriptions(int currentIndex, int index) {
+    final mainScreeenIndexes = [0, 1];
+    if (currentIndex == index ||
+        mainScreeenIndexes.contains(currentIndex) &&
+            mainScreeenIndexes.contains(index)) {
+      return;
+    }
+
+    read<OutgoingPackagesCubit>()
+      ..sendDataSubscription(
+        parameterIds: _getPageIdList(index),
+        isSubscribe: true,
+      )
+      ..sendDataSubscription(
+        parameterIds: _getPageIdList(currentIndex),
+        isSubscribe: false,
+      );
+  }
+
+  /// пользователь тапнул на пункт нижнего меню
   Future<void> onTabTap(int index) async {
-    if (index == 2) {
+    _updateDataSubscriptions(tabsRouter.activeIndex, index);
+
+    if (index == _navigatorIndex) {
       if (mounted) {
         final fastAccess = read<NavigatorFastAccessBloc>().state.payload;
 
@@ -233,6 +284,6 @@ extension on BuildContext {
   }
 
   Future<void> onTabLongTap(int index) async {
-    if (index == 2) tabsRouter.setActiveIndex(index);
+    if (index == _navigatorIndex) tabsRouter.setActiveIndex(index);
   }
 }

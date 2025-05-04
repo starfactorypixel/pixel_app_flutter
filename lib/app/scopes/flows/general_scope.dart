@@ -18,10 +18,10 @@ class GeneralScope extends AutoRouter {
           // blocs
           BlocProvider(
             create: (context) {
-              context
+             /* context
                   .read<OutgoingPackagesCubit>()
                   .subscribeTo({const CustomImageParameterId()});
-
+*/
               return LEDPanelSwitcherCubit(
                 dataSource: context.read(),
               );

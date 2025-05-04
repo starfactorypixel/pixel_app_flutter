@@ -164,17 +164,18 @@ class SelectedDataSourceScope extends AutoRouter {
                   ..subscribeToLowBeam()
                   ..subscribeToTurnSignals()
                   ..subscribeToReverseLight()
-                  ..subscribeToBrakeLight()
-                  ..subscribeToCabinLight(),
+                  ..subscribeToBrakeLight(),
+                //..subscribeToCabinLight(),
                 lazy: false,
               ),
               BlocProvider(
                 create: (context) => GeneralInterfacesCubit(
                   dataSource: context.read(),
                 )
-                  ..subscribeToLeftDoor()
-                  ..subscribeToRightDoor()
-                  ..subscribeToWindscreenWipers(),
+                //..subscribeToLeftDoor()
+                //..subscribeToRightDoor()
+                //..subscribeToWindscreenWipers()
+                ,
               ),
               BlocProvider(
                 create: (context) => SuspensionControlBloc(

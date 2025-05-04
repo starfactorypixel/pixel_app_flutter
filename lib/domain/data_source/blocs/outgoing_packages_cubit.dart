@@ -47,6 +47,17 @@ class OutgoingPackagesCubit extends Cubit<DeveloperToolsParameters>
     return true;
   }
 
+  void sendDataSubscription({
+    required Set<DataSourceParameterId> parameterIds,
+    required bool isSubscribe,
+  }) {
+    if (isSubscribe) {
+      subscribeTo(parameterIds);
+    } else {
+      unsubscribeFrom(parameterIds);
+    }
+  }
+
   void _subscribeTo(Set<DataSourceParameterId> parameterIds) {
     for (final parameterId in parameterIds) {
       final package = OutgoingSubscribePackage(parameterId: parameterId);
