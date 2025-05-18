@@ -100,12 +100,14 @@ class _PackagesExchangeConsoleScreenState
                   child: Row(
                     children: [
                       _PackageTextFiled(
-                        hint: context.l10n.requestTypeHint,
+                        hint: context.l10n.packageDataHint,
                         controller: typeController,
+                        label: context.l10n.requestTypeHint,
                       ),
                       _PackageTextFiled(
-                        hint: context.l10n.parameterIDHint,
+                        hint: context.l10n.packageDataHint,
                         controller: idController,
+                        label: context.l10n.parameterIDHint,
                       ),
                     ].map((e) => Expanded(child: e)).toList(),
                   ),
