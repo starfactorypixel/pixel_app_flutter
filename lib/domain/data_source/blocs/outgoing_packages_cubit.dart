@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
+import 'package:pixel_app_flutter/domain/data_source/extensions/int.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/outgoing_data_source_packages.dart';
 import 'package:re_seedwork/re_seedwork.dart';
 
@@ -24,6 +25,8 @@ class OutgoingPackagesCubit extends Cubit<DeveloperToolsParameters>
       _onDeveloperToolsParametersUpdated,
     );
   }
+
+  static const MAX_PARAMETERS_LEN_PER_REQUEST = 32;
 
   bool subscribeTo(Set<DataSourceParameterId> parameterIds) {
     final newParameters = parameterIds.difference(subscribeToParameterIdList);
@@ -59,10 +62,19 @@ class OutgoingPackagesCubit extends Cubit<DeveloperToolsParameters>
   }
 
   void _subscribeTo(Set<DataSourceParameterId> parameterIds) {
-    for (final parameterId in parameterIds) {
-      final package = OutgoingSubscribePackage(parameterId: parameterId);
-      sendPackage(package);
+    if (parameterIds.length > MAX_PARAMETERS_LEN_PER_REQUEST) {
+      throw ArgumentError('not valid number of subscriptions');
     }
+
+    final data =
+        parameterIds.map((item) => item.value.toBytesUint16).flattenedToList;
+
+    final package = DataSourceOutgoingPackage.raw(
+      requestType: const DataSourceRequestType.subscriptionArray().value,
+      parameterId: 0,
+      data: data,
+    );
+    sendPackage(package);
   }
 
   void unsubscribeFrom(Set<DataSourceParameterId> parameterIds) {
@@ -85,10 +97,23 @@ class OutgoingPackagesCubit extends Cubit<DeveloperToolsParameters>
   }
 
   void _unsubscribeFrom(Set<DataSourceParameterId> parameterIds) {
-    for (final parameterId in parameterIds) {
-      final package = OutgoingUnsubscribePackage(parameterId: parameterId);
-      sendPackage(package);
+    if (parameterIds.length > MAX_PARAMETERS_LEN_PER_REQUEST) {
+      throw ArgumentError('not valid number of subscriptions');
     }
+
+    final data = parameterIds
+        .map(
+          (item) =>
+              OutgoingUnsubscribePackage.modifyId(item).value.toBytesUint16,
+        )
+        .flattenedToList;
+
+    final package = DataSourceOutgoingPackage.raw(
+      requestType: const DataSourceRequestType.subscriptionArray().value,
+      parameterId: 0,
+      data: data,
+    );
+    sendPackage(package);
   }
 
   void getValue(DataSourceParameterId id) {

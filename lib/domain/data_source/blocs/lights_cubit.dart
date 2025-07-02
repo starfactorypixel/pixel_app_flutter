@@ -427,11 +427,7 @@ class LightsCubit extends Cubit<LightsState> with ConsumerBlocMixin {
   }
 
   void _sendSubscriptionPackages(List<DataSourceParameterId> parameterIds) {
-    dataSource.sendPackages(
-      parameterIds
-          .map((e) => OutgoingSubscribePackage(parameterId: e))
-          .toList(),
-    );
+
   }
 
   void _sendSetValuePackages(

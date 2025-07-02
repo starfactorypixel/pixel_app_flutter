@@ -135,66 +135,21 @@ class GeneralInterfacesCubit extends Cubit<GeneralInterfacesState>
     DataSourceParameterId parameterId =
         const DataSourceParameterId.custom(ButtonFunctionId.leftDoorId),
   ]) {
-    _subscribe(
-      newStateBuilder: (newState) => state.copyWith(leftDoor: newState),
-      newFeatureStateBuilder: () => state.leftDoor,
-      parameterId: parameterId,
-    );
+
   }
 
   void subscribeToRightDoor([
     DataSourceParameterId parameterId =
         const DataSourceParameterId.custom(ButtonFunctionId.rightDoorId),
   ]) {
-    _subscribe(
-      newStateBuilder: (newState) => state.copyWith(rightDoor: newState),
-      newFeatureStateBuilder: () => state.rightDoor,
-      parameterId: parameterId,
-    );
+
   }
 
   void subscribeToWindscreenWipers({
     DataSourceParameterId parameterId =
         const DataSourceParameterId.windscreenWipers(),
   }) {
-    _subscribe(
-      newStateBuilder: (newState) => state.copyWith(wipers: newState),
-      newFeatureStateBuilder: () => state.wipers,
-      parameterId: parameterId,
-    );
-  }
 
-  Future<void> _subscribe({
-    required GeneralInterfacesState Function(
-      AsyncData<bool, ToggleStateError> newState,
-    ) newStateBuilder,
-    required AsyncData<bool, ToggleStateError> Function()
-        newFeatureStateBuilder,
-    required DataSourceParameterId parameterId,
-  }) async {
-    emit(newStateBuilder(const AsyncData.loading(false)));
-
-    await dataSource.sendPackage(
-      OutgoingSubscribePackage(parameterId: parameterId),
-    );
-
-    final failure = await stream
-        .where((event) => newFeatureStateBuilder().isExecuted)
-        .map<GeneralInterfacesState?>((event) => null)
-        .first
-        .timeout(
-      subscriptionTimeout,
-      onTimeout: () async {
-        return newStateBuilder(
-          newFeatureStateBuilder().inFailure(
-            const ToggleStateError.timeout(),
-          ),
-        );
-      },
-    );
-
-    if (isClosed) return;
-    if (failure != null) emit(failure);
   }
 
   void toggleLeftDoor([

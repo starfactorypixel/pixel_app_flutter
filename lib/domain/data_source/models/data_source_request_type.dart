@@ -2,15 +2,24 @@ sealed class DataSourceRequestType {
   const DataSourceRequestType(this.value);
 
   const factory DataSourceRequestType.mirror() = _MirrorDataSourceRequestType;
+
   const factory DataSourceRequestType.bufferRequest() =
       _BufferRequestDataSourceRequestType;
+
   const factory DataSourceRequestType.canRequest() =
       _CanRequestDataSourceRequestType;
+
   const factory DataSourceRequestType.handshake() =
       _HandshakeDataSourceRequestType;
+
   const factory DataSourceRequestType.subscription() =
       _SubscriptionDataSourceRequestType;
+
+  const factory DataSourceRequestType.subscriptionArray() =
+      _SubscriptionDataSourceArrayRequestType;
+
   const factory DataSourceRequestType.event() = _EventDataSourceRequestType;
+
   const factory DataSourceRequestType.unknown(int value) =
       _UnknownDataSourceRequestType;
 
@@ -49,6 +58,7 @@ sealed class DataSourceRequestType {
       _CanRequestDataSourceRequestType() => canRequest?.call() ?? orElse(),
       _HandshakeDataSourceRequestType() => handshake?.call() ?? orElse(),
       _SubscriptionDataSourceRequestType() => subscription?.call() ?? orElse(),
+      _SubscriptionDataSourceArrayRequestType() => subscription?.call() ?? orElse(),
       _EventDataSourceRequestType() => event?.call() ?? orElse(),
       _UnknownDataSourceRequestType(value: final int value) =>
         unknown?.call(value) ?? orElse(),
@@ -56,8 +66,11 @@ sealed class DataSourceRequestType {
   }
 
   bool get isSubscription => this is _SubscriptionDataSourceRequestType;
+
   bool get isEvent => this is _EventDataSourceRequestType;
+
   bool get isHandshake => this is _HandshakeDataSourceRequestType;
+
   bool get isBufferRequest => this is _BufferRequestDataSourceRequestType;
 }
 
@@ -79,6 +92,11 @@ final class _HandshakeDataSourceRequestType extends DataSourceRequestType {
 
 final class _SubscriptionDataSourceRequestType extends DataSourceRequestType {
   const _SubscriptionDataSourceRequestType() : super(0x11);
+}
+
+final class _SubscriptionDataSourceArrayRequestType
+    extends DataSourceRequestType {
+  const _SubscriptionDataSourceArrayRequestType() : super(0x12);
 }
 
 final class _EventDataSourceRequestType extends DataSourceRequestType {
