@@ -52,6 +52,8 @@ abstract class DataSourceParameterId {
   const factory DataSourceParameterId.lowVoltage1() = LowVoltage1ParameterId;
   const factory DataSourceParameterId.lowVoltage2() = LowVoltage2ParameterId;
 
+  const factory DataSourceParameterId.temperatureExternal() =
+      TemperatureExternalParameterId;
   const factory DataSourceParameterId.batteryPower1() =
       BatteryPower1ParameterId;
   const factory DataSourceParameterId.batteryPower2() =
@@ -678,6 +680,10 @@ class Transmission4ParameterId extends DataSourceParameterId {
 
 class SteeringRackParameterId extends DataSourceParameterId {
   const SteeringRackParameterId() : super(0x01A4);
+}
+
+class TemperatureExternalParameterId extends DataSourceParameterId{
+  const TemperatureExternalParameterId(): super(0x011F);
 }
 
 class MotorTemperature1ParameterId extends DataSourceParameterId {

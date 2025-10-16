@@ -219,18 +219,14 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
   static Set<DataSourceParameterId> kDefaultVoltageParameterIds = {
     const DataSourceParameterId.lowVoltageMinMaxDelta1(),
     const DataSourceParameterId.lowVoltageMinMaxDelta2(),
-    const DataSourceParameterId.lowVoltage1(),
-    const DataSourceParameterId.lowVoltage2(),
-  };
-
-  static Set<DataSourceParameterId> kDefaultTemperatureParameterIds = {
-    const DataSourceParameterId.temperature1(),
-    const DataSourceParameterId.temperature2(),
   };
 
   static Set<DataSourceParameterId> kAllParameterIds = {
     ...kDefaultSubscribeParameters,
-    ...kDefaultTemperatureParameterIds,
     ...kDefaultVoltageParameterIds,
+    const DataSourceParameterId.lowVoltage1(), //0x15 every 5sec
+    const DataSourceParameterId.lowVoltage2(),
+    const DataSourceParameterId.temperature1(), //0x15 every 5sec
+    const DataSourceParameterId.temperature2(),
   };
 }

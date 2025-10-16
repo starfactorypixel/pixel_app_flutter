@@ -104,7 +104,7 @@ class _BottomNavBar extends StatelessWidget {
         return IntrinsicHeight(
           child: Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 36).copyWith(bottom: 33),
+            const EdgeInsets.symmetric(horizontal: 36).copyWith(bottom: 33),
             child: const BottomInterfacesMenu(),
           ),
         );
@@ -231,23 +231,42 @@ extension on BuildContext {
 
   List<PageRouteInfo<void>> get routes => _routes;
 
-  void _updateDataSubscriptions(int currentIndex, int index) {
-    final mainScreeenIndexes = [0, 1];
-    if (currentIndex == index ||
-        mainScreeenIndexes.contains(currentIndex) &&
-            mainScreeenIndexes.contains(index)) {
+  void _updateDataSubscriptions(int previousIndex, int targetIndex) {
+    final mainScreenIndexes = [0, 1];
+    if (previousIndex == targetIndex ||
+        mainScreenIndexes.contains(previousIndex) &&
+            mainScreenIndexes.contains(targetIndex)) {
       return;
     }
 
     read<OutgoingPackagesCubit>()
       ..sendDataSubscription(
-        parameterIds: _getPageIdList(index),
-        isSubscribe: true,
-      )
-      ..sendDataSubscription(
-        parameterIds: _getPageIdList(currentIndex),
+        parameterIds: _getPageIdList(previousIndex),
         isSubscribe: false,
+      )..sendDataSubscription(
+      parameterIds: _getPageIdList(targetIndex),
+      isSubscribe: true,
+    );
+
+    if (targetIndex == 5) {
+      read<OutgoingPackagesCubit>().subscribeToTimer(
+        parameterIds: {
+        //  const DataSourceParameterId.temperatureExternal(),
+        },
       );
+    }
+    else if (targetIndex == 4) {
+      read<OutgoingPackagesCubit>().subscribeToTimer(
+        parameterIds: {
+          const DataSourceParameterId.lowVoltage1(),
+          const DataSourceParameterId.lowVoltage2(),
+          const DataSourceParameterId.temperature1(),
+          const DataSourceParameterId.temperature2(),
+        },
+      );
+    } else {
+      read<OutgoingPackagesCubit>().unsubscribeFromTimer();
+    }
   }
 
   /// пользователь тапнул на пункт нижнего меню

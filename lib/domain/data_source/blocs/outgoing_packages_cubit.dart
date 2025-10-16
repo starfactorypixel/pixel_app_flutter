@@ -50,6 +50,26 @@ class OutgoingPackagesCubit extends Cubit<DeveloperToolsParameters>
     return true;
   }
 
+  static const TIMER_REQUEST_DELAY = 5000;
+
+  void unsubscribeFromTimer() {
+    periodicRequestsSubscriptionTimer?.cancel();
+    periodicRequestsSubscriptionTimer = null;
+  }
+
+  void subscribeToTimer({required Set<DataSourceParameterId> parameterIds}) {
+    unsubscribeFromTimer();
+
+    periodicRequestsSubscriptionTimer = Timer.periodic(
+      const Duration(milliseconds: TIMER_REQUEST_DELAY),
+      (timer) {
+        for (final id in parameterIds) {
+          getValue(id);
+        }
+      },
+    );
+  }
+
   void sendDataSubscription({
     required Set<DataSourceParameterId> parameterIds,
     required bool isSubscribe,
@@ -63,7 +83,11 @@ class OutgoingPackagesCubit extends Cubit<DeveloperToolsParameters>
 
   void _subscribeTo(Set<DataSourceParameterId> parameterIds) {
     if (parameterIds.length > MAX_PARAMETERS_LEN_PER_REQUEST) {
-      throw ArgumentError('not valid number of subscriptions');
+      final items = parameterIds.slices(MAX_PARAMETERS_LEN_PER_REQUEST).toSet();
+      for (final item in items) {
+        _subscribeTo(item.toSet());
+      }
+      return;
     }
 
     final data =
@@ -98,7 +122,11 @@ class OutgoingPackagesCubit extends Cubit<DeveloperToolsParameters>
 
   void _unsubscribeFrom(Set<DataSourceParameterId> parameterIds) {
     if (parameterIds.length > MAX_PARAMETERS_LEN_PER_REQUEST) {
-      throw ArgumentError('not valid number of subscriptions');
+      final items = parameterIds.slices(MAX_PARAMETERS_LEN_PER_REQUEST).toSet();
+      for (final item in items) {
+        _unsubscribeFrom(item.toSet());
+      }
+      return;
     }
 
     final data = parameterIds
@@ -196,6 +224,9 @@ class OutgoingPackagesCubit extends Cubit<DeveloperToolsParameters>
 
   @visibleForTesting
   Timer? periodicRequestsTimer;
+
+  @visibleForTesting
+  Timer? periodicRequestsSubscriptionTimer;
 
   @protected
   final DataSource dataSource;
