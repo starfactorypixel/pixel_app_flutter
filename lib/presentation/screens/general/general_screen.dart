@@ -90,10 +90,7 @@ class TabletGeneralScreenBody extends StatelessWidget {
           ),
           Positioned(
             left: 10,
-            bottom: height.flexSize(
-              screenFlexRange: (600, 700),
-              valueClampRange: (420, 460),
-            ),
+            top: 120,
             child: GearWidget(screenSize: size),
           ),
           const Positioned(
