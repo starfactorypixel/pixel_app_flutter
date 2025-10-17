@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:pixel_app_flutter/presentation/app/colors.dart';
 import 'package:pixel_app_flutter/presentation/widgets/common/atoms/icon_button.dart';
-import 'package:pixel_app_flutter/presentation/widgets/tablet/atoms/car_interface_pointer.dart';
 
 enum CarInterfaceSwitcherTitleSide {
   left,
@@ -23,7 +22,6 @@ class CarInterfaceSwitcher extends StatelessWidget {
     required this.title,
     required this.status,
     this.onPressed,
-    this.pointerSide,
     this.titleSide = CarInterfaceSwitcherTitleSide.top,
     this.pointerLength = 75,
   });
@@ -31,8 +29,6 @@ class CarInterfaceSwitcher extends StatelessWidget {
   @protected
   final CarInterfaceSwitcherTitleSide titleSide;
 
-  @protected
-  final CarInterfacePointerSide? pointerSide;
 
   @protected
   final PIconButtonState state;
@@ -65,12 +61,6 @@ class CarInterfaceSwitcher extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (pointerSide?.isLeft ?? false)
-          CarInterfacePointer(
-            color: color,
-            pointerLength: pointerLength,
-            side: CarInterfacePointerSide.left,
-          ),
         if (titleSide.isLeft) ...[
           _TitleAndStatus(
             title: title,
@@ -114,11 +104,6 @@ class CarInterfaceSwitcher extends StatelessWidget {
             status: status,
           ),
         ],
-        if (pointerSide?.isRight ?? false)
-          CarInterfacePointer(
-            color: color,
-            pointerLength: pointerLength,
-          ),
       ],
     );
   }

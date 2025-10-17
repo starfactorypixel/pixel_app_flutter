@@ -101,13 +101,7 @@ class _BottomNavBar extends StatelessWidget {
 
     return screenData.whenType(
       orElse: () {
-        return IntrinsicHeight(
-          child: Padding(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 36).copyWith(bottom: 33),
-            child: const BottomInterfacesMenu(),
-          ),
-        );
+        return const IntrinsicHeight();
       },
       handset: () {
         if (!landscape) {
@@ -153,7 +147,8 @@ class _SideNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 50,
+      bottom: 0,
+      top: 0,
       left: isHandset ? 16 : 40,
       child: Center(
         child: SideNavBar(

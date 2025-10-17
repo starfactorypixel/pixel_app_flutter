@@ -1,7 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:nested/nested.dart';
-import 'package:pixel_app_flutter/presentation/app/extensions.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/car_widget.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/gear_widget.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/general_interfaces_state_error_listener.dart';
@@ -16,6 +15,7 @@ import 'package:pixel_app_flutter/presentation/widgets/app/organisms/screen_data
 import 'package:pixel_app_flutter/presentation/widgets/common/atoms/responsive_padding.dart';
 import 'package:pixel_app_flutter/presentation/widgets/common/molecules/speed_widget.dart';
 import 'package:pixel_app_flutter/presentation/widgets/common/molecules/statistic_widget.dart';
+import 'package:pixel_app_flutter/presentation/widgets/common/organisms/bottom_interfaces_menu.dart';
 import 'package:pixel_app_flutter/presentation/widgets/tablet/molecules/blinker_button.dart';
 import 'package:pixel_app_flutter/presentation/widgets/tablet/organisms/tablet_upper_info_panel.dart';
 import 'package:re_widgets/re_widgets.dart';
@@ -68,38 +68,40 @@ class TabletGeneralScreenBody extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final height = size.height;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 37),
-      child: Stack(
-        children: [
-          SizedBox(
-            width: size.width,
-            height: height,
+    return Stack(
+      children: [
+        SizedBox(
+          width: size.width,
+          height: height,
+        ),
+        const CarWidget(),
+        const Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: TabletUpperInfoPanel(),
+        ),
+        Positioned(
+          left: 10,
+          top: 120,
+          child: GearWidget(screenSize: size),
+        ),
+        const Positioned(
+          right: 0,
+          top: 0,
+          child: BlinkerButton(),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 200)
+                .copyWith(bottom: 33),
+            child: const BottomInterfacesMenu(),
           ),
-          const Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: TabletUpperInfoPanel(),
-          ),
-          Positioned(
-            right: 0,
-            left: 0,
-            bottom: height * .3,
-            child: const CarWidget(),
-          ),
-          Positioned(
-            left: 10,
-            top: 120,
-            child: GearWidget(screenSize: size),
-          ),
-          const Positioned(
-            right: 0,
-            top: 0,
-            child: BlinkerButton(),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
