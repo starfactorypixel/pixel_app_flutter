@@ -228,5 +228,9 @@ class BatteryDataCubit extends Cubit<BatteryDataState>
     const DataSourceParameterId.lowVoltage2(),
     const DataSourceParameterId.temperature1(), //0x15 every 5sec
     const DataSourceParameterId.temperature2(),
+    const DataSourceParameterId.batteryPercent1(),
+    const DataSourceParameterId.batteryPercent2(),
+    const DataSourceParameterId.batteryPower1(),
+    const DataSourceParameterId.batteryPower2(),
   };
 }
