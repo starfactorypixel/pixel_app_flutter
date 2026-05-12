@@ -34,6 +34,7 @@ import 'package:pixel_app_flutter/presentation/screens/general/widgets/led_panel
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/steering_rack_control_dialog.dart';
 import 'package:pixel_app_flutter/presentation/screens/general/widgets/suspension_control_dialog.dart';
 import 'package:pixel_app_flutter/presentation/screens/home/home_screen.dart';
+import 'package:pixel_app_flutter/presentation/screens/mic/mic_screen.dart';
 import 'package:pixel_app_flutter/presentation/screens/navigator/navigator_screen.dart';
 import 'package:pixel_app_flutter/presentation/screens/navigator/widgets/enable_fast_access_dialog.dart';
 import 'package:pixel_app_flutter/presentation/screens/settings/led_panel_screen/add_led_configuration_dialog.dart';

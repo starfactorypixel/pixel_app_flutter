@@ -66,6 +66,10 @@ final _homeRoute = AutoRoute(
       path: 'motor',
       page: MotorRoute.page,
     ),
+    AutoRoute(
+      path: 'mic',
+      page: MicRoute.page,
+    ),
   ],
 );
 

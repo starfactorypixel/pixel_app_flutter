@@ -3,8 +3,10 @@ import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel_app_flutter/domain/apps/apps.dart';
+import 'package:pixel_app_flutter/domain/data_source/blocs/CurrentScreenCubit.dart';
 import 'package:pixel_app_flutter/domain/data_source/blocs/battery_data_cubit.dart';
 import 'package:pixel_app_flutter/domain/data_source/blocs/general_data_cubit.dart';
+import 'package:pixel_app_flutter/domain/data_source/blocs/mic_data_cubit.dart';
 import 'package:pixel_app_flutter/domain/data_source/blocs/motor_data_cubit.dart';
 import 'package:pixel_app_flutter/domain/data_source/blocs/outgoing_packages_cubit.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/data_source_parameter_id.dart';
@@ -14,7 +16,6 @@ import 'package:pixel_app_flutter/presentation/routes/main_router.dart';
 import 'package:pixel_app_flutter/presentation/widgets/app/atoms/gradient_scaffold.dart';
 import 'package:pixel_app_flutter/presentation/widgets/app/organisms/screen_data.dart';
 import 'package:pixel_app_flutter/presentation/widgets/common/molecules/side_nav_bar.dart';
-import 'package:pixel_app_flutter/presentation/widgets/common/organisms/bottom_interfaces_menu.dart';
 import 'package:pixel_app_flutter/presentation/widgets/phone/molecules/bottom_navigation_bar.dart';
 import 'package:pixel_app_flutter/presentation/widgets/phone/organisms/bottom_sheet_interfaces_builder.dart';
 import 'package:re_widgets/re_widgets.dart';
@@ -118,6 +119,7 @@ class _BottomNavBar extends StatelessWidget {
                 PixelIcons.apps,
                 PixelIcons.charging,
                 PixelIcons.engine,
+                PixelIcons.mic,
               ],
             ),
           );
@@ -185,6 +187,11 @@ class _SideNavBar extends StatelessWidget {
               icon: PixelIcons.engine,
               title: context.l10n.motorTabTitle,
             ),
+            SideNavBarItem(
+              pageIndex: 6,
+              icon: PixelIcons.mic,
+              title: context.l10n.micTabTitle,
+            ),
           ],
           onTap: context.onTabTap,
           onLongTap: context.onTabLongTap,
@@ -197,6 +204,7 @@ class _SideNavBar extends StatelessWidget {
 
 extension on BuildContext {
   static const _navigatorIndex = 2;
+  static const micIndex = 6;
 
   static const _routes = [
     //pages
@@ -208,6 +216,7 @@ extension on BuildContext {
     AppsFlow(),
     ChargingRoute(),
     MotorRoute(),
+    MicRoute(),
   ];
 
   Set<DataSourceParameterId> _getPageIdList(int index) {
@@ -238,19 +247,19 @@ extension on BuildContext {
       ..sendDataSubscription(
         parameterIds: _getPageIdList(previousIndex),
         isSubscribe: false,
-      )..sendDataSubscription(
-      parameterIds: _getPageIdList(targetIndex),
-      isSubscribe: true,
-    );
+      )
+      ..sendDataSubscription(
+        parameterIds: _getPageIdList(targetIndex),
+        isSubscribe: true,
+      );
 
     if (targetIndex == 5) {
       read<OutgoingPackagesCubit>().subscribeToTimer(
         parameterIds: {
-        //  const DataSourceParameterId.temperatureExternal(),
+          //  const DataSourceParameterId.temperatureExternal(),
         },
       );
-    }
-    else if (targetIndex == 4) {
+    } else if (targetIndex == 4) {
       read<OutgoingPackagesCubit>().subscribeToTimer(
         parameterIds: {
           const DataSourceParameterId.lowVoltage1(),
@@ -264,9 +273,16 @@ extension on BuildContext {
     }
   }
 
+  Screens getScreen(int index) {
+    return Screens.values[index];
+  }
+
   /// пользователь тапнул на пункт нижнего меню
   Future<void> onTabTap(int index) async {
     _updateDataSubscriptions(tabsRouter.activeIndex, index);
+
+    read<MicDataCubit>().setIsListening(index == micIndex);
+    read<CurrentScreenCubit>().setState(getScreen(index));
 
     if (index == _navigatorIndex) {
       if (mounted) {
