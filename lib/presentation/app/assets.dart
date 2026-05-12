@@ -19,3 +19,11 @@ final class MapIcons {
   static const petal = 'assets/maps_icons/petal.svg';
   static const tomtomgo = 'assets/maps_icons/tomtomgo.svg';
 }
+
+final class MicImages{
+  static const micErrorLoading = 'assets/svg/mic/mic_error_loading.svg';
+  static const micErrorProcessing = 'assets/svg/mic/mic_error_processing.svg';
+  static const micListening = 'assets/svg/mic/mic_listening.svg';
+  static const micLoading = 'assets/svg/mic/mic_loading.svg';
+  static const micSuccess = 'assets/svg/mic/mic_success.svg';
+}

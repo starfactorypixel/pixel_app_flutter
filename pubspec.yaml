@@ -77,6 +77,8 @@ dependencies:
   firebase_analytics: ^11.3.6
   firebase_crashlytics: ^4.2.0
 
+  speech_to_text: ^7.3.0
+
 dev_dependencies:
   #  test
   flutter_test:
@@ -102,6 +104,11 @@ flutter:
     - assets/svg/car.svg
     - assets/png/car.png
     - assets/maps_icons/
+    - assets/svg/mic/mic_error_loading.svg
+    - assets/svg/mic/mic_error_processing.svg
+    - assets/svg/mic/mic_listening.svg
+    - assets/svg/mic/mic_loading.svg
+    - assets/svg/mic/mic_success.svg
 
   fonts:
     - family: Inter
@@ -127,3 +134,6 @@ flutter:
     - family: PixelIcons
       fonts:
         - asset: assets/icons/PixelIcons.ttf
+    - family: FontMic
+      fonts:
+        - asset: assets/icons/FontMic.ttf

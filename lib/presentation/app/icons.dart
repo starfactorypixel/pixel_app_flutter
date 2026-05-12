@@ -11,6 +11,7 @@ class PixelIcons {
   PixelIcons._();
 
   static const String _fontFamily = 'PixelIcons';
+  static const _kFontFam = 'FontMic';
 
   static const IconData batteryPlus = IconData(0xe921, fontFamily: _fontFamily);
   static const IconData batteryMinus =
@@ -51,4 +52,6 @@ class PixelIcons {
   static const IconData battery = IconData(0xe918, fontFamily: _fontFamily);
   static const IconData pinOutline = IconData(0xe91b, fontFamily: _fontFamily);
   static const IconData pin = IconData(0xe91c, fontFamily: _fontFamily);
+  static const IconData mic = IconData(0xe800, fontFamily: _kFontFam);
+  static const IconData mic_off = IconData(0xe801, fontFamily: _kFontFam);
 }
