@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/incoming/incoming_data_source_packages.dart';
 import 'package:pixel_app_flutter/domain/data_source/models/package/outgoing/outgoing_data_source_packages.dart';
@@ -134,22 +134,64 @@ class GeneralInterfacesCubit extends Cubit<GeneralInterfacesState>
   void subscribeToLeftDoor([
     DataSourceParameterId parameterId =
         const DataSourceParameterId.custom(ButtonFunctionId.leftDoorId),
-  ]) {
-
-  }
+  ]) {}
 
   void subscribeToRightDoor([
     DataSourceParameterId parameterId =
         const DataSourceParameterId.custom(ButtonFunctionId.rightDoorId),
-  ]) {
-
-  }
+  ]) {}
 
   void subscribeToWindscreenWipers({
     DataSourceParameterId parameterId =
         const DataSourceParameterId.windscreenWipers(),
-  }) {
+  }) {}
 
+  void openDoorLeft() {
+    debugPrint("открыл левую дверь");
+    _setBool(
+      newFeatureStateBuilder: () => state.leftDoor,
+      newStateBuilder: (newState) => state.copyWith(leftDoor: newState),
+      outgoingPackageBuilder: (setTo) => OutgoingActionRequestPackage(
+        parameterId: const DataSourceParameterId.leftDoor(),
+      ),
+      value: true,
+    );
+  }
+
+  void openDoorRight() {
+    debugPrint("открыл правую дверь");
+    _setBool(
+      newFeatureStateBuilder: () => state.rightDoor,
+      newStateBuilder: (newState) => state.copyWith(rightDoor: newState),
+      outgoingPackageBuilder: (setTo) => OutgoingActionRequestPackage(
+        parameterId: const DataSourceParameterId.rightDoor(),
+      ),
+      value: true,
+    );
+  }
+
+  void closeDoorLeft() {
+    debugPrint("закрыл левую дверь");
+    _setBool(
+      newFeatureStateBuilder: () => state.leftDoor,
+      newStateBuilder: (newState) => state.copyWith(leftDoor: newState),
+      outgoingPackageBuilder: (setTo) => OutgoingActionRequestPackage(
+        parameterId: const DataSourceParameterId.leftDoor(),
+      ),
+      value: false,
+    );
+  }
+
+  void closeDoorRight() {
+    debugPrint("закрыл правую дверь");
+    _setBool(
+      newFeatureStateBuilder: () => state.rightDoor,
+      newStateBuilder: (newState) => state.copyWith(rightDoor: newState),
+      outgoingPackageBuilder: (setTo) => OutgoingActionRequestPackage(
+        parameterId: const DataSourceParameterId.rightDoor(),
+      ),
+      value: false,
+    );
   }
 
   void toggleLeftDoor([
@@ -174,6 +216,32 @@ class GeneralInterfacesCubit extends Cubit<GeneralInterfacesState>
     );
   }
 
+  void enableWipers() {
+    debugPrint("включил дворники");
+    _setBool(
+      newFeatureStateBuilder: () => state.wipers,
+      newStateBuilder: (newState) => state.copyWith(wipers: newState),
+      outgoingPackageBuilder: (setTo) => OutgoingSetValuePackage(
+        parameterId: const DataSourceParameterId.windscreenWipers(),
+        setValueBody: SetUint8Body(value: setTo ? 0xFF : 0),
+      ),
+      value: true,
+    );
+  }
+
+  void disableWipers() {
+    debugPrint("выключил дворники");
+    _setBool(
+      newFeatureStateBuilder: () => state.wipers,
+      newStateBuilder: (newState) => state.copyWith(wipers: newState),
+      outgoingPackageBuilder: (setTo) => OutgoingSetValuePackage(
+        parameterId: const DataSourceParameterId.windscreenWipers(),
+        setValueBody: SetUint8Body(value: setTo ? 0xFF : 0),
+      ),
+      value: false,
+    );
+  }
+
   void toggleWindscreenWipers([
     DataSourceParameterId parameterId =
         const DataSourceParameterId.windscreenWipers(),
@@ -188,6 +256,7 @@ class GeneralInterfacesCubit extends Cubit<GeneralInterfacesState>
     );
   }
 
+  //todo refactor: code dublicates lights_cubit
   Future<void> _toggleBool({
     required AsyncData<bool, ToggleStateError> Function()
         newFeatureStateBuilder,
@@ -202,12 +271,34 @@ class GeneralInterfacesCubit extends Cubit<GeneralInterfacesState>
     if (!currentState.isExecuted) return;
 
     final setTo = !currentState.payload;
-    emit(newStateBuilder(AsyncData.loading(setTo)));
+    await _setBool(
+        newFeatureStateBuilder: newFeatureStateBuilder,
+        newStateBuilder: newStateBuilder,
+        outgoingPackageBuilder: outgoingPackageBuilder,
+        value: setTo);
+  }
 
-    await dataSource.sendPackage(outgoingPackageBuilder(setTo));
+  //todo refactor: code dublicates lights_cubit
+  Future<void> _setBool({
+    required AsyncData<bool, ToggleStateError> Function()
+        newFeatureStateBuilder,
+    required GeneralInterfacesState Function(
+      AsyncData<bool, ToggleStateError> newState,
+    ) newStateBuilder,
+    // ignore: avoid_positional_boolean_parameters
+    required DataSourceOutgoingPackage Function(bool setTo)
+        outgoingPackageBuilder,
+    required bool value,
+  }) async {
+    final currentState = newFeatureStateBuilder();
+    if (!currentState.isExecuted) return;
+
+    emit(newStateBuilder(AsyncData.loading(value)));
+
+    await dataSource.sendPackage(outgoingPackageBuilder(value));
 
     final failure = await stream
-        .where((event) => newFeatureStateBuilder().payload == setTo)
+        .where((event) => newFeatureStateBuilder().payload == value)
         .map<GeneralInterfaceState?>((event) => null)
         .first
         .timeout(

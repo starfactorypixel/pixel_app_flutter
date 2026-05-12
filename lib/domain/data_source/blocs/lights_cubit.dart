@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
@@ -35,11 +36,15 @@ class TwoBoolsState {
   final bool? waitingForSwitch;
 
   bool get isOn => first || second;
+
   bool get isOff => !first && !second;
+
   bool get differs => first != second;
+
   bool get bothOn => first && second;
 
   int get oppositeValue => (!(differs || isOn)).toInt;
+
   bool get oppositeBool => !differs && !isOn;
 
   @override
@@ -426,9 +431,7 @@ class LightsCubit extends Cubit<LightsState> with ConsumerBlocMixin {
     emit(newStateBuilder(newFeatureState));
   }
 
-  void _sendSubscriptionPackages(List<DataSourceParameterId> parameterIds) {
-
-  }
+  void _sendSubscriptionPackages(List<DataSourceParameterId> parameterIds) {}
 
   void _sendSetValuePackages(
     List<DataSourceParameterId> parameterIds,
@@ -612,6 +615,42 @@ class LightsCubit extends Cubit<LightsState> with ConsumerBlocMixin {
     );
   }
 
+  void _enableLeftTurnSignal() {
+    _setTwoBools(
+      newStateBuilder: (newState) => state.copyWith(leftTurnSignal: newState),
+      newFeatureStateBuilder: () => state.leftTurnSignal,
+      parameterIds: kLeftTurnSignalParameterIds,
+      value: true,
+    );
+  }
+
+  void _disableLeftTurnSignal() {
+    _setTwoBools(
+      newStateBuilder: (newState) => state.copyWith(leftTurnSignal: newState),
+      newFeatureStateBuilder: () => state.leftTurnSignal,
+      parameterIds: kLeftTurnSignalParameterIds,
+      value: false,
+    );
+  }
+
+  void _enableRightTurnSignal() {
+    _setTwoBools(
+      newStateBuilder: (newState) => state.copyWith(rightTurnSignal: newState),
+      newFeatureStateBuilder: () => state.rightTurnSignal,
+      parameterIds: kRightTurnSignalParameterIds,
+      value: true,
+    );
+  }
+
+  void _disableRightTurnSignal() {
+    _setTwoBools(
+      newStateBuilder: (newState) => state.copyWith(rightTurnSignal: newState),
+      newFeatureStateBuilder: () => state.rightTurnSignal,
+      parameterIds: kRightTurnSignalParameterIds,
+      value: false,
+    );
+  }
+
   void toggleLeftTurnSignal() {
     if (state.rightTurnSignal.payload.isOn) _toggleRightTurnSignal();
     if (state.hazardBeam.payload.isOn) _toggleHazardBeam();
@@ -647,6 +686,18 @@ class LightsCubit extends Cubit<LightsState> with ConsumerBlocMixin {
     if (state.rightTurnSignal.payload.isOn) _toggleRightTurnSignal();
 
     _toggleHazardBeam();
+  }
+
+  void enableHazardLight() {
+    debugPrint("включил аварийку");
+    if (!state.leftTurnSignal.payload.isOn) _enableLeftTurnSignal();
+    if (!state.rightTurnSignal.payload.isOn) _enableRightTurnSignal();
+  }
+
+  void disableHazardLight() {
+    debugPrint("выключил аварийку");
+    if (state.leftTurnSignal.payload.isOn) _disableLeftTurnSignal();
+    if (state.rightTurnSignal.payload.isOn) _disableRightTurnSignal();
   }
 
   void toggleLowBeam() {
@@ -689,6 +740,27 @@ class LightsCubit extends Cubit<LightsState> with ConsumerBlocMixin {
     );
   }
 
+  void enableCabinLight() {
+    debugPrint("включил свет");
+    _setBool(
+      newFeatureStateBuilder: () => state.cabin,
+      newStateBuilder: (newState) => state.copyWith(cabin: newState),
+      parameterIds: kCabinLightParameterIds,
+      value: true,
+    );
+  }
+
+  void disableCabinLight() {
+    debugPrint("выключил свет");
+    _setBool(
+      newFeatureStateBuilder: () => state.cabin,
+      newStateBuilder: (newState) => state.copyWith(cabin: newState),
+      parameterIds: kCabinLightParameterIds,
+      value: false,
+    );
+  }
+
+  //todo refactor: code dublicates general_interfaces_cubit
   Future<void> _toggleBool({
     required AsyncData<bool, ToggleStateError> Function()
         newFeatureStateBuilder,
@@ -701,14 +773,34 @@ class LightsCubit extends Cubit<LightsState> with ConsumerBlocMixin {
     if (!currentState.isExecuted) return;
 
     final setTo = !currentState.payload;
-    emit(newStateBuilder(AsyncData.loading(setTo)));
+    await _setBool(
+      newFeatureStateBuilder: newFeatureStateBuilder,
+      newStateBuilder: newStateBuilder,
+      parameterIds: parameterIds,
+      value: setTo,
+    );
+  }
+
+  Future<void> _setBool({
+    required AsyncData<bool, ToggleStateError> Function()
+        newFeatureStateBuilder,
+    required LightsState Function(
+      AsyncData<bool, ToggleStateError> newState,
+    ) newStateBuilder,
+    required List<DataSourceParameterId> parameterIds,
+    required bool value,
+  }) async {
+    final currentState = newFeatureStateBuilder();
+    if (!currentState.isExecuted) return;
+
+    emit(newStateBuilder(AsyncData.loading(value)));
     _sendSetValuePackages(
       parameterIds,
-      setTo.toInt,
+      value.toInt,
     );
 
     final failure = await stream
-        .where((event) => newFeatureStateBuilder().payload == setTo)
+        .where((event) => newFeatureStateBuilder().payload == value)
         .map<LightState<bool>?>((event) => null)
         .first
         .timeout(
@@ -736,11 +828,29 @@ class LightsCubit extends Cubit<LightsState> with ConsumerBlocMixin {
     final currentState = newFeatureStateBuilder();
     if (!currentState.isExecuted) return;
 
+    await _setTwoBools(
+        newFeatureStateBuilder: newFeatureStateBuilder,
+        newStateBuilder: newStateBuilder,
+        parameterIds: parameterIds,
+        value: currentState.payload.oppositeBool);
+  }
+
+  Future<void> _setTwoBools(
+      {required AsyncData<TwoBoolsState, ToggleStateError> Function()
+          newFeatureStateBuilder,
+      required LightsState Function(
+        AsyncData<TwoBoolsState, ToggleStateError> newState,
+      ) newStateBuilder,
+      required List<DataSourceParameterId> parameterIds,
+      required bool value}) async {
+    final currentState = newFeatureStateBuilder();
+    if (!currentState.isExecuted) return;
+
     emit(
       newStateBuilder(
         AsyncData.loading(
           const TwoBoolsState.off().copyWith(
-            waitingForSwitch: currentState.payload.oppositeBool,
+            waitingForSwitch: value,
           ),
         ),
       ),
@@ -748,7 +858,7 @@ class LightsCubit extends Cubit<LightsState> with ConsumerBlocMixin {
 
     _sendSetValuePackages(
       parameterIds,
-      currentState.payload.oppositeValue,
+      value.toInt,
     );
 
     final failure = await stream
