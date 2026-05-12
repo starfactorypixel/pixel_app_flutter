@@ -7,6 +7,9 @@ import 'package:get_it/get_it.dart';
 import 'package:pixel_app_flutter/bootstrap.dart';
 import 'package:pixel_app_flutter/domain/app/storages/logger_storage.dart';
 import 'package:pixel_app_flutter/domain/apps/apps.dart';
+import 'package:pixel_app_flutter/domain/data_source/blocs/CurrentScreenCubit.dart';
+import 'package:pixel_app_flutter/domain/data_source/blocs/SpeechProcessingCubit.dart';
+import 'package:pixel_app_flutter/domain/data_source/blocs/mic_data_cubit.dart';
 import 'package:pixel_app_flutter/domain/data_source/data_source.dart';
 import 'package:pixel_app_flutter/domain/data_source/extensions/int.dart';
 import 'package:pixel_app_flutter/domain/developer_tools/developer_tools.dart';
@@ -223,6 +226,45 @@ class SelectedDataSourceScope extends AutoRouter {
                 create: (context) => IncomingPackagesCubit(
                   context.read(),
                 ),
+              ),
+
+              BlocProvider(
+                create: (context) => SpeechProcessingCubit(
+                  dataSource: context.read(),
+                  lightsCubit: context.read(),
+                  generalInterfacesCubit: context.read(),
+                  outgoingPackagesCubit: context.read(),
+                  changeGearBloc: context.read(),
+                  commandLights: context.l10n.voiceCommandLight,
+                  commandPowerOn: context.l10n.voiceCommandPowerOn,
+                  commandPowerOff: context.l10n.voiceCommandPowerOff,
+                  commandWipers: context.l10n.voiceCommandWindshieldWipers,
+                  commandHood: context.l10n.voiceCommandEngineHood,
+                  commandOpen: context.l10n.voiceCommandOpen,
+                  commandClose: context.l10n.voiceCommandClose,
+                  commandBlink: context.l10n.voiceCommandBlink,
+                  commandHazardLight: context.l10n.voiceCommandHazardLight,
+                  commandGearDrive: context.l10n.voiceCommandGearDrive,
+                  commandGearReverse: context.l10n.voiceCommandGearBack,
+                  commandGearLow: context.l10n.voiceCommandGarLow,
+                  commandGearNeutral: context.l10n.voiceCommandGearNeutral,
+                  commandDoor: context.l10n.voiceCommandDoor,
+                  commandRight: context.l10n.voiceCommandRight,
+                  commandLeft: context.l10n.voiceCommandLeft,
+                ),
+              ),
+
+              BlocProvider(
+                create: (context) =>
+                    CurrentScreenCubit(dataSource: context.read()),
+              ),
+
+              BlocProvider(
+                create: (context) => MicDataCubit(
+                  dataSource: context.read(),
+                  speechProcessingCubit: context.read(),
+                  currentScreenCubit: context.read(),
+                )..init(),
               ),
             ],
             child: BlocConsumer<DataSourceConnectionStatusCubit,
